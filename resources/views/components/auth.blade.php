@@ -26,7 +26,7 @@
 
     <style defer="defer">
         .login_header {
-            background-color: {{ $globalSetting->logo_background_color }}      !important;
+            background-color: {{ $globalSetting->logo_background_color }};
         }
 
     </style>
@@ -54,16 +54,16 @@
     @endif
 </header>
 
-
-<section class="bg-grey py-5 login_section"  @if ($globalSetting->login_background_url) style="background: url('{{ $globalSetting->login_background_url }}') center center/cover no-repeat;" @endif>
+<section class="py-5 login_section">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 text-center">
-
-                <div class="login_box mx-auto rounded bg-white text-center">
+            @if ($globalSetting->login_background_url)
+            <div class="col-md-6" style="background: url('{{ $globalSetting->login_background_url ? $globalSetting->login_background_url : 'public/img/login.jpg' }}') center center/cover no-repeat;"></div>
+            @endif
+            <div class="col-md-6 text-center">
+            <div class="login_box mx-auto rounded bg-white text-center">
                     {{ $slot }}
                 </div>
-
                 {{ $outsideLoginBox ?? '' }}
 
                 @if($languages->count() >1)
@@ -82,13 +82,9 @@
                         </div>
                     </div>
                 @endif
-
-
             </div>
         </div>
-
     </div>
-
 </section>
 <!-- Global Required Javascript -->
 <script src="{{ asset('vendor/bootstrap/javascript/bootstrap-native.js') }}" defer="defer"></script>
@@ -107,7 +103,6 @@
     const RIGHT_MODAL = '#task-detail-1';
     const RIGHT_MODAL_CONTENT = '#right-modal-content';
     const RIGHT_MODAL_TITLE = '#right-modal-title';
-
     const dropifyMessages = {
         default: "@lang('app.dragDrop')",
         replace: "@lang('app.dragDropReplace')",
@@ -132,9 +127,6 @@
         })
     });
 </script>
-
 {{ $scripts }}
-
 </body>
-
 </html>

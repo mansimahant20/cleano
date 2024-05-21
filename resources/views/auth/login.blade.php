@@ -2,14 +2,12 @@
     <form id="login-form" action="{{ route('login') }}" class="ajax-form" method="POST">
         {{ csrf_field() }}
             <h3 class="text-capitalize mb-4 f-w-500">@lang('app.login')</h3>
-
             <script>
                 const facebook = "{{ route('social_login', 'facebook') }}";
                 const google = "{{ route('social_login', 'google') }}";
                 const twitter = "{{ route('social_login', 'twitter') }}";
                 const linkedin = "{{ route('social_login', 'linkedin') }}";
             </script>
-
             @if ($socialAuthSettings->google_status == 'enable')
                 <a class="mb-3 height_50 rounded f-w-500" onclick="window.location.href = google;">
                                     <span>
@@ -41,11 +39,9 @@
                     @lang('auth.signInLinkedin')
                 </a>
             @endif
-
             @if ($socialAuthSettings->social_auth_enable)
                 <p class="position-relative my-4">@lang('auth.useEmail')</p>
             @endif
-
             <div class="form-group text-left">
                 <label for="email">@lang('auth.email')</label>
                 <input tabindex="1" type="email" name="email"
@@ -62,16 +58,13 @@
                 <button type="submit" id="submit-next"
                         class="btn-primary f-w-500 rounded w-100 height-50 f-18 ">@lang('auth.next') <i
                         class="fa fa-arrow-right pl-1"></i></button>
-
                 @if ($company->allow_client_signup)
                     <a href="{{ route('register') }}" id="signup-client-next"
                         class="btn-secondary f-w-500 rounded w-100 height-50 f-15 mt-3">
                         @lang('app.signUpAsClient')
                     </a>
                 @endif
-
             @endif
-
             <div id="password-section"
                  @if ($socialAuthSettings->social_auth_enable && !$errors->has('g-recaptcha-response')) class="d-none" @endif>
                 <div class="form-group text-left">
@@ -88,7 +81,6 @@
                                 <i
                                     class="fa fa-eye"></i></button>
                         </x-slot>
-
                     </x-forms.input-group>
                     @if ($errors->has('password'))
                         <div class="invalid-feedback d-block">{{ $errors->first('password') }}</div>
@@ -97,24 +89,19 @@
                 <div class="forgot_pswd mb-3">
                     <a href="{{ url('forgot-password') }}">@lang('app.forgotPassword')</a>
                 </div>
-
                 <div class="form-group text-left ">
                     <input id="checkbox-signup" class="cursor-pointer" type="checkbox" name="remember">
                     <label for="checkbox-signup" class="cursor-pointer">@lang('app.rememberMe')</label>
                 </div>
-
                 @if ($globalSetting->google_recaptcha_status == 'active')
                     <div class="form-group" id="captcha_container"></div>
                 @endif
-
                 <input type="hidden" id="g_recaptcha" name="g_recaptcha">
-
                 @if ($errors->has('g-recaptcha-response'))
                     <div
                         class="invalid-feedback  d-block text-left">{{ $errors->first('g-recaptcha-response') }}
                     </div>
                 @endif
-
                 <button type="submit" id="submit-login"
                         class="btn-primary f-w-500 rounded w-100 height-50 f-18">
                     @lang('app.login') <i class="fa fa-arrow-right pl-1"></i>
@@ -127,14 +114,8 @@
                     </a>
                 @endif
             </div>
-
-
-
     </form>
-
     <x-slot name="scripts">
-
-
         @if ($globalSetting->google_recaptcha_status == 'active' && $globalSetting->google_recaptcha_v2_status == 'active')
             <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async
                     defer></script>
@@ -169,14 +150,10 @@
         @endif
 
         <script>
-
             $(document).ready(function () {
-
                 $("form#login-form").submit(function () {
                     const button = $('form#login-form').find('#submit-login');
-
                     const text = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> {{__('app.loading')}}';
-
                     button.prop("disabled", true);
                     button.html(text);
                 });
@@ -188,7 +165,6 @@
                 $('#submit-next').click(function (event) {
                     event.preventDefault();
                     document.addEventListener('click', handleFormSubmit, false);
-
                     const url = "{{ route('check_email') }}";
                     $.easyAjax({
                         url: url,
@@ -222,9 +198,7 @@
                     },
                 })
                 @endif
-
             });
         </script>
     </x-slot>
-
 </x-auth>
