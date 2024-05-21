@@ -4,6 +4,7 @@
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
  */
+@charset "UTF-8";
 .ql-container {
   box-sizing: border-box;
   font-family: Helvetica, Arial, sans-serif;
@@ -5178,7 +5179,7 @@ button.ql-table[value="append-col"]:after {
 .mention > span {
   margin: 0 3px;
 }
-@charset "UTF-8";
+
 /*!--
 
 TEMPLATE NAME: Bootbox - Agency HTML Template
