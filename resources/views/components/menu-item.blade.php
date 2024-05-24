@@ -4,14 +4,14 @@
         <a class="nav-item text-lightest f-15 sidebar-text-color" href="{{ $link }}"
            title="{{ $text }}">
             @isset($iconPath)
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                      class="bi bi-{{ $icon }}" viewBox="0 0 16 16">
                     {!! $iconPath !!}
                 </svg>
             @endisset
             <span class="pl-3">{{ $text }}</span>
             @if ($addon)
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                      class="bi bi-gift ml-2 text-yellow" viewBox="0 0 16 16" data-toggle="tooltip"
                      data-original-title="Add On (Need to be bought separately)">
                     <path
@@ -26,7 +26,7 @@
         <a class="nav-item text-lightest f-15 sidebar-text-color accordionItemHeading {{ $active == 1 ? 'active' : '' }}"
            title="{{ $text }}">
             @isset($iconPath)
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                      class="bi bi-{{ $icon }}" viewBox="0 0 16 16">
                     {!! $iconPath !!}
                 </svg>
@@ -34,7 +34,7 @@
             <span class="pl-3">{{ $text }}</span>
 
             @if ($addon)
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                      class="bi bi-gift ml-2 text-yellow" viewBox="0 0 16 16" data-toggle="tooltip"
                      data-original-title="Add On (Need to be bought separately)">
                     <path

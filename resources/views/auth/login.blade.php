@@ -1,7 +1,7 @@
 <x-auth>
     <form id="login-form" action="{{ route('login') }}" class="ajax-form" method="POST">
         {{ csrf_field() }}
-            <h3 class="text-capitalize mb-4 f-w-500">@lang('app.login')</h3>
+            <h3 class="text-capitalize mt-4 mb-4 f-w-500">@lang('app.login')</h3>
             <script>
                 const facebook = "{{ route('social_login', 'facebook') }}";
                 const google = "{{ route('social_login', 'google') }}";
@@ -86,13 +86,17 @@
                         <div class="invalid-feedback d-block">{{ $errors->first('password') }}</div>
                     @endif
                 </div>
-                <div class="forgot_pswd mb-3">
-                    <a href="{{ url('forgot-password') }}">@lang('app.forgotPassword')</a>
+
+                <div class="form-group text-left" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="forgot_pswd">
+                        <a href="{{ url('forgot-password') }}">@lang('app.forgotPassword')</a>
+                    </div>
+                    <div class="mt-2">
+                        <input id="checkbox-signup" class="cursor-pointer" type="checkbox" name="remember">
+                        <label for="checkbox-signup" class="cursor-pointer">@lang('app.rememberMe')</label>
+                    </div>
                 </div>
-                <div class="form-group text-left ">
-                    <input id="checkbox-signup" class="cursor-pointer" type="checkbox" name="remember">
-                    <label for="checkbox-signup" class="cursor-pointer">@lang('app.rememberMe')</label>
-                </div>
+
                 @if ($globalSetting->google_recaptcha_status == 'active')
                     <div class="form-group" id="captcha_container"></div>
                 @endif
@@ -103,8 +107,8 @@
                     </div>
                 @endif
                 <button type="submit" id="submit-login"
-                        class="btn-primary f-w-500 rounded w-100 height-50 f-18">
-                    @lang('app.login') <i class="fa fa-arrow-right pl-1"></i>
+                        class="btn-dark f-w-500 rounded w-100 height-50 f-18">
+                    @lang('app.login') <i class="fas fa-hand-point-right"></i>
                 </button>
 
                 @if ($company->allow_client_signup)

@@ -5,9 +5,10 @@
  * Copyright (c) 2013, salesforce.com
  */
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 .ql-container {
   box-sizing: border-box;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: "Nunito", sans-serif;
   font-size: 13px;
   height: 100%;
   margin: 0;
@@ -361,10 +362,10 @@
   color: #93f;
 }
 .ql-editor .ql-font-serif {
-  font-family: Georgia, Times New Roman, serif;
+  font-family: "Nunito", sans-serif;
 }
 .ql-editor .ql-font-monospace {
-  font-family: Monaco, Courier New, monospace;
+  font-family: "Nunito", sans-serif;
 }
 .ql-editor .ql-size-small {
   font-size: 0.75em;
@@ -818,10 +819,10 @@
   content: "Monospace";
 }
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]:before {
-  font-family: Georgia, Times New Roman, serif;
+  font-family: "Nunito", sans-serif;
 }
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]:before {
-  font-family: Monaco, Courier New, monospace;
+  font-family: "Nunito", sans-serif;
 }
 .ql-snow .ql-picker.ql-size {
   width: 98px;
@@ -860,7 +861,7 @@
 .ql-toolbar.ql-snow {
   border: 1px solid #ccc;
   box-sizing: border-box;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: "Nunito", sans-serif;
   padding: 8px;
 }
 .ql-toolbar.ql-snow .ql-formats {
@@ -5278,7 +5279,7 @@ section {
 body {
   color: #212529;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif,
+    Nunito, Arial, Noto Sans, Liberation Sans, sans-serif,
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   font-size: 1rem;
   line-height: 1.5;
@@ -9363,7 +9364,7 @@ input[type="submit"].btn-block {
   background-clip: border-box;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
+  border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -9413,7 +9414,6 @@ input[type="submit"].btn-block {
   margin-left: 1.25rem;
 }
 .card-header {
-  background-color: rgba(0, 0, 0, 0.03);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   margin-bottom: 0;
   padding: 0.75rem 1.25rem;
@@ -9427,7 +9427,7 @@ input[type="submit"].btn-block {
   padding: 0.75rem 1.25rem;
 }
 .card-footer:last-child {
-  border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
+  border-radius: 0 0 calc(1.25rem - 1px) calc(1.25rem - 1px);
 }
 .card-header-tabs {
   border-bottom: 0;
@@ -10535,7 +10535,7 @@ a.close.disabled {
   word-wrap: break-word;
   display: block;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif,
+    Nunito, Arial, Noto Sans, Liberation Sans, sans-serif,
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   font-size: 0.875rem;
   font-style: normal;
@@ -10646,7 +10646,7 @@ a.close.disabled {
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif,
+    Nunito, Arial, Noto Sans, Liberation Sans, sans-serif,
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   font-size: 0.875rem;
   font-style: normal;
@@ -11170,7 +11170,7 @@ button.bg-dark:hover {
   border-radius: 0.2rem !important;
 }
 .rounded {
-  border-radius: 0.25rem !important;
+  border-radius: 1.25rem !important;
 }
 .rounded-top {
   border-top-left-radius: 0.25rem !important;
@@ -14505,7 +14505,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #fff;
   color: #28313c;
-  font-family: Helvetica Neue;
+  font-family: "Nunito", sans-serif;
   font-size: 14px;
   font-stretch: normal;
   font-style: normal;
@@ -14582,7 +14582,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: Helvetica Neue;
+  font-family: "Nunito", sans-serif;
   margin-top: 0;
 }
 h1 {
@@ -14651,7 +14651,7 @@ h6 a {
   color: #777;
   cursor: pointer;
   display: block;
-  font-family: Roboto, Helvetica Neue, Helvetica, Arial;
+  font-family: "Nunito", sans-serif;
   font-size: 14px;
   height: 200px;
   line-height: 22px;
@@ -14739,7 +14739,7 @@ h6 a {
   border: 2px solid #fff;
   color: #fff;
   display: none;
-  font-family: Roboto, Helvetica Neue, Helvetica, Arial;
+  font-family: "Nunito", sans-serif;
   font-size: 11px;
   font-weight: 700;
   opacity: 0;
@@ -18274,7 +18274,7 @@ select.selectpicker {
 }
 .chart-container {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Nunito, sans-serif;
   position: relative;
 }
 .chart-container .axis,
@@ -18372,7 +18372,7 @@ select.selectpicker {
   display: inline-block;
   padding: 5px 10px;
 }
-@font-face {
+/* @font-face {
   font-display: swap;
   font-family: Helvetica Neue;
   font-style: normal;
@@ -18395,7 +18395,7 @@ select.selectpicker {
   font-weight: 700;
   src: url(../fonts/HelveticaNeue-Bold.woff2) format("woff2"),
     url(../fonts/HelveticaNeue-Bold.woff) format("woff");
-}
+} */
 body.dark-theme,
 body.dark-theme .bg-additional-grey,
 body.dark-theme .preloader-container {
@@ -18810,9 +18810,6 @@ ul.thumbnails.image_picker_selector li .thumbnail.selected {
     width: 96px !important;
   }
 }
-.sidebar-menu li {
-  box-shadow: 0 1px 0 0 rgba(232, 238, 243, 0.078);
-}
 .settings-box {
   padding: 20px 28px;
 }
@@ -18829,7 +18826,7 @@ ul.thumbnails.image_picker_selector li .thumbnail.selected {
 .sidebar-dark .sidebar-brand-box,
 .sidebar-dark .sidebar-menu,
 .sidebar-dark .sidebarTogglerBox {
-  background-color: #171f29 !important;
+  /* background-color: #171f29 !important; */
 }
 .sidebar-light .main-sidebar {
   background-color: #f7faff;
@@ -19274,7 +19271,7 @@ input[type="number"] {
   }
 }
 .login_section {
-  min-height: calc(100vh - 56px);
+  min-height: 100vh;
 }
 .login_header {
   box-shadow: 0 1px 0 0 #e8eef3;
@@ -19360,7 +19357,7 @@ input[type="number"] {
 .forgot_pswd a {
   border: none;
   color: #616e80;
-  font-size: 12px;
+  font-size: 14px;
   justify-content: left;
   padding: 0;
   text-decoration: underline;
@@ -19949,7 +19946,6 @@ button:disabled {
   z-index: 1 !important;
 }
 .sidebar-brand-box .sidebar-brand {
-  border-bottom: 1px solid #252d37;
   padding: 8px 20px;
   transition: width 0.3s;
 }
@@ -20059,15 +20055,16 @@ button:disabled {
   transform: scaleY(1);
   transform-origin: top;
 }
-.accordionItem a.active {
-  color: #f7faff;
+.accordionItemContent a.active {
+  color: #cf46fa;
 }
 .sidebar-menu {
   display: block !important;
   height: calc(100% - 111px);
-  overflow: auto;
+  overflow: hidden;
   white-space: nowrap;
   z-index: 0;
+  padding: 10px;
 }
 @media (max-width: 991.98px) {
   .sidebar-menu {
@@ -20075,7 +20072,7 @@ button:disabled {
   }
 }
 .sidebar-menu li {
-  box-shadow: 0 1px 0 0 #252d37;
+  /* box-shadow: 0 1px 0 0 #252d37; */
   position: relative;
 }
 .sidebar-menu li .accordionItemContent a {
@@ -20083,20 +20080,32 @@ button:disabled {
   margin-left: 36px;
   padding: 0.5rem 1.2rem;
   white-space: nowrap;
+  border-radius: 10px;
 }
 .sidebar-menu li .accordionItemContent a:hover {
-  color: #f7faff !important;
+  color: #cf46fa !important;
+  font-weight: 500;
 }
 .sidebar-menu li .nav-item {
+  font-family: "Nunito", sans-serif;
   align-items: center;
   display: block;
   line-height: 1.87;
   padding: 10px 20px;
   white-space: nowrap;
+  font-weight: 500;
+}
+.sidebar-menu li .nav-item.active {
+  background-color: #f8edfc;
+  border-radius: 10px;
+}
+.sidebar-menu li .nav-item.active .pl-3,
+.sidebar-menu li .nav-item.active svg {
+  color: #cf46fa;
 }
 .sidebar-menu li .nav-item:focus,
 .sidebar-menu li .nav-item:hover {
-  color: #f7faff !important;
+  color: #cf46fa !important;
 }
 .side-icon {
   display: inline-block;
@@ -20132,7 +20141,6 @@ button:disabled {
   overflow: hidden;
 }
 .sidebarTogglerBox {
-  border-top: 1px solid #252d37;
   bottom: 0;
   height: 48px;
   padding: 0 16px;
@@ -20386,7 +20394,7 @@ button:disabled {
   background-color: #2cb100;
 }
 .bg-additional-grey {
-  background-color: #f2f4f7;
+  background-color: #ede9ef8a;
 }
 .bg-amt-grey {
   background-color: #e7e9eb;
@@ -20395,16 +20403,16 @@ button:disabled {
   background-color: #f7faff;
 }
 .text-darkest-grey {
-  color: #4d4f5c !important;
+  color: #4c4b4b;
 }
 .text-dark-grey {
-  color: #616e80;
+  color: #000;
 }
 .text-dark {
   color: #28313c !important;
 }
 .text-lightest {
-  color: #99a5b5;
+  color: #000;
 }
 .text-blue {
   color: #1d82f5 !important;
@@ -20422,7 +20430,7 @@ button:disabled {
   color: #2cb100;
 }
 .text-white-shade {
-  color: #f7faff;
+  color: #000;
 }
 .text-pink {
   color: #ea4c89;
@@ -20454,7 +20462,7 @@ button:disabled {
   }
 }
 .f-w-500 {
-  font-weight: 500 !important;
+  font-weight: 600 !important;
 }
 .f-8 {
   font-size: 8px;
@@ -20475,7 +20483,7 @@ button:disabled {
   font-size: 14px !important;
 }
 .f-15 {
-  font-size: 15px !important;
+  font-size: 16px !important;
 }
 .f-16 {
   font-size: 16px;
