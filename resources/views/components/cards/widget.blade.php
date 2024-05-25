@@ -7,7 +7,7 @@
         @endif
         </h5>
         <div class="d-flex">
-            <p class="mb-0 f-15 font-weight-bold text-blue text-primary d-grid"><span
+            <p class="mb-0 f-15 font-weight-bold text-indigo d-grid"><span
                     id="{{ $widgetId }}">{{ $value }}</span>
             </p>
         </div>

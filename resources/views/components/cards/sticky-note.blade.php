@@ -15,7 +15,7 @@
         @endphp
 
 @endswitch
-<div class="card sticky-note border">
+<!-- <div class="card sticky-note border">
     <div class="card-body text-justify text-wrap">
         <div class="row">
 
@@ -50,4 +50,28 @@
             <div class="text-{{ $colour }}"><i class="fa fa-circle"></i></div>
         </div>
     </div>
+</div> -->
+
+<div class="post-it">
+  <div class="dropdown dropdown-right">
+    <button class="btn btn-lg f-14 px-2 py-0 text-dark-grey text-capitalize rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fa fa-ellipsis-h"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0" aria-labelledby="dropdownMenuLink" tabindex="0">
+      <a class="openRightModal dropdown-item" href="{{ route('sticky-notes.show', $stickyNote->id) }}">
+        <i class="fa fa-eye mr-2"></i>@lang('app.view')
+      </a>
+      <a class="openRightModal dropdown-item" href="{{ route('sticky-notes.edit', $stickyNote->id) }}">
+        <i class="fa fa-edit mr-2"></i>@lang('app.edit')
+      </a>
+      <a class="dropdown-item delete-note" data-note-id="{{ $stickyNote->id }}" href="javascript:;">
+        <i class="fa fa-trash mr-2"></i>@lang('app.delete')
+      </a>
+    </div>
+  </div>
+  <p class="sticky taped text-center sticky-{{ $colour }}">
+    <span class="sticky-title">{!! nl2br($stickyNote->note_text) !!}</span><br><br>
+    <span class="sticky-date">Date: {{ $stickyNote->created_at->translatedFormat(company()->date_format) }}</span>
+  </p>
 </div>
+
