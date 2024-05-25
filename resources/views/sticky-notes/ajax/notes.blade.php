@@ -17,9 +17,9 @@
     </div>
 </div>
 
-<div class="row mt-4">
+<div class="row">
     @forelse ($stickyNotes as $item)
-        <div class="col-sm-12 col-md-6 col-lg-2 mb-4">
+        <div class="col-sm-12 col-md-6 col-lg-2">
             <x-cards.sticky-note :stickyNote="$item" />
         </div>
     @empty

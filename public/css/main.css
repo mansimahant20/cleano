@@ -23361,8 +23361,6 @@ ul.thumbnails.image_picker_selector li .thumbnail.selected {
 .sticky {
   -webkit-box-shadow: #DDD 0px 1px 2px;
   position: relative;
-  background-color: #F4F39E;
-  border-color: #DEE184;
   color: #47576B;
   text-align: center;
   margin: 2.5em 0px;
@@ -24024,7 +24022,7 @@ input[type="number"] {
 }
 
 .b-shadow-4 {
-  box-shadow: 0 0 4px 0 #e8eef3;
+  box-shadow: 3px 3px 4px 1px #e8eef3
 }
 
 .b-r-8 {
@@ -28388,3 +28386,43 @@ body.dark-theme::-webkit-scrollbar-thumb {
 }
 
 /*# sourceMappingURL=main.css.map*/
+
+.widget-bg-1 {
+  background-color: #FFCDD2; 
+  color: #000000; 
+}
+
+.widget-bg-2 {
+  background-color: #F8BBD0; 
+  color: #000000; 
+}
+
+.widget-bg-3 {
+  background-color: #E1BEE7; 
+  color: #000000; 
+}
+
+.widget-bg-4 {
+  background-color: #D1C4E9; 
+  color: #000000; 
+}
+
+.widget-bg-5 {
+  background-color: #C5CAE9;
+  color: #000000; 
+}
+
+.widget-bg-6 {
+  background-color: #BBDEFB; 
+  color: #000000; 
+}
+
+.widget-bg-7 {
+  background-color: #B3E5FC; 
+  color: #000000;
+}
+
+.widget-bg-8 {
+  background-color: #B2EBF2; 
+  color: #000000;
+}

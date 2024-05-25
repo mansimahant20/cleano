@@ -97,50 +97,47 @@ class LeaveTypeController extends AccountBaseController
 
     public function update(StoreLeaveType $request, $id)
     {
-        if ($request->leaves < 0) {
-            return Reply::error('messages.leaveTypeValueError');
-        }
-
-        $leaveType = LeaveType::findOrFail($id);
-        $leaveType->type_name = $request->type_name;
-        $leaveType->color = $request->color;
-        $leaveType->paid = $request->paid;
-        $leaveType->no_of_leaves = $request->leave_number;
-        $leaveType->monthly_limit = $request->monthly_limit;
-        $leaveType->effective_after = $request->effective_after;
-        $leaveType->effective_type = $request->effective_type;
-        $leaveType->unused_leave = $request->unused_leave;
-        $leaveType->encashed = $request->encashed;
-        $leaveType->allowed_probation = $request->allowed_probation;
-        $leaveType->allowed_notice = $request->allowed_notice;
-        $leaveType->gender = $request->gender ? json_encode($request->gender) : null;
-        $leaveType->marital_status = $request->marital_status ? json_encode($request->marital_status) : null;
-        $leaveType->department = $request->department ? json_encode($request->department) : null;
-        $leaveType->designation = $request->designation ? json_encode($request->designation) : null;
-        $leaveType->role = $request->role ? json_encode($request->role) : null;
-        $leaveType->save();
-
-        $employees = EmployeeDetails::select('id', 'user_id', 'joining_date')->get();
-        $settings = company();
-        $leaves = $leaveType->no_of_leaves;
-
-        foreach ($employees as $employee) {
-
-            if ($settings && $settings->leaves_start_from == 'year_start')
-            {
-                $joiningDate = $employee->joining_date->copy()->addDay()->startOfMonth();
-                $startingDate = Carbon::create($joiningDate->year + 1, $settings->year_starts_from)->startOfMonth();
-                $differenceMonth = $joiningDate->diffInMonths($startingDate);
-                $countOfMonthsAllowed = $differenceMonth > 12 ? $differenceMonth - 12 : $differenceMonth;
-                $leaves = floor($leaveType->no_of_leaves / 12 * $countOfMonthsAllowed);
+        try {
+            if ($request->leaves < 0) {
+                return Reply::error('messages.leaveTypeValueError');
             }
-
-            $employeeQuota = EmployeeLeaveQuota::where('leave_type_id', $leaveType->id)->where('user_id', $employee->user_id)->first();
-            $employeeQuota->no_of_leaves = $leaves;
-            $employeeQuota->save();
+            $leaveType = LeaveType::findOrFail($id);
+            $leaveType->update([
+                'type_name' => $request->type_name,
+                'color' => $request->color,
+                'paid' => $request->paid,
+                'no_of_leaves' => $request->leave_number,
+                'monthly_limit' => $request->monthly_limit,
+                'effective_after' => $request->effective_after,
+                'effective_type' => $request->effective_type,
+                'unused_leave' => $request->unused_leave,
+                'encashed' => $request->encashed,
+                'allowed_probation' => $request->allowed_probation,
+                'allowed_notice' => $request->allowed_notice,
+                'gender' => $request->gender ? json_encode($request->gender) : null,
+                'marital_status' => $request->marital_status ? json_encode($request->marital_status) : null,
+                'department' => $request->department ? json_encode($request->department) : null,
+                'designation' => $request->designation ? json_encode($request->designation) : null,
+                'role' => $request->role ? json_encode($request->role) : null,
+            ]);
+            $employees = EmployeeDetails::select('id', 'user_id', 'joining_date')->get();
+            $settings = company();
+            foreach ($employees as $employee) {
+                $leaves = $leaveType->no_of_leaves;
+                if ($settings && $settings->leaves_start_from == 'year_start') {
+                    $joiningDate = $employee->joining_date->copy()->addDay()->startOfMonth();
+                    $startingDate = Carbon::create($joiningDate->year + 1, $settings->year_starts_from)->startOfMonth();
+                    $differenceMonth = $joiningDate->diffInMonths($startingDate);
+                    $countOfMonthsAllowed = $differenceMonth > 12 ? $differenceMonth - 12 : $differenceMonth;
+                    $leaves = floor($leaveType->no_of_leaves / 12 * $countOfMonthsAllowed);
+                }
+                EmployeeLeaveQuota::updateOrCreate(['leave_type_id' => $leaveType->id, 'user_id' => $employee->user_id],['no_of_leaves' => $leaves]);
+            }
+            return Reply::success(__('messages.leaveTypeAdded'));
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return Reply::error(__('messages.serverError'));
         }
-
-        return Reply::success(__('messages.leaveTypeAdded'));
     }
 
     /**
