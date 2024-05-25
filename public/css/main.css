@@ -25387,7 +25387,7 @@ button:disabled {
 }
 
 .text-darkest-grey {
-  color: #4c4b4b;
+  color: #fff;
 }
 
 .text-dark-grey {
@@ -28388,41 +28388,41 @@ body.dark-theme::-webkit-scrollbar-thumb {
 /*# sourceMappingURL=main.css.map*/
 
 .widget-bg-1 {
-  background-color: #FFCDD2; 
+  background-color: #ab53db; 
   color: #000000; 
 }
 
 .widget-bg-2 {
-  background-color: #F8BBD0; 
+  background-color: #ff5b5a; 
   color: #000000; 
 }
 
 .widget-bg-3 {
-  background-color: #E1BEE7; 
+  background-color: #00a28a; 
   color: #000000; 
 }
 
 .widget-bg-4 {
-  background-color: #D1C4E9; 
+  background-color: #ffbc54; 
   color: #000000; 
 }
 
 .widget-bg-5 {
-  background-color: #C5CAE9;
+  background-color: #12A0BC;
   color: #000000; 
 }
 
 .widget-bg-6 {
-  background-color: #BBDEFB; 
+  background-color: #CE4B8E; 
   color: #000000; 
 }
 
 .widget-bg-7 {
-  background-color: #B3E5FC; 
+  background-color: #F99A13; 
   color: #000000;
 }
 
 .widget-bg-8 {
-  background-color: #B2EBF2; 
+  background-color: #07753D; 
   color: #000000;
 }
