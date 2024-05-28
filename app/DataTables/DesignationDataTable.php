@@ -34,13 +34,13 @@ class DesignationDataTable extends BaseDataTable
     public function dataTable($query)
     {
         return datatables()
-            ->eloquent($query)
+            ->eloquent($query)  
             ->addIndexColumn()
             ->addColumn('check', function ($row) {
                 return '<input type="checkbox" class="select-table-row" id="datatable-row-' . $row->id . '"  name="datatable_ids[]" value="' . $row->id . '" onclick="dataTableRowCheck(' . $row->id . ')">';
             })
             ->editColumn('name', function ($row) {
-                $name = '<h5 class="mb-0 f-13 text-darkest-grey"><a href="' . route('designations.show', [$row->id]) . '" class="openRightModal">' . $row->name . '</a></h5>';
+                $name = '<h5 class="mb-0 f-15 text-darkest-grey"><a href="' . route('designations.show', [$row->id]) . '" class="openRightModal">' . $row->name . '</a></h5>';
 
                 return $name;
             })

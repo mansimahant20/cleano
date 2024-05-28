@@ -16,7 +16,7 @@
         <!-- CLIENT START -->
         <div class="select-box d-flex pr-2 border-right-grey border-right-grey-sm-0">
             <p class="mb-0 pr-2 f-14 text-dark-grey d-flex align-items-center">@lang('app.employee')</p>
-            <div class="select-status d-flex align-items-center"">
+            <div class="select-status d-flex align-items-center">
                 <select class="form-control select-picker" name="employee" id="employee" data-live-search="true"
                     data-size="8">
                     <option value="all">@lang('app.all')</option>

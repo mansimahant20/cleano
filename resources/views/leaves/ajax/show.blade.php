@@ -12,7 +12,7 @@ $approveRejectPermission = user()->permission('approve_or_reject_leaves');
                     <div class="row">
                         <div class="col-md-10 col-10">
                             <h3 class="heading-h1">@lang('app.menu.leaves') @lang('app.details')</h3>
-                            <div class="f-10 text-lightest">@lang('app.apply')  @lang('app.date') - {{ $leave->created_at->timezone(company()->timezone)->translatedFormat(company()->date_format .' ' . company()->time_format) }}</div>
+                            <div class="f-13 text-lightest">@lang('app.apply')  @lang('app.date') - {{ $leave->created_at->timezone(company()->timezone)->translatedFormat(company()->date_format .' ' . company()->time_format) }}</div>
                         </div>
                         <div class="col-md-2 col-2 text-right">
                             <div class="dropdown">

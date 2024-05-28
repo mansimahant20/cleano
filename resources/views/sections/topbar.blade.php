@@ -164,7 +164,7 @@
                     </a>
                     <!-- DROPDOWN - INFORMATION -->
                     <div
-                        class="dropdown-menu dropdown-menu-right notification-dropdown border-0 shadow-lg py-0 bg-additional-grey"
+                        class="dropdown-menu dropdown-menu-right notification-dropdown border-0 shadow-lg py-0"
                         tabindex="0">
                         <div
                             class="d-flex px-3 justify-content-between align-items-center border-bottom-grey py-1 bg-white">

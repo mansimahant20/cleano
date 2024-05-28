@@ -70,7 +70,7 @@ class DepartmentDataTable extends BaseDataTable
             ->editColumn(
                 'name',
                 function ($row) {
-                    return '<h5 class="mb-0 f-13 text-darkest-grey"><a href="' . route('departments.show', [$row->id]) . '" class="openRightModal">' . $row->team_name . '</a></h5>';
+                    return '<h5 class="mb-0 f-15 text-darkest-grey"><a href="' . route('departments.show', [$row->id]) . '" class="openRightModal">' . $row->team_name . '</a></h5>';
                 }
             )
             ->editColumn('parent_id', function ($row) {

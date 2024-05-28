@@ -40,7 +40,7 @@
                     </div>
                 </th>
             @endforeach
-        </x-slot>
+        </x-slot>    
 
         @foreach ($employeeAttendence as $key => $attendance)
             @php
@@ -79,7 +79,7 @@
                                         <i class="fa fa-ban text-red"></i>
                                         @endif</button>
                                 @elseif ($day == 'Holiday')
-                                <div data-toggle="tooltip" class=" py-4 badge badge-light f-10 p-1 border border-primary w-100"
+                                <div data-toggle="tooltip" class="py-4 badge badge-light f-12 p-1 border border-primary w-100"
                                     data-original-title="@lang('modules.attendance.holiday')"> <i class="fa fa-star text-primary"></i>
                                     {{ $holidayOccasions[$key2] }}</div>
                             @else

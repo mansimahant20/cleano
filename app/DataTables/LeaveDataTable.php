@@ -82,7 +82,7 @@ class LeaveDataTable extends BaseDataTable
 
                 if($row->duration == 'multiple' && !is_null($row->unique_id)){
 
-                    $leaveStatus = '<h5 class="mb-0 f-13 ">
+                    $leaveStatus = '<h5 class="mb-0 f-15">
                             <a class="view-related-leave text-darkest-grey ml-2" data-leave-id=' . $row->id . '
                                     data-unique-id="' . $row->unique_id . '" data-leave-type-id="' . $row->leave_type_id . '" href="javascript:;">
                                     ' . __('app.view') . ' '.__('app.status').'
@@ -103,7 +103,7 @@ class LeaveDataTable extends BaseDataTable
             })
             ->addColumn('duration', function ($row) {
                 $leave = ' <div class="media-body">
-                    <span class="mb-0 f-13 "> '.(($row->duration == 'half day') ? __('modules.leaves.halfDay') : (($row->duration == 'multiple') ? __('modules.leaves.multiple') : __('app.'.$row->duration))) .' </span></br>';
+                    <span class="mb-0 f-15 "> '.(($row->duration == 'half day') ? __('modules.leaves.halfDay') : (($row->duration == 'multiple') ? __('modules.leaves.multiple') : __('app.'.$row->duration))) .' </span></br>';
 
                 if($row->count_multiple_leaves != 0){
                     $leave .= '<span class="badge badge-secondary">' . $row->count_multiple_leaves .' '.__('app.leave').'</span>';

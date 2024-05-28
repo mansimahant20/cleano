@@ -12,9 +12,9 @@
                 </div>
             @endif
             <div class="card-body border-0 pl-0 pr-0 py-1">
-                <p class="card-title f-11 mb-0 text-dark-grey f-w-500">{{ $title ?? '' }}</p>
+                <p class="card-title f-14 mb-0 text-dark-grey f-w-500">{{ $title ?? '' }}</p>
                 <p class="f-11 mb-0 text-dark-grey">{{ $text ?? '' }}</p>
-                <p class="card-text f-10 text-lightest">{{ $time->diffForHumans() }}</p>
+                <p class="card-text f-11 text-lightest">{{ $time->diffForHumans() }}</p>
             </div>
         </div>
     </a>
