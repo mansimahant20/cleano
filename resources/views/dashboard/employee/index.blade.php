@@ -126,7 +126,7 @@
 
                 @if (in_array('attendance', user_modules()) && $cannotLogin == false)
                     @if (is_null($currentClockIn) && is_null($checkTodayLeave) && is_null($checkTodayHoliday) && $checkJoiningDate == true)
-                        <button type="button" class="btn-primary rounded f-15 ml-4" id="clock-in"><i
+                        <button type="button" class="btn-primary f-15 ml-4" id="clock-in"><i
                         class="icons icon-login mr-2"></i>@lang('modules.attendance.clock_in')</button>
                     @endif
                 @endif

@@ -37,7 +37,7 @@
         <div class="col-sm-12 col-lg-6 mt-3">
             <x-cards.data :title="__('modules.dashboard.statusWiseProject')">
                 <x-pie-chart id="task-chart" :labels="$statusWiseProject['labels']"
-                    :values="$statusWiseProject['values']" :colors="$statusWiseProject['colors']" height="250" width="300" />
+                    :values="$statusWiseProject['values']" :colors="$statusWiseProject['colors']" height="310" width="300" />
             </x-cards.data>
         </div>
     @endif

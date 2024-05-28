@@ -51,7 +51,7 @@ var myChart = new Chart(ctx, {
     <div class="text-center text-lightest p-20"
         style="height: {{ $attributes['height'] }}px">
 
-        <i class="side-icon f-21 bi bi-pie-chart"></i>
+        <i class="side-icon bi bi-pie-chart"></i>
         <div class="f-15 mt-4">
             - @lang('messages.notEnoughData') -
         </div>

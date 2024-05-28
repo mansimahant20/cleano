@@ -98,7 +98,7 @@
                             <td class="pl-20">
                                 <x-client :user="$item" />
                             </td>
-                            <td>
+                            <td class="f-14">
                                 {{ $item->email }}
                             </td>
                             <td class="pr-20" align="right">{{ $item->created_at->translatedFormat(company()->date_format) }}</td>

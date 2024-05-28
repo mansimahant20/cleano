@@ -17,7 +17,7 @@
         <a href="{{ isset($disabledLink) ? 'javascript:;' : route('employees.show', [$user->id]) }}"
            class="position-relative {{ isset($disabledLink) ? 'disabled-link' : '' }}">
             @if ($active)
-                <span class="text-light-green position-absolute f-8 user-online"
+                <span class="text-light-green position-absolute f-13 user-online"
                       title="@lang('modules.client.online')"><i class="fa fa-circle"></i></span>
             @endif
             <img src="{{ $user->image_url }}" class="mr-2 taskEmployeeImg rounded-circle"

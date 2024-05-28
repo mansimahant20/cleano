@@ -6964,7 +6964,8 @@ sup {
 
 a {
   background-color: transparent;
-  color: #1d82f5;
+  color: #000;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -7089,6 +7090,8 @@ input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;
   padding: 0;
+  height: 18px;
+  width: 18px;
 }
 
 textarea {
@@ -23122,8 +23125,8 @@ table h5 a:hover {
 }
 
 img.taskEmployeeImg {
-  height: 30px;
-  width: 30px;
+  height: 50px;
+  width: 50px;
 }
 
 .badge img.taskEmployeeImg {
@@ -24980,7 +24983,7 @@ button:disabled {
 .sidebar-menu {
   display: block !important;
   height: calc(100% - 111px);
-  overflow: hidden;
+  overflow: auto;
   white-space: nowrap;
   z-index: 0;
   padding: 10px;
@@ -25387,7 +25390,7 @@ button:disabled {
 }
 
 .text-darkest-grey {
-  color: #fff;
+  /* color: #fff; */
 }
 
 .text-dark-grey {
@@ -25703,13 +25706,13 @@ div.dataTables_wrapper div.dataTables_info {
 .table th,
 .table thead th {
   border: 0;
-  padding: 6px;
+  padding: 14px;
 }
 
 .table thead th {
   box-shadow: 0 1px 0 0 #f1f1f3;
   color: #99a5b5;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
 }
 
@@ -25720,7 +25723,7 @@ div.dataTables_wrapper div.dataTables_info {
 
 .table tr td {
   color: #28313c;
-  font-size: 13px;
+  font-size: 14px;
   vertical-align: middle;
 }
 
@@ -25741,7 +25744,7 @@ div.dataTables_wrapper div.dataTables_info {
 
 .task_view .taskView {
   border-right: 1px solid #99a5b5;
-  color: #99a5b5;
+  color: #262728;
   line-height: 2;
   padding: 0 7px;
 }
@@ -28212,8 +28215,7 @@ body.dark-theme .pagination .page-item.active .page-link {
 
 body.dark-theme .dropdown-item.active,
 body.dark-theme .dropdown-item.active:hover,
-body.dark-theme .page-item.active .page-link,
-body.dark-theme .text-white {
+body.dark-theme .page-item.active .page-link {
   color: #181c34 !important;
 }
 
@@ -28426,3 +28428,57 @@ body.dark-theme::-webkit-scrollbar-thumb {
   background-color: #07753D; 
   color: #000000;
 }
+
+.widget-number {
+  font-size: 24px;
+  color: #fff;
+}
+
+.date-badge {
+  background-color: #f8f8fd;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: "Nunito", sans-serif;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.date-badge .month {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.date-badge .date {
+  font-size: 15px;
+  color: #007bff;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .date-badge {
+      padding: 5px; 
+  }
+
+  .date-badge .month,
+  .date-badge .date {
+      font-size: 1em;
+  }
+}    
+
+.bg-widget-color {
+  padding: 16px;
+  height: 50px;
+  width: 50px;
+  border-radius: 16px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
