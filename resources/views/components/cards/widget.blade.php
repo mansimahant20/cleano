@@ -22,6 +22,6 @@
         </div>
     </div>
     <div class="bg-widget-color">
-        <i class="fa fa-{{ $icon }} text-lightest f-18"></i>
+        <i class="fa fa-{{ $icon }} f-18"></i>
     </div>
 </div>

@@ -111,9 +111,9 @@ $addHolidayPermission = user()->permission('add_holiday');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             locale: initialLocaleCode,
             headerToolbar: {
-                left: 'prev,next today',
+                left: 'prev,next',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,today'
             },
             firstDay: parseInt("{{ attendance_setting()?->week_start_from }}"),
             navLinks: true, // can click day/week names to navigate views

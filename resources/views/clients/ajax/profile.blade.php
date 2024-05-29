@@ -26,7 +26,7 @@
                 <x-cards.user :image="$client->image_url">
                     <div class="row">
                         <div class="col-10">
-                            <h4 class="card-title f-15 f-w-500 text-darkest-grey mb-0">
+                            <h4 class="card-title f-16 f-w-500 text-darkest-grey mb-0">
                                 {{ ($client->salutation ? $client->salutation->label() . ' ' : '') . $client->name }}
                                 @isset($client->country)
                                     <x-flag :country="$client->country" />
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="f-13 font-weight-normal text-dark-grey mb-0">
+                    <p class="f-14 font-weight-normal text-dark-grey mb-0">
                         {{ $client->clientDetails->company_name }}
                     </p>
                     <p class="card-text f-12 text-lightest">@lang('app.lastLogin')

@@ -310,7 +310,7 @@
             <x-cards.data :title="__('modules.dashboard.userActivityTimeline').' <i class=\'fa fa-question-circle\' data-toggle=\'popover\' data-placement=\'top\' data-content=\''.__('app.from').' '.$startDate->translatedFormat(company()->date_format).' '.__('app.to').' '.$endDate->translatedFormat(company()->date_format).'\' data-trigger=\'hover\'></i>'" padding="false"
                 otherClasses="h-200 p-activity-detail cal-info">
                 @forelse($userActivities as $key=>$activity)
-                    <div class="card border-0 b-shadow-4 p-20 rounded-0">
+                    <div class="card border-0 p-20 rounded-0">
                         <div class="card-horizontal">
                             <div class="date-badge">
                                 <span class="month">{{ $activity->created_at->timezone(company()->timezone)->translatedFormat('M') }}</span>

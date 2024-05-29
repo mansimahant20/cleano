@@ -294,7 +294,7 @@
                 <div class="form-actions">
                     <button type="button" id="save-form" class="btn btn-primary"><i
                             class="fa fa-check"></i> @lang('app.save')</button>
-                    <button type="reset" class="btn btn-secondary ml-3">@lang('app.reset')</button>
+                    <button type="reset" class="btn btn-secondary">@lang('app.reset')</button>
                 </div>
             </x-form>
 

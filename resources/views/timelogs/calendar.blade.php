@@ -167,9 +167,9 @@ $addTimelogPermission = user()->permission('add_timelogs');
             locale: initialLocaleCode,
             initialView: 'dayGridMonth',
             headerToolbar: {
-                left: 'prev,next today',
+                left: 'prev,next',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,today'
             },
             // initialDate: '2020-09-12',
             navLinks: true, // can click day/week names to navigate views

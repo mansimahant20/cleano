@@ -12,7 +12,7 @@
   left: 20px;
   z-index: 3001;
   display: none;
-  font-family: arial;
+  font-family: "Nunito", sans-serif;
   font-size: 15px;
   line-height: 1em;
 }
@@ -320,9 +320,10 @@
 }
 
 .daterangepicker .ranges li {
-  font-size: 12px;
-  padding: 8px 12px;
+  font-size: 14px;
+  padding: 10px 12px;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .daterangepicker .ranges li:hover {

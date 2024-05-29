@@ -54,7 +54,6 @@
         </div>
         <!-- LEAVE STATUS FILTER END -->
 
-
         <!-- SEARCH BY LEAVE START -->
         <div class="leave-search d-flex  py-1 px-lg-3 px-0 border-right-grey align-items-center">
             <form class="w-100 mr-1 mr-lg-0 mr-md-1 ml-md-1 ml-0 ml-lg-0">
@@ -78,7 +77,6 @@
             </x-forms.button-secondary>
         </div>
         <!-- RESET END -->
-
         <!-- MORE FILTERS END -->
     </x-filters.filter-box>
 
@@ -171,9 +169,9 @@ $addLeavePermission = user()->permission('add_leave');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             locale: initialLocaleCode,
             headerToolbar: {
-                left: 'prev,next today',
+                left: 'prev,next',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,today'
             },
             firstDay: parseInt("{{ attendance_setting()?->week_start_from }}"),
             navLinks: true, // can click day/week names to navigate views

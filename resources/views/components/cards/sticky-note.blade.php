@@ -54,7 +54,7 @@
 
 <div class="post-it">
   <div class="dropdown dropdown-right">
-    <button class="btn btn-lg f-14 px-2 py-0 text-dark-grey text-capitalize rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button class="btn btn-lg f-14 px-2 py-0 text-capitalize rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fa fa-ellipsis-h"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0" aria-labelledby="dropdownMenuLink" tabindex="0">

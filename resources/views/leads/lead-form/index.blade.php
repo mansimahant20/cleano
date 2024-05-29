@@ -28,7 +28,7 @@
                                     <x-form id="editSettings" method="PUT">
                                         <div id="sortable">
                                             @foreach ($leadFormFields as $item)
-                                                <div class="row py-3 pt-4 border-bottom">
+                                                <div class="row py-3 pt-4 border-bottom field-name">
                                                     <div class="col-md-3">
                                                         <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                                                         <input type="hidden" name="sort_order[]"
@@ -61,13 +61,13 @@
                         </div>
                     </div>
                     <div class="col-sm-12 mt-4 mb-4">
-                        <x-cards.data>
+                        <x-cards.data class="card-gap">
                             <p class="f-w-500">@lang('modules.lead.iframeSnippet')</p>
                             <code>
                                 &lt;iframe src="{{ route('front.lead_form',[company()->hash]) }}"  frameborder="0" scrolling="yes"  style="display:block; width:100%; height:60vh;">&lt;/iframe&gt;
                             </code>
                         </x-cards.data>
-                        <x-cards.data>
+                        <x-cards.data class="card-gap">
                             <p class="f-w-500">Share Direct link</p>
                             <p class="f-12"><a href="{{ route('front.lead_form', [company()->hash]).'?styled=1' }}"
                                                target="_blank">{{ route('front.lead_form', [company()->hash]).'?styled=1' }}</a>

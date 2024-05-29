@@ -34,7 +34,7 @@
                                                         <input type="hidden" name="sort_order[]"
                                                             value="{{ $item->id }}">
                                                     </div>
-                                                    <div class="col-md-5">{{ $item->field_display_name}}</div>
+                                                    <div class="col-md-5 field-name">{{ $item->field_display_name}}</div>
                                                     <div class="col-md-4">
                                                         @if (!in_array($item->field_name, ['name', 'email', 'ticket_subject', 'message', 'assign_group']))
                                                             <div class="custom-control custom-switch">
