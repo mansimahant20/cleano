@@ -526,7 +526,7 @@
                     </x-form>
                 </div>
                 <div class="modal-footer">
-                    <x-forms.button-cancel data-dismiss="modal" class="border-0 mr-3">@lang('app.cancel')
+                    <x-forms.button-cancel data-dismiss="modal" class="border-0">@lang('app.cancel')
                     </x-forms.button-cancel>
                     <x-forms.button-primary id="decline-proposal" icon="times">@lang('app.decline')
                     </x-forms.button-primary>
@@ -548,7 +548,7 @@
                     {{__('app.loading')}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-cancel rounded mr-3" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn-cancel rounded" data-dismiss="modal">Close</button>
                     <button type="button" class="btn-primary rounded">Save changes</button>
                 </div>
             </div>

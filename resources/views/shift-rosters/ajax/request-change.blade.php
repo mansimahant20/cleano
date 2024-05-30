@@ -58,7 +58,7 @@
 
 
 <div class="modal-footer">
-    <x-forms.button-cancel data-dismiss="modal" class="border-0 mr-3">@lang('app.close')</x-forms.button-cancel>
+    <x-forms.button-cancel data-dismiss="modal" class="border-0">@lang('app.close')</x-forms.button-cancel>
     @if (!is_null($shift->requestChange) && $shift->requestChange->status == 'waiting')
         <x-forms.button-primary id="delete-shift" data-change-id="{{ $shift->requestChange->id }}" icon="times">@lang('modules.attendance.deleteRequestChange')</x-forms.button-primary>
     @elseif($employeeShifts->isNotEmpty())

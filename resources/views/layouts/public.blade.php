@@ -141,7 +141,7 @@
                 {{__('app.loading')}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-cancel rounded mr-3" data-dismiss="modal">Close</button>
+                <button type="button" class="btn-cancel rounded" data-dismiss="modal">Close</button>
                 <button type="button" class="btn-primary rounded">Save changes</button>
             </div>
         </div>

@@ -95,7 +95,7 @@
 
 <div class="modal-footer">
 
-    <x-forms.button-cancel data-dismiss="modal" class="border-0 mr-3">@lang('app.close')</x-forms.button-cancel>
+    <x-forms.button-cancel data-dismiss="modal" class="border-0">@lang('app.close')</x-forms.button-cancel>
     @if($localFilesCount>0)
         <x-forms.button-primary id="test-aws-submit" icon="check">Move All</x-forms.button-primary>
     @endif

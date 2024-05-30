@@ -45,7 +45,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <x-forms.button-cancel data-dismiss="modal" class="border-0 mr-3">@lang('app.close')</x-forms.button-cancel>
+        <x-forms.button-cancel data-dismiss="modal" class="border-0">@lang('app.close')</x-forms.button-cancel>
         <x-forms.button-primary id="save-stripe-detail">@lang('app.save') <i class="fa fa-arrow-right pl-1"></i></x-forms.button-primary>
     </div>
 

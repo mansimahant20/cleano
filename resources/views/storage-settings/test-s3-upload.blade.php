@@ -38,7 +38,7 @@
 </div>
 
 <div class="modal-footer">
-    <x-forms.button-cancel data-dismiss="modal" class="border-0 mr-3">@lang('app.close')</x-forms.button-cancel>
+    <x-forms.button-cancel data-dismiss="modal" class="border-0">@lang('app.close')</x-forms.button-cancel>
     <a href="javascript:;" id="show-file" class="d-none">@lang('app.storageSetting.viewFile')</a>
 
     <x-forms.button-secondary class="btn-xs mr-3 d-none" id="show-file" icon="eye">

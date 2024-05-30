@@ -26,7 +26,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <x-forms.button-cancel data-dismiss="modal" class="border-0 mr-3">@lang('app.cancel')</x-forms.button-cancel>
+    <x-forms.button-cancel data-dismiss="modal" class="border-0">@lang('app.cancel')</x-forms.button-cancel>
     <x-forms.button-primary id="save-consent" icon="check">@lang('app.save')</x-forms.button-primary>
 </div>
 

@@ -8608,7 +8608,12 @@ pre code {
 
 .table-hover tbody tr:hover {
   background-color: #f3f2f7;
-  color: #212529;
+  color:#212529
+}
+
+.dark-theme .table-hover tbody tr:hover {
+  background-color:rgba(0,0,0,.075);
+  color:#212529
 }
 
 .table-primary,
@@ -10355,7 +10360,6 @@ input[type="submit"].btn-block {
   background-color: #e9ecef;
   color: #16181b;
   text-decoration: none;
-  border-radius: 14px;
 }
 
 .dropdown-item.active,
@@ -23455,13 +23459,6 @@ ul.thumbnails.image_picker_selector li .thumbnail.selected {
   height: 25px;
 }
 
-.sidebar-dark .main-sidebar,
-.sidebar-dark .sidebar-brand-box,
-.sidebar-dark .sidebar-menu,
-.sidebar-dark .sidebarTogglerBox {
-  /* background-color: #171f29 !important; */
-}
-
 .sidebar-light .main-sidebar {
   background-color: #f7faff;
   border-right: 1px solid #e8eef3;
@@ -24141,7 +24138,7 @@ input[type="number"] {
 
 .form-control:focus,
 .form-control:hover {
-  border-color: #dbb0f3;
+  border-color: #c2c2c2;
   box-shadow: none;
 }
 
@@ -24470,9 +24467,8 @@ button:disabled {
 }
 
 .btn-cancel {
-  background-color: #fff !important;
-  border: 1px solid #fff;
-  color: #99a5b5 !important;
+  background-color: #fe5e5e !important;
+  color: #fff !important;
   padding: 9px 11px;
   position: relative;
   text-transform: capitalize;
@@ -24804,6 +24800,7 @@ button:disabled {
   transition: width 0.3s;
   width: 240px;
   z-index: 2;
+  background-color: #fff;
 }
 
 @media (max-width: 991.98px) {
@@ -25495,7 +25492,7 @@ button:disabled {
 }
 
 .f-14 {
-  font-size: 14px !important;
+  font-size: 15px !important;
 }
 
 .f-15 {

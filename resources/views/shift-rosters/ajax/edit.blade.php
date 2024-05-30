@@ -58,7 +58,7 @@
 </div>
 
 <div class="modal-footer">
-    <x-forms.button-cancel data-dismiss="modal" class="border-0 mr-3">@lang('app.close')</x-forms.button-cancel>
+    <x-forms.button-cancel data-dismiss="modal" class="border-0">@lang('app.close')</x-forms.button-cancel>
     @if (!is_null($shiftSchedule))
         @if (!is_null($shiftSchedule->pendingRequestChange))
             <x-forms.button-secondary class="mr-3 decline-request" icon="times" data-request-id="{{ $shiftSchedule->pendingRequestChange->id }}">@lang('app.decline')</x-forms.button-secondary>
