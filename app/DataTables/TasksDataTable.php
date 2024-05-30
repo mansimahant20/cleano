@@ -328,10 +328,10 @@ class TasksDataTable extends BaseDataTable
                 $name = '';
 
                 if (!is_null($row->project_id) && !is_null($row->id)) {
-                    $name .= '<h5 class="f-13 text-darkest-grey mb-0">' . $row->heading . '</h5><div class="text-muted f-11">' . $row->project_name . '</div>';
+                    $name .= '<h5 class="f-14 text-darkest-grey mb-0">' . $row->heading . '</h5><div class="text-muted f-11">' . $row->project_name . '</div>';
                 }
                 else if (!is_null($row->id)) {
-                    $name .= '<h5 class="f-13 text-darkest-grey mb-0 mr-1">' . $row->heading . '</h5>';
+                    $name .= '<h5 class="f-14 text-darkest-grey mb-0 mr-1">' . $row->heading . '</h5>';
                 }
 
                 if ($row->repeat) {

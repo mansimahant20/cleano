@@ -91,7 +91,7 @@
                     <div class="forgot_pswd">
                         <a href="{{ url('forgot-password') }}">@lang('app.forgotPassword')</a>
                     </div>
-                    <div class="mt-2">
+                    <div class="checkbox-container">
                         <input id="checkbox-signup" class="cursor-pointer" type="checkbox" name="remember">
                         <label for="checkbox-signup" class="cursor-pointer">@lang('app.rememberMe')</label>
                     </div>

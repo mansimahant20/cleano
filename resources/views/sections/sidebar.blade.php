@@ -14,7 +14,7 @@
                 @if (companyOrGlobalSetting()->sidebar_logo_style !== 'full')
                     <!-- SIDEBAR BRAND NAME START -->
                     <div class="sidebar-brand-name">
-                        <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0" data-placement="bottom" data-toggle="tooltip"
+                        <h1 class="mb-0 f-21 f-w-500 text-white-shade mt-0" data-placement="bottom" data-toggle="tooltip"
                             data-original-title="{{ $appName }}">{{ $appName }}
                             <i class="icon-arrow-down icons pl-2"></i>
                         </h1>
@@ -33,7 +33,7 @@
                 @else
                     <!-- SIDEBAR BRAND NAME START -->
                     <div class="sidebar-brand-name">
-                        <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0" data-placement="bottom"
+                        <h1 class="mb-0 f-21 f-w-500 text-white-shade mt-0" data-placement="bottom"
                             data-toggle="tooltip" data-original-title="{{ $appName }}">
                             <img src="{{ companyOrGlobalSetting()->logo_url }}">
                         </h1>

@@ -92,7 +92,7 @@ class ContractTemplatesDataTable extends BaseDataTable
 
                 return '<div class="media align-items-center">
                         <div class="media-body">
-                    <h5 class="mb-0 f-13 text-darkest-grey"><a href="' . route('contract-template.show', [$row->id]) . '">' . $row->subject . '</a></h5>
+                    <h5 class="mb-0 f-14 text-darkest-grey"><a href="' . route('contract-template.show', [$row->id]) . '">' . $row->subject . '</a></h5>
                     <p class="mb-0">' . $signed . '</p>
                     </div>
                   </div>';

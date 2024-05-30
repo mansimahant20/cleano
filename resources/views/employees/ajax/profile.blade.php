@@ -72,7 +72,6 @@ $viewAppreciationPermission = user()->permission('view_appreciation');
                                         </div>
                                     </div>
                                 @endif
-
                             </div>
 
                             <p class="f-12 font-weight-normal text-dark-grey mb-0">
@@ -101,22 +100,22 @@ $viewAppreciationPermission = user()->permission('view_appreciation');
                                 <div class="card-footer bg-white border-top-grey pl-0">
                                     <div class="d-flex flex-wrap justify-content-between">
                                         <span>
-                                            <label class="f-11 text-dark-grey mb-12 text-capitalize"
+                                            <label class="f-12 text-dark-grey mb-12 text-capitalize"
                                                 for="usr">@lang('app.open') @lang('app.menu.tasks')</label>
                                             <p class="mb-0 f-18 f-w-500">{{ $employee->open_tasks_count }}</p>
                                         </span>
                                         <span>
-                                            <label class="f-11 text-dark-grey mb-12 text-capitalize"
+                                            <label class="f-12 text-dark-grey mb-12 text-capitalize"
                                                 for="usr">@lang('app.menu.projects')</label>
                                             <p class="mb-0 f-18 f-w-500">{{ $employee->member_count }}</p>
                                         </span>
                                         <span>
-                                            <label class="f-11 text-dark-grey mb-12 text-capitalize"
+                                            <label class="f-12 text-dark-grey mb-12 text-capitalize"
                                                 for="usr">@lang('modules.employees.hoursLogged')</label>
                                             <p class="mb-0 f-18 f-w-500">{{ $hoursLogged }}</p>
                                         </span>
                                         <span>
-                                            <label class="f-11 text-dark-grey mb-12 text-capitalize"
+                                            <label class="f-12 text-dark-grey mb-12 text-capitalize"
                                                 for="usr">@lang('app.menu.tickets')</label>
                                             <p class="mb-0 f-18 f-w-500">{{ $employee->agents_count }}</p>
                                         </span>

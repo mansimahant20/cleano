@@ -8,8 +8,9 @@
             @forelse($activities as $key=>$activity)
                 <div class="card border-0 b-shadow-4 p-20 rounded">
                     <div class="card-horizontal">
-                        <div class="card-header m-0 p-0 bg-white rounded">
-                            <x-date-badge :month="$activity->created_at->timezone(company()->timezone)->translatedFormat('M')" :date="$activity->created_at->timezone(company()->timezone)->translatedFormat('d')" />
+                        <div class="date-badge">
+                            <span class="month">{{ $activity->created_at->timezone(company()->timezone)->translatedFormat('M') }}</span>
+                            <span class="date">{{ $activity->created_at->timezone(company()->timezone)->translatedFormat('d') }}</span>
                         </div>
                         <div class="card-body border-0 p-0 ml-3">
                             <h4 class="card-title f-14 font-weight-normal text-capitalize">{!! __($activity->activity) !!}

@@ -131,7 +131,7 @@ class ContractsDataTable extends BaseDataTable
 
                 return '<div class="media align-items-center">
                         <div class="media-body">
-                    <h5 class="mb-0 f-13 text-darkest-grey"><a href="' . route('contracts.show', [$row->id]) . '">' . $row->subject . '</a></h5>
+                    <h5 class="mb-0 f-14 text-darkest-grey"><a href="' . route('contracts.show', [$row->id]) . '">' . $row->subject . '</a></h5>
                     <p class="mb-0">' . $signed . '</p>
                     </div>
                   </div>';
@@ -157,7 +157,7 @@ class ContractsDataTable extends BaseDataTable
                     <a href="' . route('clients.show', [$row->client_id]) . '">
                     <img src="' . $row->client->image_url . '" class="mr-3 taskEmployeeImg rounded-circle" alt="' . $row->client->name . '" title="' . $row->client->name . '"></a>
                     <div class="media-body">
-                    <h5 class="mb-0 f-13 text-darkest-grey"><a href="' . route('clients.show', [$row->client_id]) . '">' . ($row->client->salutation ? $row->client->salutation->label() . ' ' : '') . $row->client->name . '</a></h5>
+                    <h5 class="mb-0 f-14 text-darkest-grey"><a href="' . route('clients.show', [$row->client_id]) . '">' . ($row->client->salutation ? $row->client->salutation->label() . ' ' : '') . $row->client->name . '</a></h5>
                     <p class="mb-0 f-13 text-dark-grey">' . $row->client->clientDetails->company_name . '</p>
                     </div>
                   </div>';

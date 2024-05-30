@@ -85,7 +85,7 @@ class OrdersDataTable extends BaseDataTable
 
                 return '<div class="media align-items-center">
                         <div class="media-body">
-                    <h5 class="mb-0 f-13 text-darkest-grey"><a href="' . route('orders.show', [$row->id]) . '">' . $row->order_number . '</a></h5>
+                    <h5 class="mb-0 f-14 text-darkest-grey"><a href="' . route('orders.show', [$row->id]) . '">' . $row->order_number . '</a></h5>
                     </div>
                   </div>';
 

@@ -17510,6 +17510,7 @@ a.text-warning:hover {
 
 .text-danger {
   color: #d30000 !important;
+  font-weight: 600;
 }
 
 a.text-danger:focus,
@@ -23139,7 +23140,7 @@ img.taskEmployeeImg {
 }
 
 .dataTable .bootstrap-select .filter-option-inner-inner {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .modal-dialog-scrollable .modal-body {
@@ -24210,7 +24211,7 @@ textarea {
   color: #28313c;
   cursor: pointer;
   display: flex;
-  font-size: 13px;
+  font-size: 15px;
   justify-content: center;
   padding-left: 25px;
   position: relative;
@@ -25480,7 +25481,7 @@ button:disabled {
 }
 
 .f-11 {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .f-12 {
@@ -28495,4 +28496,14 @@ body.dark-theme::-webkit-scrollbar-thumb {
 
 .card-gap {
   margin-bottom: 20px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container input[type="checkbox"],
+.checkbox-container label {
+  margin-right: 5px; 
 }

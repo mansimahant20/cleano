@@ -191,7 +191,7 @@ class RecurringInvoicesDataTable extends BaseDataTable
 
                 return '<div class="media align-items-center">
                         <div class="media-body">
-                    <h5 class="mb-0 f-13 text-darkest-grey"><a href="' . route('invoices.show', [$row->id]) . '">' . $row->invoice_number . '</a></h5>
+                    <h5 class="mb-0 f-14 text-darkest-grey"><a href="' . route('invoices.show', [$row->id]) . '">' . $row->invoice_number . '</a></h5>
                     <p class="mb-0">' . $recurring . '</p>
                     </div>
                   </div>';

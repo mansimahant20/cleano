@@ -69,7 +69,7 @@ class ProjectTemplateTasksDataTable extends BaseDataTable
 
                 return '<div class="media align-items-center">
                         <div class="media-body">
-                    <h5 class="mb-0 f-13 text-darkest-grey"><a href="' . route('project-template-task.show', [$row->id]) . '" class="openRightModal">' . $row->heading . '</a></h5>
+                    <h5 class="mb-0 f-14 text-darkest-grey"><a href="' . route('project-template-task.show', [$row->id]) . '" class="openRightModal">' . $row->heading . '</a></h5>
                     </div>
                   </div>';
             })
