@@ -557,7 +557,7 @@
 
 
         <x-form-actions>
-            <x-forms.button-primary id="save-form" icon="check">@lang('app.save')</x-forms.button-primary>
+            <x-forms.button-primary class="mr-2" id="save-form" icon="check">@lang('app.save')</x-forms.button-primary>
 
             <x-forms.button-cancel :link="route('recurring-invoices.index')" class="border-0 mr-3">@lang('app.cancel')
             </x-forms.button-cancel>

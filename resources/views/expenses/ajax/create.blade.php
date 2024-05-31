@@ -144,7 +144,7 @@ $addExpenseCategoryPermission = user()->permission('manage_expense_category');
                 <x-forms.custom-field :fields="$fields"></x-forms.custom-field>
 
                 <x-form-actions>
-                    <x-forms.button-primary id="save-expense-form" class="mr-3" icon="check">@lang('app.save')
+                    <x-forms.button-primary id="save-expense-form" class="mr-2" icon="check">@lang('app.save')
                     </x-forms.button-primary>
                     <x-forms.button-cancel :link="route('expenses.index')" class="border-0">@lang('app.cancel')
                     </x-forms.button-cancel>

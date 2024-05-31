@@ -158,9 +158,9 @@
 
 
                 <x-form-actions>
-                    <x-forms.button-primary id="save-product" class="mr-3" icon="check">@lang('app.save')
+                    <x-forms.button-primary id="save-product" class="mr-2" icon="check">@lang('app.save')
                     </x-forms.button-primary>
-                    <x-forms.button-secondary class="mr-3" id="save-more-product" icon="check-double">@lang('app.saveAddMore')
+                    <x-forms.button-secondary class="mr-2" id="save-more-product" icon="check-double">@lang('app.saveAddMore')
                     </x-forms.button-secondary>
                     <x-forms.button-cancel :link="route('products.index')" class="border-0">@lang('app.cancel')
                     </x-forms.button-cancel>

@@ -157,7 +157,7 @@
             confirmButtonText: "@lang('app.delete')",
             cancelButtonText: "@lang('app.cancel')",
             customClass: {
-                confirmButton: 'btn btn-primary mr-3',
+                confirmButton: 'btn btn-primary mr-2',
                 cancelButton: 'btn btn-secondary'
             },
             showClass: {

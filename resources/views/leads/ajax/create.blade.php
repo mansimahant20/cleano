@@ -134,14 +134,14 @@ $addProductPermission = user()->permission('add_product');
                         </x-forms.input-group>
                     </div>
 
-                    <div class="col-lg-4 mt-2">
+                    <div class="col-lg-4 col-md-6">
                         <x-forms.select fieldId="next_follow_up" fieldName="next_follow_up" :fieldLabel="__('app.next_follow_up')">
                             <option value="yes"> @lang('app.yes')</option>
                             <option value="no"> @lang('app.no')</option>
                         </x-forms.select>
                     </div>
 
-                    <div class="col-lg-4 mt-2">
+                    <div class="col-lg-4 col-md-6">
                         <x-forms.select fieldId="status" :fieldLabel="__('app.status')" fieldName="status">
                             <option value="">--</option>
                             @foreach ($status as $sts)
@@ -151,7 +151,7 @@ $addProductPermission = user()->permission('add_product');
                         </x-forms.select>
                     </div>
 
-                    <div class="col-lg-4 mt-2">
+                    <div class="col-lg-4 col-md-6 mt-3">
                         <div class="form-group">
                             <x-forms.label fieldId="selectProduct" :fieldLabel="__('app.menu.products')" >
                             </x-forms.label>
@@ -174,7 +174,7 @@ $addProductPermission = user()->permission('add_product');
                     </div>
 
                     @if ($addLeadNotePermission == 'all' || $addLeadNotePermission == 'added' || $addLeadNotePermission == 'both')
-                    <div class="col-md-12">
+                    <div class="col-md-12 mt-2">
                         <div class="form-group my-3">
                             <x-forms.label fieldId="note" :fieldLabel="__('app.note')">
                             </x-forms.label>

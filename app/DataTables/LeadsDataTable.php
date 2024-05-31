@@ -209,7 +209,7 @@ class LeadsDataTable extends BaseDataTable
 
             return '
                         <div class="media-bod1y">
-                    <h5 class="mb-0 f-13 "><a href="' . route('leads.show', [$row->id]) . '">' . $client_name . '</a></h5>
+                    <h5 class="mb-0 f-14 "><a href="' . route('leads.show', [$row->id]) . '">' . $client_name . '</a></h5>
                     <p class="mb-0">' . $label . '</p>
                     <p class="mb-0 f-12 text-dark-grey">
                     '.$row->company_name.'
