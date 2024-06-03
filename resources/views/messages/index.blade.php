@@ -1,23 +1,28 @@
 @extends('layouts.app')
-
 <link rel="stylesheet" href="{{ asset('vendor/css/dropzone.min.css') }}">
-
 @push('styles')
     <style>
+        .d-flex {
+        display: flex;
+        }
+        .align-items-center {
+            align-items: center;
+        }
+        .justify-content-start {
+            justify-content: flex-start;
+        }
+        .flex-grow-1 {
+            flex-grow: 1;
+        }
         .message-action {
             visibility: hidden;
         }
-
         .message_wrapper .msg-content-right .chat-box .card:hover .message-action {
             visibility: visible;
-        }
-        #submitTexts {
-            border-top: 1px solid;
         }
         .ql-editor {
             padding-left: 0px !important;
         }
-
         .ql-editor-disabled {
         border-radius: 6px;
         background-color: rgba(124, 0, 0, 0.2);
@@ -37,24 +42,20 @@
         }
     </style>
 @endpush
-
 @section('content')
-
     <!-- MESSAGE START -->
     <div class="message_wrapper bg-white border-top-0">
         <!-- MESSAGE HEADER START -->
-
         <!-- MESSAGE HEADER END -->
         <!-- MESSAGE CONTENT START -->
         <div class="w-100 d-lg-flex d-md-flex d-block">
             <!-- MESSAGE CONTENT LEFT START -->
             <div class="msg-content-left border-top-0 border-bottom-0">
-                <div class="msg-header d-flex align-items-center">
+                <div class="msg-header d-flex align-items-center" style="background-color: #eff5f9;">
                     <div class="msg-header-left d-flex justify-content-between">
-
                         <div class="flex-lg-grow-1">
                             <form class="mb-0">
-                                <div class="input-group rounded py-1">
+                                <div class="input-group py-1">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text border-0">
                                             <i class="fa fa-search f-12 text-lightest"></i>
@@ -65,7 +66,6 @@
                                 </div>
                             </form>
                         </div>
-
                         <div class="pl-2 d-lg-none">
                             <x-forms.button-primary id="new-chat-mbl" icon="plus">@lang('app.new')
                             </x-forms.button-primary>
@@ -77,13 +77,15 @@
                      class="nav nav-tabs border-bottom-0" role="tablist">
                     @include('messages.user_list')
                 </div>
-
             </div>
             <!-- MESSAGE CONTENT LEFT END -->
 
             <!-- MESSAGE CONTENT RIGHT START -->
             <div class="msg-content-right" id="msgContentRight">
                 <div class="msg-header d-none d-lg-flex align-items-center">
+                    <div class="message-list-img">
+                        <img src="{{ $user->image_url }}" alt="{{ $user->name }}">
+                    </div>
                     <div class="msg-header-right w-100 d-flex justify-content-between align-items-center">
                         <div class="msg-sender-name">
                             <p class="f-15 text-capitailize text-dark mb-0 f-w-500 message-user"></p>
@@ -92,7 +94,6 @@
                         </x-forms.button-primary>
                     </div>
                 </div>
-
                 <!-- MOBILE MESSAGE SENDER NAME START -->
                 <div
                     class="msg-sender-name d-flex d-lg-none mbl-sender-name align-items-center justify-content-between">
@@ -106,13 +107,10 @@
                     <!-- This chatBox id is for scroll plugin -->
                     <div data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500" id="chatBox"
                          class="tab-content" data-chat-for-user="">
-
                         <div id="tab1" class="tabcontent" style="display: block;">
                             <x-cards.no-record icon="comment-alt" :message="__('messages.selectConversation')"/>
                         </div><!-- TAB END -->
-
                     </div>
-
                 </div>
                 <!-- CHAT BOX END -->
 
@@ -121,44 +119,38 @@
                     <input type="hidden" name="user_id" id="current_user_id">
                     <div class="row">
                         <div class="w-100 col-md-12">
-                             <br>
-                             <div id="submitTexts" class="form-control rounded-0 f-14 p-3 border-left-0 border-right-0 border-bottom-0" contentEditable=true data-text="@lang('messages.enterText')"></div>
+                            <div id="submitTexts" class="form-control rounded-0 f-14 p-3 border-left-0 border-right-0 border-bottom-0" contentEditable=true data-text="@lang('messages.enterText')"></div>
                             <textarea name="message" id="message-text" class="d-none"></textarea>
                         </div>
-                       <input type = "hidden" name = "mention_user_id" id = "mentionUserId" class ="mention_user_ids">
-                       <div class="col-md-12">
-                           <div class="w-100 justify-content-start attach-send bg-white">
-                               <a class="f-15 f-w-500" href="javascript:;" id="add-file"><i
-                                       class="fa fa-paperclip font-weight-bold mr-1"></i>@lang('modules.projects.uploadFile')
-                               </a>
-                           </div>
-                       </div>
+                        <input type="hidden" name="mention_user_id" id="mentionUserId" class="mention_user_ids">
                         <div class="col-md-12 d-none file-container">
-                           <x-forms.file-multiple class="mr-0 mr-lg-2 mr-md-2 ml-3"
-                                                  :fieldLabel="__('app.menu.addFile')" fieldName="file"
-                                                  fieldId="file-upload-dropzone"/>
-                           <input type="hidden" name="message_id" id="messageId">
-                           <input type="hidden" name="type" id="message">
-
-                           {{-- These inputs fields are used for file attchment --}}
-                           <input type="hidden" name="user_list" id="user_list">
-                           <input type="hidden" name="message_list" id="message_list">
-                           <input type="hidden" name="receiver_id" id="receiver_id">
+                            <x-forms.file-multiple class="mr-0 mr-lg-2 mr-md-2 ml-3"
+                                :fieldLabel="__('app.menu.addFile')" fieldName="file"
+                                fieldId="file-upload-dropzone" />
+                            <input type="hidden" name="message_id" id="messageId">
+                            <input type="hidden" name="type" id="message">
+                            <input type="hidden" name="user_list" id="user_list">
+                            <input type="hidden" name="message_list" id="message_list">
+                            <input type="hidden" name="receiver_id" id="receiver_id">
                         </div>
-
-
                     </div>
                     <div class="col-md-12 border-top-grey p-0">
-                        <div class="w-100 justify-content-start attach-send bg-white">
-                            <x-forms.button-primary id="sendMessage" class="mr-1" icon="location-arrow">
+                        <div class="w-100 d-flex align-items-center justify-content-start attach-send bg-white">
+                            <div id="submitTexts" class="form-control rounded-0 f-14 p-3 border-left-0 border-right-0 border-bottom-0 flex-grow-1" contentEditable=true data-text="@lang('messages.enterText')"></div>
+                            <a class="f-20 f-w-500 ml-2" href="javascript:;" id="add-file">
+                                <i class="fa fa-paperclip font-weight-bold"></i>
+                                <!-- @lang('modules.projects.uploadFile') -->
+                            </a>
+                            <a class="f-20 f-w-500 ml-2" href="javascript:;" id="add-emoji">
+                                <i class="fa fa-smile font-weight-bold"></i>
+                            </a>
+                            <x-forms.button-primary id="sendMessage" class="ml-2" icon="location-arrow">
                                 @lang('modules.messages.send')
                             </x-forms.button-primary>
                         </div>
-
                     </div>
                 </x-form>
                 <!-- SEND MESSAGE END -->
-
             </div>
             <!-- MESSAGE CONTENT RIGHT START -->
         </div>
@@ -168,9 +160,7 @@
 @endsection
 
 @push('scripts')
-
     <script>
-
         $(document).ready(function() {
             getUserMention();
             var atValues = @json($userData);
@@ -221,7 +211,6 @@
                 })
             }
         });
-
         taskDropzone.on('sending', function (file, xhr, formData) {
             var ids = $('#messageId').val();
             formData.append('message_id', ids);
@@ -249,11 +238,9 @@
             if (helpBlockContainer.length == 0) {
                 helpBlockContainer = $(grp);
             }
-
             helpBlockContainer.append('<div class="help-block invalid-feedback">' + message + '</div>');
             $(grp).addClass("has-error");
             $(label).addClass("is-invalid");
-
         });
 
         // Submitting message
@@ -266,7 +253,6 @@
         $('#mentionUserId').val(mention_user_id.join(','));
             //getting values by input fields
             var url = "{{ route('messages.store') }}";
-
             $.easyAjax({
                 url: url,
                 container: '#sendMessageForm',
@@ -276,14 +262,11 @@
                 buttonSelector: "#sendMessage",
                 data: $('#sendMessageForm').serialize(),
                 success: function (response) {
-
                     $('#user_list').val(response.user_list);
                     $('#message_list').val(response.message_list);
                     $('#receiver_id').val(response.receiver_id);
-
                     // Reload left user-list
                     fetchUserList();
-
                     if (taskDropzone.getQueuedFiles().length > 0) {
                         messageId = response.message_id;
                         $('#messageId').val(response.message_id);
@@ -293,7 +276,6 @@
                     }
                 }
             });
-
             return false;
         });
 
@@ -304,7 +286,6 @@
             $('#msgContentRight').addClass('d-block');
             $('.file-container').addClass('d-none');
             taskDropzone.removeAllFiles(true);
-
             fetchUserMessages();
         }
 
@@ -317,7 +298,6 @@
         $('#user-search').keyup(function () {
             var url = "{{ route('messages.index') }}";
             var term = $(this).val();
-
             $.easyAjax({
                 url: url,
                 blockUI: true,
@@ -347,21 +327,17 @@
             var isUnreadMessage = $(this).hasClass('unread-message');
             $(this).removeData('unread-message-count')
             var unreadMessageCount = $(this).data('unread-message-count');
-
             if (isUnreadMessage) {
                 $(this).find('.card-text').removeClass('text-dark');
                 $(this).find('.card-text').removeClass('font-weight-bold');
                 $(this).find('.unread-count').remove();
             }
-
             $('.message-user').html(userName);
             $('#current_user_id').val(id);
             $('.show-user-messages').removeClass('active');
             $(this).addClass('active');
-
             var url = "{{ route('messages.show', ':id') }}";
             url = url.replace(':id', id);
-
             $.easyAjax({
                 url: url,
                 blockUI: true,
@@ -371,14 +347,11 @@
                     if (response.status == "success") {
                         $('#chatBox').html(response.html);
                         $('#user-no-' + response.id + ' > a').attr("data-unread-message-count", 0);
-
                         // Set data value to chatBox to set active class later
                         $('#chatBox').attr("data-chat-for-user", id);
-
                         $('#sendMessageForm').removeClass('d-none');
                         scrollChat();
                         $('#msgContentRight').addClass('d-block');
-
                         if (totalUnreadMessagesCount > 0 && isUnreadMessage && response.unreadMessages == 0) {
                             var remainingUnreadMessages = parseInt(totalUnreadMessagesCount) - parseInt(unreadMessageCount);
                             if (remainingUnreadMessages > 0) {
@@ -392,9 +365,7 @@
                     }
                 }
             });
-
         });
-
 
         $('body').on('keypress', '#submitTexts', function (e) {
             var key = e.which;
@@ -435,9 +406,7 @@
                 if (result.isConfirmed) {
                     var url = "{{ route('messages.destroy', ':id') }}";
                     url = url.replace(':id', id);
-
                     var token = "{{ csrf_token() }}";
-
                     $.easyAjax({
                         type: 'POST',
                         url: url,
@@ -448,14 +417,11 @@
                         success: function (response) {
                             if (response.status == "success") {
                                 $('#message-' + id).remove();
-
                                 // Reload left user-list
                                 fetchUserList();
-
                                 if (response.chat_details.length == 0) {
                                     resetChatBoxView();
                                 }
-
                             }
                         }
                     });
@@ -463,47 +429,37 @@
             });
         });
 
-
         function resetChatBoxView() {
             $('#chatBox').html(`
             <div id="tab1" class="tabcontent" style="display: block;">
                 <x-cards.no-record icon="comment-alt" :message="__('messages.selectConversation')" />
             </div>
             `);
-
             $('#sendMessageForm').addClass('d-none');
-
             $('.message-user').html('');
-
         }
 
         function fetchUserList() {
             var url = "{{ route('messages.fetch_user_list') }}";
-
             $.easyAjax({
                 url: url,
                 type: "GET",
                 success: function (response) {
                     $('#msgLeft').html(response.user_list);
-
                     let receiverId = $('#chatBox').data('chat-for-user');
                     $('#user-no-' + receiverId + ' a').addClass('active');
-
                 }
             });
         }
 
         function fetchUserMessages() {
             var currentUserId = $('#current_user_id').val();
-
             if (currentUserId === '') {
                 return false;
             }
             var url = "{{ route('messages.fetch_messages', ':id') }}";
             url = url.replace(':id', currentUserId);
             var token = "{{ csrf_token() }}";
-
-
             $.easyAjax({
                 url: url,
                 container: '#sendMessageForm',
@@ -526,11 +482,8 @@
                 var replacement = '<div class="card-text f-11 text-lightest d-flex justify-content-between message-mention">@' + name + '</div>';
                 if(content !== undefined && replacement !== undefined && name !== undefined){
                     $(obj).find('.message-mention').replaceWith(replacement);
-
                 }
-
             });
-
         }
 
         @if (isset($client))
@@ -560,10 +513,8 @@
                 }, 300)
             });
 
-
             Echo.private('chat').listenForWhisper('typing', (e) => {
                 var currentUserId = $('#current_user_id').val();
-
                 if (e.to == Laravel.user.id && e.from == currentUserId) {
                     e.typing ? $('#chatBox').find('.typing').removeClass('invisible').addClass('visible') : $('#chatBox').find('.typing').removeClass('visible').addClass('invisible')
                     // remove is typing indicator after 0.9s
@@ -603,9 +554,7 @@
                 if (result.isConfirmed) {
                     var url = "{{ route('message-file.destroy', ':id') }}";
                     url = url.replace(':id', id);
-
                     var token = "{{ csrf_token() }}";
-
                     $.easyAjax({
                         type: 'POST',
                         url: url,

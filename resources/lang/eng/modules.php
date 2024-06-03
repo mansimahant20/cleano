@@ -1719,6 +1719,9 @@ return array(
         'agree' => 'I Agree',
         'disagree' => 'I Disagree',
     ),
+    // 'asset' => array(
+    //     'viewAsset' => 'Asset Info',
+    // ),
     'reports' => array(
         'totalExpense' => 'Total Expense',
         'totalCategories' => 'Total Categories',

@@ -197,6 +197,7 @@
             </x-slot>
         </x-menu-item>
     @endif
+    
 
 <!-- NAV ITEM - MESSAGES -->
     @if (in_array('messages', user_modules()))
