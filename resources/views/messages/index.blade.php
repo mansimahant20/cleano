@@ -116,39 +116,31 @@
 
                 <!-- SEND MESSAGE START -->
                 <x-form id="sendMessageForm" class="d-none mb-0">
-                    <input type="hidden" name="user_id" id="current_user_id">
-                    <div class="row">
-                        <div class="w-100 col-md-12">
+                    <div class="col-md-12 border-top-grey p-0">
+                        <div class=" d-flex align-items-center justify-content-start attach-send bg-white">
+                        <input type="hidden" name="user_id" id="current_user_id">
                             <div id="submitTexts" class="form-control rounded-0 f-14 p-3 border-left-0 border-right-0 border-bottom-0" contentEditable=true data-text="@lang('messages.enterText')"></div>
                             <textarea name="message" id="message-text" class="d-none"></textarea>
+                            <input type="hidden" name="mention_user_id" id="mentionUserId" class="mention_user_ids">
+                                <x-forms.file-multiple class="mr-0 mr-lg-2 mr-md-2 ml-3"
+                                        :fieldLabel="__('app.menu.addFile')" fieldName="file"
+                                        fieldId="file-upload-dropzone" />
+                                <input type="hidden" name="message_id" id="messageId">
+                                <input type="hidden" name="type" id="message">
+                                <input type="hidden" name="user_list" id="user_list">
+                                <input type="hidden" name="message_list" id="message_list">
+                                <input type="hidden" name="receiver_id" id="receiver_id">
+                                <a class="f-20 f-w-500 ml-2" href="javascript:;" id="add-file">
+                                    <i class="fa fa-paperclip font-weight-bold"></i>
+                                </a>
+                                <a class="f-20 f-w-500 ml-2" href="javascript:;" id="add-emoji">
+                                        <i class="fa fa-smile font-weight-bold"></i>
+                                </a>
+                                <x-forms.button-primary id="sendMessage" class="ml-2" icon="location-arrow">
+                                        @lang('modules.messages.send')
+                                </x-forms.button-primary>
+                            </div>
                         </div>
-                        <input type="hidden" name="mention_user_id" id="mentionUserId" class="mention_user_ids">
-                        <div class="col-md-12 d-none file-container">
-                            <x-forms.file-multiple class="mr-0 mr-lg-2 mr-md-2 ml-3"
-                                :fieldLabel="__('app.menu.addFile')" fieldName="file"
-                                fieldId="file-upload-dropzone" />
-                            <input type="hidden" name="message_id" id="messageId">
-                            <input type="hidden" name="type" id="message">
-                            <input type="hidden" name="user_list" id="user_list">
-                            <input type="hidden" name="message_list" id="message_list">
-                            <input type="hidden" name="receiver_id" id="receiver_id">
-                        </div>
-                    </div>
-                    <div class="col-md-12 border-top-grey p-0">
-                        <div class="w-100 d-flex align-items-center justify-content-start attach-send bg-white">
-                            <div id="submitTexts" class="form-control rounded-0 f-14 p-3 border-left-0 border-right-0 border-bottom-0 flex-grow-1" contentEditable=true data-text="@lang('messages.enterText')"></div>
-                            <a class="f-20 f-w-500 ml-2" href="javascript:;" id="add-file">
-                                <i class="fa fa-paperclip font-weight-bold"></i>
-                                <!-- @lang('modules.projects.uploadFile') -->
-                            </a>
-                            <a class="f-20 f-w-500 ml-2" href="javascript:;" id="add-emoji">
-                                <i class="fa fa-smile font-weight-bold"></i>
-                            </a>
-                            <x-forms.button-primary id="sendMessage" class="ml-2" icon="location-arrow">
-                                @lang('modules.messages.send')
-                            </x-forms.button-primary>
-                        </div>
-                    </div>
                 </x-form>
                 <!-- SEND MESSAGE END -->
             </div>
