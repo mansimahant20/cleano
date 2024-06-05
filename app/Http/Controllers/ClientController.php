@@ -117,7 +117,7 @@ class ClientController extends AccountBaseController
         $this->languages = LanguageSetting::where('status', 'enabled')->get();
 
         $client = new ClientDetails();
-
+  
         if ($client->getCustomFieldGroupsWithFields()) {
             $this->fields = $client->getCustomFieldGroupsWithFields()->fields;
         }

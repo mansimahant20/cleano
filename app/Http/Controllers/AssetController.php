@@ -4,14 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AssetController extends Controller
+class AssetController extends AccountBaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pageTitle = 'app.menu.assets';
+        $this->middleware(function ($request, $next) {
+            abort_403(!in_array('assets', $this->user->modules));
+
+            return $next($request);
+        });
+    }
+
     public function index()
     {
-        return view('assets.index');
+        $pageTitle = $this->pageTitle;
+        return view('assets.index', compact('pageTitle'));
     }
 
     /**
