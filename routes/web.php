@@ -115,6 +115,9 @@ use App\Http\Controllers\KnowledgeBaseCategoryController;
 use App\Http\Controllers\ProjectTemplateMemberController;
 use App\Http\Controllers\ProjectTemplateSubTaskController;
 use App\Http\Controllers\EmployeeShiftChangeRequestController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\SocialCalendersController;
+use App\Http\Controllers\PayrollController;
 
 Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::post('image/upload', [ImageController::class, 'store'])->name('image.store');
@@ -208,6 +211,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::post('user-permissions/customPermissions/{id}', [UserPermissionController::class, 'customPermissions'])->name('user-permissions.custom_permissions');
     Route::post('user-permissions/resetPermissions/{id}', [UserPermissionController::class, 'resetPermissions'])->name('user-permissions.reset_permissions');
     Route::resource('user-permissions', UserPermissionController::class);
+
+    /* ASSETS */
+    Route::resource('assets', AssetController::class);
+
+    /* SOCIAL CALENDERS */
+    Route::resource('social-calenders', SocialCalendersController::class);
+
+    /* PAYROLL */
+    Route::resource('payroll', PayrollController::class);
 
     /* PROJECTS */
     Route::resource('projectCategory', ProjectCategoryController::class);

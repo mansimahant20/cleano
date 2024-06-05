@@ -297,6 +297,15 @@ return array(
         'internship' => 'Internship',
         'trainee' => 'Trainee',
     ),
+    'assets' => array(
+        'addAsset' => 'Add New Asset'
+    ),
+    'socialCalenders' => array(
+        'viewLeads' => 'View Leads'
+    ),
+    'payroll' => array(
+        'viewPayroll' => 'View Payroll'
+    ),
     'projects' => array(
         'addNewProject' => 'Add New Project',
         'projectName' => 'Project Name',

@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 class ClientsDataTable extends BaseDataTable
 {
-
     private $viewClientPermission;
     private $editClientPermission;
     private $deleteClientPermission;
