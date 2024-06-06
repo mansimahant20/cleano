@@ -434,7 +434,7 @@ return array(
     'deactive' => 'Inactive',
     'inactive' => 'Inactive',
     'admin' => 'Admin',
-    'employee' => 'Employee',
+    'employee' => 'Employee',  
     'complete' => 'Complete',
     'approved' => 'Approved',
     'reject' => 'Reject',
@@ -1077,4 +1077,10 @@ return array(
     ),
     'thisEvent' => 'This event',
     'allEvent' => 'All events',
+    'assets' => array(
+        'assetType' => 'Asset Type',
+        'addAsset' => 'Add New Asset',
+        'exportExcel' => 'Export'
+    ),
+    'employees' => 'Employees',
 );

@@ -1674,7 +1674,7 @@ return array(
         'messages' => 'Messages',
         'contracts' => 'Contracts',
         'product' => 'Product',
-        'asset' => 'Assets',
+        'assets' => 'Assets',
         'payroll' => 'Payroll',
         'restapi' => 'RestAPI',
         'gitlab' => 'GITLAB',

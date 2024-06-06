@@ -188,7 +188,7 @@
         </x-menu-item>
     @endif
     
-    <!-- NAV ITEM - ASSETS COLLAPASE MENU -->
+    <!-- NAV ITEM - CALENDERS COLLAPASE MENU -->
     <x-menu-item icon="calendar-event" :text="__('app.menu.socialCalenders')" :link="route('social-calenders.index')">
         <x-slot name="iconPath">
             <path 
@@ -261,14 +261,13 @@
                     <path
                         d="M 3.246094 10.910156 L 10.035156 10.910156 C 10.328125 10.910156 10.566406 10.671875 10.566406 10.375 C 10.566406 10.082031 10.328125 9.84375 10.035156 9.84375 L 3.246094 9.84375 C 2.953125 9.84375 2.714844 10.082031 2.714844 10.375 C 2.714844 10.671875 2.953125 10.910156 3.246094 10.910156 Z M 3.246094 10.910156 " />
                 </g>
-
             </x-slot>
         </x-menu-item>
     @endif
 <!-- Knowledge base -->
 
     <!-- NAV ITEM - ASSETS COLLAPASE MENU -->
-    @if (in_array('assets', user_modules()))
+    @if(!in_array('assets', user_roles()) && in_array('assets', user_modules()))
     <x-menu-item icon="person" :text="__('app.menu.assets')" :link="route('assets.index')">
         <x-slot name="iconPath">
             <path

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Traits\ImportExcel;
 
 class AssetController extends AccountBaseController
 {
+    use ImportExcel;
+
     public function __construct()
     {
         parent::__construct();
@@ -20,7 +24,27 @@ class AssetController extends AccountBaseController
     public function index()
     {
         $pageTitle = $this->pageTitle;
-        return view('assets.index', compact('pageTitle'));
+        $pushSetting = push_setting();
+        $pusherSettings = pusher_settings();
+        $checkListCompleted = $this->checkListCompleted;
+        $checkListTotal = $this->checkListTotal;
+        $activeTimerCount = $this->activeTimerCount;
+        $unreadNotificationCount  = $this->unreadNotificationCount;
+        $appTheme = $this->appTheme;
+        $appName = $this->appName;
+        $user = $this->user;
+        $sidebarUserPermissions = $this->sidebarUserPermissions;
+        $companyName = $this->companyName;
+        $currentRouteName = $this->currentRouteName;
+        $unreadMessagesCount = $this->unreadMessagesCount;
+        $worksuitePlugins = $this->worksuitePlugins;
+        $customLink = $this->customLink;
+
+        return view('assets.index', compact('pageTitle','pushSetting','pusherSettings','checkListCompleted',
+        'checkListTotal','activeTimerCount','unreadNotificationCount','appTheme','appName','user','sidebarUserPermissions',
+        'companyName','currentRouteName','unreadMessagesCount','worksuitePlugins','customLink'));
+
+        // return view('assets.index', compact('pageTitle'));
     }
 
     /**
