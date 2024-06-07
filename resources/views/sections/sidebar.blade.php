@@ -51,7 +51,7 @@
                 aria-labelledby="dropdownMenuLink" tabindex="0">
                 <div class="d-flex justify-content-between align-items-center profile-box">
                     <a @if(!in_array('client', user_roles())) href="{{ route('employees.show', user()->id) }}" @endif >
-                            <div class="profileInfo d-flex align-items-center mr-1 flex-wrap">
+                            <div class="profileInfo d-flex align-items-center flex-wrap">
                                 <div class="profileImg mr-2">
                                     <img class="h-100" src="{{ $user->image_url }}"
                                         alt="{{ user()->name }}">

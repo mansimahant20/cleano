@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ImportExcel;
+use App\Helper\Reply;
 
 class AssetController extends AccountBaseController
 {
@@ -43,8 +44,6 @@ class AssetController extends AccountBaseController
         return view('assets.index', compact('pageTitle','pushSetting','pusherSettings','checkListCompleted',
         'checkListTotal','activeTimerCount','unreadNotificationCount','appTheme','appName','user','sidebarUserPermissions',
         'companyName','currentRouteName','unreadMessagesCount','worksuitePlugins','customLink'));
-
-        // return view('assets.index', compact('pageTitle'));
     }
 
     /**
@@ -52,7 +51,20 @@ class AssetController extends AccountBaseController
      */
     public function create()
     {
-        //
+        $this->pageTitle = __('app.asset');
+        if (request()->ajax()) {
+            if (request('quick-form') == 1) {
+                return view('clients.ajax.quick_create', $this->data);
+            }
+
+            $html = view('assets.ajax.create', $this->data)->render();
+
+            return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
+        }
+
+        $this->view = 'assets.ajax.create';
+
+        return view('assets.create', $this->data);
     }
 
     /**

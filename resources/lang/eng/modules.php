@@ -298,7 +298,16 @@ return array(
         'trainee' => 'Trainee',
     ),
     'assets' => array(
-        'addAsset' => 'Add New Asset'
+        'addAsset' => 'Add New Asset',
+        'assetInfo' => 'Add Asset Info',
+        'assetName' => 'Asset Name',
+        'assetType' => 'Asset Type',
+        'serialNumber' => 'Serial Number',
+        'assetValue' => 'Value',
+        'assetLocation' => 'Location',
+        'assetStatus' => 'Status',
+        'description' => 'Description',
+        'assetPicture' => 'Asset Picture'
     ),
     'socialCalenders' => array(
         'viewLeads' => 'View Leads'

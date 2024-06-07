@@ -48,6 +48,7 @@ return array(
     'task' => 'Task',
     'tasks' => 'Tasks',
     'client' => 'Client',
+    'asset' => 'Assets',
     'stop' => 'Stop',
     'remove' => 'Remove',
     'description' => 'Description',
@@ -586,6 +587,11 @@ return array(
     'bankaccount' => 'Bank Account',
     'bankaccounts' => 'Bank Accounts',
     'Changestatus' => 'Lead Status',
+    'available' => 'Available',
+    'nonFunctional' => 'Non Functional',
+    'lost' => 'Lost',
+    'damaged' => 'Damaged',
+    'underMaintenance' => 'Under Maintenance',
     'pusher' => array(
         'appId' => 'App Id',
         'appKey' => 'App Key',
@@ -1082,5 +1088,5 @@ return array(
         'addAsset' => 'Add New Asset',
         'exportExcel' => 'Export'
     ),
-    'employees' => 'Employees',
+    'employees' => 'Employees'
 );

@@ -172,4 +172,11 @@ return array(
         'languageName' => 'e.g. English',
         'languageCode' => 'e.g. en',
     ),
+    'asset' => array(
+        'assetName' => 'e.g. Laptop, iphone, etc',
+        'serialNumber' => 'Serial Number',
+        'assetValue' => 'Value',
+        'assetLocation' => 'Location',
+        'description' => 'Enter Description (optional)'
+    )
 );
