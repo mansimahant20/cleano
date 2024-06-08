@@ -79,7 +79,7 @@ class AssetController extends AccountBaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AssetTypes $request)
+    public function store(Asset $request)
     {
         //
     }

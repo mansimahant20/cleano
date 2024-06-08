@@ -44,7 +44,7 @@ $addPermission = user()->permission('add_assets');
                                 </x-forms.input-group>
                             </div>
                             <div class="col-md-6">
-                                <x-forms.text fieldId="name" :fieldLabel="__('modules.assets.serialNumber')" fieldName="number"
+                                <x-forms.text fieldId="serial_number" :fieldLabel="__('modules.assets.serialNumber')" fieldName="serial_number"
                                     fieldRequired="true" :fieldPlaceholder="__('placeholders.asset.serialNumber')"
                                     :fieldValue="$asset->serial_number ?? ''"></x-forms.text>
                             </div>
@@ -56,7 +56,7 @@ $addPermission = user()->permission('add_assets');
                             <div class="col-md-6">
                                 <x-forms.text fieldId="name" :fieldLabel="__('modules.assets.assetLocation')" fieldName="name"
                                     :fieldPlaceholder="__('placeholders.asset.assetLocation')"
-                                    :fieldValue="$asset->asset_name ?? ''"></x-forms.text>
+                                    :fieldValue="$asset->location ?? ''"></x-forms.text>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group my-3">

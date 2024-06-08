@@ -24,7 +24,7 @@ class Asset extends FormRequest
         return [
             'asset_name' => 'required',
             'asset_type' => 'required',
-            'serial_number' => 'nullable|numeric'
+            'serial_number' => 'required|nullable|numeric'
         ];
     }
 }
