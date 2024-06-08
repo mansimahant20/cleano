@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ImportExcel;
 use App\Helper\Reply;
+use App\Models\AssetType;
+use App\Http\Requests\Assets\Asset;
 
 class AssetController extends AccountBaseController
 {
@@ -52,6 +54,13 @@ class AssetController extends AccountBaseController
     public function create()
     {
         $this->pageTitle = __('app.asset');
+        $this->assetTypes = AssetType::all(); 
+        
+        $this->data = [
+            'pageTitle' => $this->pageTitle,
+            'assetTypes' => $this->assetTypes,
+        ];
+
         if (request()->ajax()) {
             if (request('quick-form') == 1) {
                 return view('clients.ajax.quick_create', $this->data);
@@ -65,13 +74,12 @@ class AssetController extends AccountBaseController
         $this->view = 'assets.ajax.create';
 
         return view('assets.create', $this->data);
-        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AssetTypes $request)
     {
         //
     }
