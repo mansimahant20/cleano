@@ -307,7 +307,8 @@ return array(
         'assetLocation' => 'Location',
         'assetStatus' => 'Status',
         'description' => 'Description',
-        'assetPicture' => 'Asset Picture'
+        'assetPicture' => 'Asset Picture',
+        'name' => 'Name'
     ),
     'socialCalenders' => array(
         'viewLeads' => 'View Leads'

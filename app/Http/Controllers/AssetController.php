@@ -65,6 +65,7 @@ class AssetController extends AccountBaseController
         $this->view = 'assets.ajax.create';
 
         return view('assets.create', $this->data);
+        
     }
 
     /**

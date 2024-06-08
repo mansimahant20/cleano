@@ -39,7 +39,7 @@ $addPermission = user()->permission('add_assets');
             
                                     {{-- {{-- @if ($addClientCategoryPermission == 'all') --}}
                                         <x-slot name="append">
-                                            <button id="addClientCategory" type="button"
+                                            <button id="addAssetTypes" type="button"
                                                 class="btn btn-outline-secondary border-grey"
                                                 data-toggle="tooltip" data-original-title="{{ __('app.add').' '.__('modules.assets.assetType') }}">
                                                 @lang('app.add')</button>
@@ -107,5 +107,13 @@ $addPermission = user()->permission('add_assets');
         </x-form>
     </div>
 </div>
+
+<script>
+   $('#addAssetTypes').click(function() {
+        const url = "{{ route('assets-types.create') }}";
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        $.ajaxModal(MODAL_LG, url);
+    })
+</script>
 
 

@@ -177,6 +177,7 @@ return array(
         'serialNumber' => 'Serial Number',
         'assetValue' => 'Value',
         'assetLocation' => 'Location',
-        'description' => 'Enter Description (optional)'
+        'description' => 'Enter Description (optional)',
+        'name' => 'Name'
     )
 );

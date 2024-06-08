@@ -118,6 +118,7 @@ use App\Http\Controllers\EmployeeShiftChangeRequestController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\SocialCalendersController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\AssetTypeController;
 
 Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::post('image/upload', [ImageController::class, 'store'])->name('image.store');
@@ -211,6 +212,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::post('user-permissions/customPermissions/{id}', [UserPermissionController::class, 'customPermissions'])->name('user-permissions.custom_permissions');
     Route::post('user-permissions/resetPermissions/{id}', [UserPermissionController::class, 'resetPermissions'])->name('user-permissions.reset_permissions');
     Route::resource('user-permissions', UserPermissionController::class);
+
+    /* ASSET TYPES*/
+    Route::resource('assets-types', AssetTypeController::class);
 
     /* ASSETS */
     Route::resource('assets', AssetController::class);
