@@ -21,7 +21,7 @@ $addPermission = user()->permission('add_assets');
                                     :fieldValue="$asset->asset_name ?? ''"></x-forms.text>
                             </div>
                             <div class="col-md-6">
-                                <x-forms.label class="mt-3" fieldId="category"
+                                <x-forms.label class="mt-3" fieldId="asset_type_id"
                                 fieldRequired="true" :fieldLabel="__('modules.assets.assetType')">
                                 </x-forms.label>
                                 <x-forms.input-group>
@@ -37,7 +37,7 @@ $addPermission = user()->permission('add_assets');
                                         <x-slot name="append">
                                             <button id="addAssetTypes" type="button"
                                                 class="btn btn-outline-secondary border-grey"
-                                                data-toggle="tooltip" data-original-title="{{ __('app.add').' '.__('modules.assets.assetType') }}">
+                                                data-toggle="tooltip" data-original-title="{{ __('app.add').' '.__('modules.assets.name') }}">
                                                 @lang('app.add')</button>
                                             </x-slot>
                                     {{-- @endif --}} 
@@ -49,12 +49,12 @@ $addPermission = user()->permission('add_assets');
                                     :fieldValue="$asset->serial_number ?? ''"></x-forms.text>
                             </div>
                             <div class="col-md-6">
-                                <x-forms.text fieldId="name" :fieldLabel="__('modules.assets.assetValue')" fieldName="name"
+                                <x-forms.text fieldId="value" :fieldLabel="__('modules.assets.assetValue')" fieldName="value"
                                     :fieldPlaceholder="__('placeholders.asset.assetValue')"
                                     :fieldValue="$asset->value ?? ''"></x-forms.text>
                             </div>
                             <div class="col-md-6">
-                                <x-forms.text fieldId="name" :fieldLabel="__('modules.assets.assetLocation')" fieldName="name"
+                                <x-forms.text fieldId="location" :fieldLabel="__('modules.assets.assetLocation')" fieldName="location"
                                     :fieldPlaceholder="__('placeholders.asset.assetLocation')"
                                     :fieldValue="$asset->location ?? ''"></x-forms.text>
                             </div>
@@ -63,8 +63,24 @@ $addPermission = user()->permission('add_assets');
                                     <label class="f-14 text-dark-grey mb-12 w-100 mt-3" for="asset_status">@lang('modules.assets.assetStatus')</label>
                                     <div class="d-flex">
                                         @foreach(['available','non-functional','lost','damaged','under-maintenance'] as $status)
-                                            <x-forms.radio fieldId="status-{{ $status }}" :fieldLabel="__(ucfirst($status))" fieldName="asset_status" fieldValue="{{ $status }}">
-                                            </x-forms.radio>
+                                            @if($status == 'available')
+                                                <x-forms.radio 
+                                                    fieldId="status-{{ $status }}" 
+                                                    :fieldLabel="__(ucfirst($status))" 
+                                                    fieldName="asset_status" 
+                                                    fieldValue="{{ $status }}"
+                                                    checked
+                                                >
+                                                </x-forms.radio>
+                                            @else
+                                                <x-forms.radio 
+                                                    fieldId="status-{{ $status }}" 
+                                                    :fieldLabel="__(ucfirst($status))" 
+                                                    fieldName="asset_status" 
+                                                    fieldValue="{{ $status }}"
+                                                >
+                                                </x-forms.radio>
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>
@@ -73,15 +89,15 @@ $addPermission = user()->permission('add_assets');
                     </div>
                     <div class="col-lg-4 col-xl-3">
                         <x-forms.file allowedFileExtensions="png jpg jpeg svg bmp" class="mr-0 mr-lg-2 mr-md-2 cropper"
-                            :fieldLabel="__('modules.assets.assetPicture')" fieldName="image" fieldId="image"
+                            :fieldLabel="__('modules.assets.assetPicture')" fieldName="asset_image" fieldId="asset_image"
                              fieldHeight="119" :popover="__('messages.fileFormat.ImageFile')" />
                     </div>  
                     <div class="col-md-12">
-                        <div class="form-group my-3">
+                        <div class="form-group my-3">   
                             <x-forms.textarea class="mr-0 mr-lg-2 mr-md-2"
                                 :fieldLabel="__('modules.assets.description')" fieldName="description"
                                 fieldId="description" :fieldPlaceholder="__('placeholders.asset.description')"
-                                :fieldValue="$lead->address ?? ''">
+                                :fieldValue="$asset->description ?? ''">
                             </x-forms.textarea>
                         </div>
                     </div>
@@ -101,17 +117,10 @@ $addPermission = user()->permission('add_assets');
 <script>
     $(document).ready(function() {
         $('#save-assets-form').click(function() {
-            // if(add_client_note_permission == 'all' || add_client_note_permission == 'added' || add_client_note_permission == 'both')
-            // {
-            //     var note = document.getElementById('note').children[0].innerHTML;
-            //     document.getElementById('note-text').value = note;
-            // }
-
             const url = "{{ route('assets.store') }}";
             var data = $('#save-assets-data-form').serialize();
 
             saveAsset(data, url, "#save-assets-form");
-
         });
 
         function saveAsset(data, url, buttonSelector) {

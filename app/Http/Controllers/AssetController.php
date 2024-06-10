@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ImportExcel;
 use App\Helper\Reply;
+use App\Models\Asset;
 use App\Models\AssetType;
-use App\Http\Requests\Assets\Asset;
+use App\Http\Requests\Assets\AssetRequest;
+use App\Helper\Files; 
+use App\DataTables\AssetsDataTable;
 
 class AssetController extends AccountBaseController
 {
@@ -24,7 +27,7 @@ class AssetController extends AccountBaseController
         });
     }
 
-    public function index()
+    public function index(AssetsDataTable $dataTable)
     {
         $pageTitle = $this->pageTitle;
         $pushSetting = push_setting();
@@ -42,10 +45,27 @@ class AssetController extends AccountBaseController
         $unreadMessagesCount = $this->unreadMessagesCount;
         $worksuitePlugins = $this->worksuitePlugins;
         $customLink = $this->customLink;
+        $assetTypes = AssetType::all();
 
-        return view('assets.index', compact('pageTitle','pushSetting','pusherSettings','checkListCompleted',
-        'checkListTotal','activeTimerCount','unreadNotificationCount','appTheme','appName','user','sidebarUserPermissions',
-        'companyName','currentRouteName','unreadMessagesCount','worksuitePlugins','customLink'));
+        return $dataTable->render('assets.index', compact(
+            'pageTitle',
+            'pushSetting',
+            'pusherSettings',
+            'checkListCompleted',
+            'checkListTotal',
+            'activeTimerCount',
+            'unreadNotificationCount',
+            'appTheme',
+            'appName',
+            'user',
+            'sidebarUserPermissions',
+            'companyName',
+            'currentRouteName',
+            'unreadMessagesCount',
+            'worksuitePlugins',
+            'customLink',
+            'assetTypes'
+        ));
     }
 
     /**
@@ -79,9 +99,31 @@ class AssetController extends AccountBaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Asset $request)
+    public function store(AssetRequest $request)
     {
-        //
+        try {
+            $asset = new Asset();
+            $asset->asset_name = $request->asset_name;  
+            $asset->asset_type_id = $request->asset_type_id;
+            $asset->serial_number = $request->serial_number;
+            $asset->value = $request->value;
+            $asset->location = $request->location;
+            $asset->status = $request->asset_status;
+            $asset->description = $request->description;
+
+            if ($request->hasFile('asset_image')) {
+                Files::deleteFile($asset->asset_image, 'avatar');
+                $asset->asset_image = Files::uploadLocalOrS3($request->asset_image, 'avatar', 300);
+            }
+
+            $asset->save();
+
+        } catch (\Exception $e) {
+            logger($e->getMessage());
+            return Reply::error('Some error occurred when inserting the data. Please try again or contact support '. $e->getMessage());
+        }
+
+        return Reply::successWithData(__('messages.recordSaved'), ['redirectUrl' => route('assets.index')]);
     }
 
     /**

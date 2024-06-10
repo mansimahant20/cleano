@@ -6,7 +6,7 @@
     <x-table class="table-bordered asset-type-table" headType="thead-light">
         <x-slot name="thead">
             <th>#</th>
-            <th>@lang('modules.assets.assetType')</th>
+            <th>@lang('modules.assets.name')</th>
             <th class="text-right">@lang('app.action')</th>
         </x-slot>
         

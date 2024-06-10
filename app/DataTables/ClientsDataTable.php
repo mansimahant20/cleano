@@ -271,5 +271,4 @@ class ClientsDataTable extends BaseDataTable
 
         return array_merge($data, CustomFieldGroup::customFieldsDataMerge(new ClientDetails()), $action);
     }
-
 }

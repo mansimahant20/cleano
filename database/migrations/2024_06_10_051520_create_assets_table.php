@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->string('asset_name')->unique();
+            $table->string('asset_name')->nullable();
             $table->unsignedBigInteger('asset_type_id')->nullable();
             $table->foreign('asset_type_id')->references('id')->on('asset_types')->onDelete('cascade')->onUpdate('cascade');
             $table->string('serial_number')->nullable();
             $table->string('value')->nullable();
             $table->string('location')->nullable();
-            $table->enum('status',['available','non-functional','lost','damaged','under-maintenance']);
+            $table->enum('status',['available','non-functional','lost','damaged','under-maintenance'])->default('available');
             $table->string('description')->nullable();
             $table->string('asset_image')->nullable();
             $table->timestamps();

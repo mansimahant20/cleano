@@ -9,5 +9,16 @@ class Asset extends Model
 {
     use HasFactory;
 
-    protected $fillable = 'assets';
+    const CUSTOM_FIELD_MODEL = 'Asset';
+
+    protected $fillable = [
+        'asset_name',
+        'asset_type_id',
+        'serial_number',
+        'value',
+        'location',
+        'status',
+        'description',
+        'asset_image'
+    ];
 }
