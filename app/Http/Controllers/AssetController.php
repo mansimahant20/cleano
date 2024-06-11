@@ -45,6 +45,8 @@ class AssetController extends AccountBaseController
         $unreadMessagesCount = $this->unreadMessagesCount;
         $worksuitePlugins = $this->worksuitePlugins;
         $customLink = $this->customLink;
+        $asset = Asset::all();
+        // dd($asset);
         $assetTypes = AssetType::all();
 
         return $dataTable->render('assets.index', compact(
@@ -64,6 +66,7 @@ class AssetController extends AccountBaseController
             'unreadMessagesCount',
             'worksuitePlugins',
             'customLink',
+            'asset',
             'assetTypes'
         ));
     }
@@ -131,7 +134,29 @@ class AssetController extends AccountBaseController
      */
     public function show(string $id)
     {
-        //
+        $this->pageTitle = __('app.asset');
+        $asset = Asset::find($id); // Use the $id parameter here
+        
+        $this->data = [
+            'pageTitle' => $this->pageTitle,
+            'asset' => $asset, // Use the defined $asset variable here
+        ];
+
+        if (request()->ajax()) {
+            if (request('quick-form') == 1) {
+                return view('clients.ajax.quick_create', $this->data);
+            }
+
+            $html = view('assets.ajax.show', $this->data)->render();
+
+            return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
+        }
+
+        // Since we're not including the 'create' view, we don't need this line
+        // $this->view = 'assets.ajax.show';
+
+        // Instead, we're rendering the 'assets.ajax.show' view directly
+        return view('assets.ajax.show', $this->data);
     }
 
     /**

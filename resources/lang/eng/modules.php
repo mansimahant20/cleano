@@ -300,6 +300,7 @@ return array(
     'assets' => array(
         'addAsset' => 'Add New Asset',
         'assetInfo' => 'Add Asset Info',
+        'assetDetail' => 'Asset Info',
         'assetName' => 'Asset Name',
         'assetType' => 'Asset Type',
         'serialNumber' => 'Serial Number',

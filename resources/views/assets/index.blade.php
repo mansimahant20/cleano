@@ -131,12 +131,38 @@
 
         <!-- Task Box Start -->
         <div class="d-flex flex-column w-tables rounded mt-3 bg-white table-responsive">
-
             {!! $dataTable->table(['class' => 'table table-hover border-0 w-100']) !!}
-
         </div>
         <!-- Task Box End -->
     </div>
     <!-- CONTENT WRAPPER END -->
 
 @endsection
+
+@push('scripts')
+@include('sections.datatable_js')
+<script>
+    $(document).ready(function() {
+    var table = $('#assets-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route('assets.index') !!}',
+        columns: [
+            { data: 'id', name: 'id' },
+            { data: 'asset_image', name: 'asset_image' },
+            { data: 'asset_name', name: 'asset_name' },
+            { data: 'status', name: 'status' },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ],
+        error: function (xhr, err, opt) {
+            console.log('Request Failed: ' + xhr.statusText, err, opt);
+        }
+    });
+
+    // Add this to handle the server-side error
+    table.on('error.dt', function (e, settings, techNote, message) {
+        console.log('An error has occurred:', message);
+    });
+});
+</script>
+@endpush

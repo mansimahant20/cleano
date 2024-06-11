@@ -8,8 +8,6 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\CustomFieldGroup;
 
@@ -20,11 +18,58 @@ class AssetsDataTable extends DataTable
      *
      * @param QueryBuilder $query Results from query() method.
      */
-    public function dataTable(QueryBuilder $query): EloquentDataTable
+    public function dataTable($query)
     {
-        return (new EloquentDataTable($query))
-            ->addColumn('action', 'assets.action')
-            ->setRowId('id');
+        $datatables = datatables()->eloquent($query);
+        $datatables->addIndexColumn();
+        $datatables->addColumn('action', function ($row) {
+            $action = '<div class="task_view">
+                    <div class="dropdown">
+                        <a class="task_view_more d-flex align-items-center justify-content-center dropdown-toggle" type="link"
+                            id="dropdownMenuLink-' . $row->id . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-options-vertical icons"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id . '" tabindex="0">';
+
+            $action .= '<a class="dropdown-item openRightModal" href="' . route('assets.show', [$row->id]) . '">
+                                <i class="fa fa-eye mr-2"></i>
+                                ' . trans('app.view') . '
+                            </a>';
+
+            $action .= '<a class="dropdown-item openRightModal" href="' . route('assets.edit', [$row->id]) . '">
+                                <i class="fa fa-edit mr-2"></i>
+                                ' . trans('app.edit') . '
+                            </a>';
+
+            $action .= '<a class="dropdown-item delete-table-row" href="javascript:;" data-asset-id="' . $row->id . '">
+                                <i class="fa fa-trash mr-2"></i>
+                                ' . trans('app.delete') . '
+                            </a>';
+
+            $action .= '</div>
+                    </div>
+                </div>';
+
+            return $action;
+        });
+
+        $datatables->editColumn('status', function ($row) {
+            if ($row->status == 'active') {
+                return ' <i class="fa fa-circle mr-1 text-light-green f-10"></i>' . __('app.active');
+            } else {
+                return '<i class="fa fa-circle mr-1 text-red f-10"></i>' . __('app.inactive');
+            }
+        });
+
+        $datatables->addIndexColumn();
+        $datatables->smart(false);
+        $datatables->setRowId(function ($row) {
+            return 'row-' . $row->id;
+        });
+
+        $datatables->rawColumns(['action', 'status']);
+
+        return $datatables;
     }
 
     /**
@@ -33,30 +78,13 @@ class AssetsDataTable extends DataTable
     public function query(Asset $model): QueryBuilder
     {
         $request = $this->request();
-        $assets = $model->withoutGlobalScope(ActiveScope::class)->with('session', 'clientDetails', 'clientDetails.addedBy')
-            ->join('role_user', 'role_user.user_id', '=', 'users.id')
-            ->leftJoin('client_details', 'users.id', '=', 'client_details.user_id')
-            ->join('roles', 'roles.id', '=', 'role_user.role_id')
-            ->select('users.id', 'users.salutation', 'users.name', 'client_details.company_name', 'users.email', 'users.mobile', 'users.image', 'users.created_at', 'users.status', 'client_details.added_by', 'users.admin_approval')
-            ->where('roles.name', 'client');
+        $assets = $model->newQuery();
 
-        if ($request->status != 'all' && $request->status != '') {
-            $assets = $assets->where('users.status', $request->status);
+        if ($request->asset) {
+            $assets->whereIn('id', collect($request->asset)->pluck('id'));
         }
 
-        if ($request->client != 'all' && $request->client != '') {
-            $assets = $assets->where('users.id', $request->client);
-        }
-
-        // if ($request->searchText != '') {
-        //     $assets = $assets->where(function ($query) {
-        //         $query->where('users.name', 'like', '%' . request('searchText') . '%')
-        //             ->orWhere('users.email', 'like', '%' . request('searchText') . '%')
-        //             ->orWhere('client_details.company_name', 'like', '%' . request('searchText') . '%');
-        //     });
-        // }
-
-        return $assets;;
+        return $assets;
     }
 
     /**
@@ -64,9 +92,9 @@ class AssetsDataTable extends DataTable
      */
     public function html(): HtmlBuilder
     {
-        $assetTypes = \App\Models\AssetType::all(); 
+        $assetTypes = \App\Models\AssetType::all();
 
-        return $this->builder()
+                    return $this->builder()
                     ->setTableId('assets-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
@@ -89,17 +117,13 @@ class AssetsDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        $data = [
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id'), 'visible' => showId()],
-            __('app.assetPicture') => ['data' => 'asset_image', 'name' => 'asset_image', 'exportable' => false, 'title' => __('app.assetPicture')],
-            __('app.assetName') => ['data' => 'asset_name', 'name' => 'asset_name', 'exportable' => false, 'title' => __('app.assetName')],
-            __('app.lentTo') => ['data' => 'client_name', 'name' => 'users.name', 'visible' => false, 'title' => __('app.lentTo')],
-            __('app.date') => ['data' => 'email', 'name' => 'email', 'title' => __('app.date')],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
-        ];
-
-        $action = [
-            Column::computed('action', __('app.action'))
+        $columns = [
+            Column::make('id')->title(__('app.id')),
+            Column::make('asset_image')->title(__('app.assetPicture'))->exportable(false)->printable(false),
+            Column::make('asset_name')->title(__('app.assetName')),
+            Column::make('status')->title(__('app.status')),
+            Column::make('created_at')->title(__('app.date')),
+            Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->orderable(false)
@@ -107,7 +131,7 @@ class AssetsDataTable extends DataTable
                 ->addClass('text-right pr-20')
         ];
 
-        return array_merge($data, CustomFieldGroup::customFieldsDataMerge(new Asset()), $action);
+        return array_merge($columns, CustomFieldGroup::customFieldsDataMerge(new Asset()));
     }
 
     /**
