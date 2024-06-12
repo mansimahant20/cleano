@@ -101,7 +101,7 @@
                 {{-- @endif  --}}
             </div>
 
-            {{-- <x-datatable.actions>
+            <x-datatable.actions>
                 <div class="select-status mr-3">
                     <select name="action_type" class="form-control select-picker" id="quick-action-type" disabled>
                         <option value="">@lang('app.selectAction')</option>
@@ -109,23 +109,7 @@
                         <option value="delete">@lang('app.delete')</option>
                     </select>
                 </div>
-                <div class="select-status mr-3 d-none quick-action-field" id="change-status-action">
-                    <select name="status" class="form-control select-picker">
-                        <option value="deactive">@lang('app.inactive')</option>
-                        <option value="active">@lang('app.active')</option>
-                    </select>
-                </div>
             </x-datatable.actions>
-
-
-            <div class="btn-group mt-2 mt-lg-0 mt-md-0 ml-0 ml-lg-3 ml-md-3" role="group">
-                <a href="{{ route('clients.index') }}" class="btn btn-secondary f-14 btn-active show-clients" data-toggle="tooltip"
-                    data-original-title="@lang('app.menu.clients')"><i class="side-icon bi bi-list-ul"></i></a>
-
-                <a href="javascript:;" class="btn btn-secondary f-14 show-unverified" data-toggle="tooltip"
-                    data-original-title="@lang('modules.dashboard.verificationPending')"><i class="side-icon bi bi-person-x"></i></a>
-            </div> --}}
-
         </div>
         <!-- Add Task Export Buttons End -->
 
@@ -149,19 +133,69 @@
         ajax: '{!! route('assets.index') !!}',
         columns: [
             { data: 'id', name: 'id' },
-            { data: 'asset_image', name: 'asset_image' },
+            { data: 'asset_image', name: 'asset_image' }, 
             { data: 'asset_name', name: 'asset_name' },
             { data: 'status', name: 'status' },
-            { data: 'action', name: 'action', orderable: false, searchable: false }
+            { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         error: function (xhr, err, opt) {
             console.log('Request Failed: ' + xhr.statusText, err, opt);
         }
     });
 
-    // Add this to handle the server-side error
-    table.on('error.dt', function (e, settings, techNote, message) {
-        console.log('An error has occurred:', message);
+    $('#assets-table').on('click', '.delete-table-row', function() {
+        var id = $(this).data('asset-id');
+        var url = "{{ route('assets.destroy', ':id') }}";
+        url = url.replace(':id', id);
+        var token = "{{ csrf_token() }}";
+
+        Swal.fire({
+            title: "@lang('messages.sweetAlertTitle')",
+            text: "@lang('messages.recoverRecord')",
+            icon: 'warning',
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: "@lang('messages.confirmDelete')",
+            cancelButtonText: "@lang('app.cancel')",
+            customClass: {
+                confirmButton: 'btn btn-primary mr-3',
+                cancelButton: 'btn btn-secondary'
+            },
+            showClass: {
+                popup: 'swal2-noanimation',
+                backdrop: 'swal2-noanimation'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.easyAjax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        '_token': token,
+                        '_method': 'DELETE'
+                    },
+                    success: function(response) {
+                        if (response.status == "success") {
+                            table.ajax.reload();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.message || 'An error occurred while deleting the asset.',
+                            });
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'An error occurred while deleting the asset.',
+                        });
+                    }
+                });
+            }
+        });
     });
 });
 </script>

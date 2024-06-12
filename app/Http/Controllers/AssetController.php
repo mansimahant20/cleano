@@ -135,11 +135,13 @@ class AssetController extends AccountBaseController
     public function show(string $id)
     {
         $this->pageTitle = __('app.asset');
-        $asset = Asset::find($id); // Use the $id parameter here
-        
+        $asset = Asset::find($id);
+        $assetType = AssetType::find($asset->asset_type_id); 
+
         $this->data = [
             'pageTitle' => $this->pageTitle,
-            'asset' => $asset, // Use the defined $asset variable here
+            'asset' => $asset,
+            'assetType' => $assetType
         ];
 
         if (request()->ajax()) {
@@ -152,10 +154,6 @@ class AssetController extends AccountBaseController
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
         }
 
-        // Since we're not including the 'create' view, we don't need this line
-        // $this->view = 'assets.ajax.show';
-
-        // Instead, we're rendering the 'assets.ajax.show' view directly
         return view('assets.ajax.show', $this->data);
     }
 
@@ -164,15 +162,48 @@ class AssetController extends AccountBaseController
      */
     public function edit(string $id)
     {
-        //
+        $this->pageTitle = __('app.asset');
+        $this->asset = Asset::findOrFail($id);
+        $this->assetType = AssetType::all();
+
+        if (request()->ajax()) {
+            $html = view('assets.ajax.edit', $this->data)->render();
+
+            return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
+        }
+
+        $this->view = 'assets.ajax.edit';
+
+        return view('assets.create', $this->data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AssetRequest $request, string $id)
     {
-        //
+        $asset = Asset::findOrFail($id);
+        $data = $request->all();
+
+        if ($request->image_delete == 'yes') {
+            Files::deleteFile($asset->image, 'avatar');
+            $data['asset_image'] = null;
+        }
+
+        if ($request->hasFile('asset_image')) {
+            Files::deleteFile($asset->asset_image, 'avatar');   
+            $data['asset_image'] = Files::uploadLocalOrS3($request->asset_image, 'avatar', 300);
+        }
+
+        $asset->update($data);
+
+        $redirectUrl = urldecode($request->redirect_url);
+
+        if ($redirectUrl == '') {
+            $redirectUrl = route('assets.index');
+        }
+
+        return Reply::successWithData(__('messages.updateSuccess'), ['redirectUrl' => $redirectUrl]);
     }
 
     /**
@@ -180,6 +211,9 @@ class AssetController extends AccountBaseController
      */
     public function destroy(string $id)
     {
-        //
+        $assets = Asset::findOrFail($id);
+        $assets->delete();
+        $assetData = Asset::all();
+        return Reply::successWithData(__('messages.deleteSuccess'), ['data' => $assetData]);
     }
 }

@@ -54,10 +54,39 @@ class AssetsDataTable extends DataTable
         });
 
         $datatables->editColumn('status', function ($row) {
-            if ($row->status == 'active') {
-                return ' <i class="fa fa-circle mr-1 text-light-green f-10"></i>' . __('app.active');
-            } else {
-                return '<i class="fa fa-circle mr-1 text-red f-10"></i>' . __('app.inactive');
+            if ($row->status == 'available') {
+                return ' <i class="fa fa-circle mr-1 text-light-green f-15"></i>' . __('app.available');
+            } elseif ($row->status == 'non-functional') {
+                return '<i class="fa fa-circle mr-1 text-red f-15"></i>' . __('app.nonFunctional');
+            } elseif ($row->status == 'lost') {
+                return '<i class="fa fa-circle mr-1 text-yellow f-15"></i>' . __('app.lost');
+            } elseif ($row->status == 'damaged') {
+                return '<i class="fa fa-circle mr-1 text-pink f-15"></i>' . __('app.damaged');
+            } elseif ($row->status == 'under-maintenance') {
+                return '<i class="fa fa-circle mr-1 text-orange f-15"></i>' . __('app.underMaintenance');
+            }
+        });
+
+        $datatables->editColumn('asset_image', function ($row) {
+            if ($row->asset_image) {
+                $imageUrl = asset('user-uploads/assets/' . $row->asset_image);
+                return '<img src="' . $imageUrl . '" alt="' . $row->asset_name . '" width="100">';
+            }
+            else {
+                return '--';
+            }
+        });
+        
+        $datatables->editColumn('created_at', function ($row) {
+            return '';
+        });
+        
+        $datatables->editColumn('lent_to', function ($row) {
+            if ($row->lent_to) {
+                return $row->lent_to->name;
+            }
+            else {
+                return '-';
             }
         });
 
@@ -67,7 +96,7 @@ class AssetsDataTable extends DataTable
             return 'row-' . $row->id;
         });
 
-        $datatables->rawColumns(['action', 'status']);
+        $datatables->rawColumns(['action', 'status', 'asset_image']);
 
         return $datatables;
     }
@@ -121,6 +150,7 @@ class AssetsDataTable extends DataTable
             Column::make('id')->title(__('app.id')),
             Column::make('asset_image')->title(__('app.assetPicture'))->exportable(false)->printable(false),
             Column::make('asset_name')->title(__('app.assetName')),
+            Column::make('lent_to')->title(__('app.lentTo')),
             Column::make('status')->title(__('app.status')),
             Column::make('created_at')->title(__('app.date')),
             Column::computed('action')

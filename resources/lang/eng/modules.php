@@ -309,7 +309,8 @@ return array(
         'assetStatus' => 'Status',
         'description' => 'Description',
         'assetPicture' => 'Asset Picture',
-        'name' => 'Name'
+        'name' => 'Name',
+        'updateInfo' => 'Update Asset Info'
     ),
     'socialCalenders' => array(
         'viewLeads' => 'View Leads'
