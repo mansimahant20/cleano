@@ -217,6 +217,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::resource('assets-types', AssetTypeController::class);
 
     /* ASSETS */
+    Route::get('assets/lend-modal', [AssetController::class, 'lend'])->name('assets.lend-modal');
     Route::resource('assets', AssetController::class);
 
     /* SOCIAL CALENDERS */

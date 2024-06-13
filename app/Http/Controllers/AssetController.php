@@ -8,6 +8,7 @@ use App\Traits\ImportExcel;
 use App\Helper\Reply;
 use App\Models\Asset;
 use App\Models\AssetType;
+use App\Models\User;
 use App\Http\Requests\Assets\AssetRequest;
 use App\Helper\Files; 
 use App\DataTables\AssetsDataTable;
@@ -46,8 +47,8 @@ class AssetController extends AccountBaseController
         $worksuitePlugins = $this->worksuitePlugins;
         $customLink = $this->customLink;
         $asset = Asset::all();
-        // dd($asset);
         $assetTypes = AssetType::all();
+        $employees = User::allEmployees();
 
         return $dataTable->render('assets.index', compact(
             'pageTitle',
@@ -67,7 +68,8 @@ class AssetController extends AccountBaseController
             'worksuitePlugins',
             'customLink',
             'asset',
-            'assetTypes'
+            'assetTypes',
+            'employees'
         ));
     }
 
@@ -136,7 +138,8 @@ class AssetController extends AccountBaseController
     {
         $this->pageTitle = __('app.asset');
         $asset = Asset::find($id);
-        $assetType = AssetType::find($asset->asset_type_id); 
+
+        $assetType = AssetType::find($asset->asset_type_id);
 
         $this->data = [
             'pageTitle' => $this->pageTitle,
@@ -216,4 +219,13 @@ class AssetController extends AccountBaseController
         $assetData = Asset::all();
         return Reply::successWithData(__('messages.deleteSuccess'), ['data' => $assetData]);
     }
-}
+
+    public function lend(Request $request)
+    {
+        if ($request->ajax()) {
+            return view('assets.lend.index'); 
+        }
+
+        return redirect()->route('assets.index');
+    }
+}   

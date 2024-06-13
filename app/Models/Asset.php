@@ -21,4 +21,9 @@ class Asset extends Model
         'description',
         'asset_image'
     ];
+
+    public function history()
+    {
+        return $this->hasMany(History::class);
+    }
 }

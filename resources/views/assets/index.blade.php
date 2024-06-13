@@ -14,9 +14,9 @@
             <div class="select-status">
                 <select class="form-control select-picker" name="assets" id="assets" data-live-search="true" data-size="8">
                     <option value="all">@lang('app.all')</option>
-                    {{-- @foreach ($clients as $employee)
-                        <x-user-option :user="$employee" />
-                    @endforeach --}}
+                    @foreach ($assetTypes as $type)
+                        <option value="{{ $type->id }}">{{ $type->type_name }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -29,9 +29,9 @@
             <div class="select-status">
                 <select class="form-control select-picker" name="employee" id="employee" data-live-search="true" data-size="8">
                     <option value="all">@lang('app.all')</option>
-                    {{-- @foreach ($employees as $employees)
+                    @foreach ($employees as $employees)
                         <x-user-option :user="$employees" />
-                    @endforeach --}}
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -42,9 +42,9 @@
             <div class="select-status">
                 <select class="form-control select-picker" name="status" id="status" data-live-search="true" data-size="8">
                     <option value="all">@lang('app.all')</option>
-                    {{-- @foreach ($employees as $employees)
-                        <x-user-option :user="$employees" />
-                    @endforeach --}}
+                    @foreach (['lent', 'available', 'non-functional', 'lost', 'damaged', 'under-maintenance'] as $status)
+                        <option value="{{ $status }}">{{ ucfirst($status) }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -76,8 +76,6 @@
         <!-- RESET END -->
 
     </x-filters.filter-box>
-
-    
 @endsection
 
 @section('content')
@@ -198,5 +196,48 @@
         });
     });
 });
+
+    $('#employee, #status, #assets, #gender, #skill, #designation, #department').on('change keyup',
+        function () {
+            if ($('#status').val() != "all") {
+                $('#reset-filters').removeClass('d-none');
+            } else if ($('#employee').val() != "all") {
+                $('#reset-filters').removeClass('d-none');
+            } else if ($('#assets').val() != "all") {
+                $('#reset-filters').removeClass('d-none');
+            } else if ($('#gender').val() != "all") {
+                $('#reset-filters').removeClass('d-none');
+            } else if ($('#designation').val() != "all") {
+                $('#reset-filters').removeClass('d-none');
+            } else if ($('#department').val() != "all") {
+                $('#reset-filters').removeClass('d-none');
+            } else {
+                $('#reset-filters').addClass('d-none');
+            }
+            showTable();
+    });
+
+    $('#search-text-field').on('keyup', function () {
+        if ($('#search-text-field').val() != "") {
+            $('#reset-filters').removeClass('d-none');
+            showTable();
+        }
+    });
+
+    $('#reset-filters, #reset-filters-2').click(function () {
+        $('#filter-form')[0].reset();
+        $('.filter-box .select-picker').selectpicker("refresh");
+        $('#reset-filters').addClass('d-none');
+        showTable();
+    });
+
+    $('body').on('click', '.assets-action-lend', function() {
+        let assetId = $(this).data('asset-id');
+        let url = "{{ route('assets.lend-modal') }}";
+        let searchQuery = "?id=" + assetId;
+        
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('@lang("app.lendAsset")');
+        $.ajaxModal(MODAL_LG, url + searchQuery);
+    });
 </script>
 @endpush

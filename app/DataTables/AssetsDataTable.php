@@ -30,26 +30,34 @@ class AssetsDataTable extends DataTable
                             <i class="icon-options-vertical icons"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-' . $row->id . '" tabindex="0">';
-
+        
             $action .= '<a class="dropdown-item openRightModal" href="' . route('assets.show', [$row->id]) . '">
                                 <i class="fa fa-eye mr-2"></i>
                                 ' . trans('app.view') . '
                             </a>';
-
+        
             $action .= '<a class="dropdown-item openRightModal" href="' . route('assets.edit', [$row->id]) . '">
                                 <i class="fa fa-edit mr-2"></i>
                                 ' . trans('app.edit') . '
                             </a>';
-
+        
+            if ($row->status == 'available') {
+                $action .= '<a class="dropdown-item assets-action-lend" data-asset-id="' . $row->id . '" 
+                                href="javascript:void(0);">
+                                <i class="fa fa-share mr-2"></i>
+                                ' . trans('app.lend') . '
+                                </a>';
+            }
+                            
             $action .= '<a class="dropdown-item delete-table-row" href="javascript:;" data-asset-id="' . $row->id . '">
                                 <i class="fa fa-trash mr-2"></i>
                                 ' . trans('app.delete') . '
                             </a>';
-
+        
             $action .= '</div>
                     </div>
                 </div>';
-
+        
             return $action;
         });
 
@@ -65,7 +73,7 @@ class AssetsDataTable extends DataTable
             } elseif ($row->status == 'under-maintenance') {
                 return '<i class="fa fa-circle mr-1 text-orange f-15"></i>' . __('app.underMaintenance');
             }
-        });
+        });        
 
         $datatables->editColumn('asset_image', function ($row) {
             if ($row->asset_image) {
@@ -89,6 +97,14 @@ class AssetsDataTable extends DataTable
                 return '-';
             }
         });
+
+        // if ($request->searchText != '') {
+        //     $users = $users->where(function ($query) {
+        //         $query->where('users.name', 'like', '%' . request('searchText') . '%')
+        //             ->orWhere('users.email', 'like', '%' . request('searchText') . '%')
+        //             ->orWhere('client_details.company_name', 'like', '%' . request('searchText') . '%');
+        //     });
+        // }
 
         $datatables->addIndexColumn();
         $datatables->smart(false);

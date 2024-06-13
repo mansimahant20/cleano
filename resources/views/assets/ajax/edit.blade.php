@@ -21,7 +21,7 @@
                                 <x-forms.input-group>
                                     <select class="form-control select-picker" name="asset_type_id" id="asset_type_id"
                                         data-live-search="true">
-                                        <option value="">--</option>
+                                        <option value="">--</option>    
                                         @foreach ($assetType as $type)
                                             <option value="{{ $type->id }}" {{ $asset->asset_type_id == $type->id ? 'selected' : '' }}>{{ $type->type_name }}</option>
                                         @endforeach
@@ -115,7 +115,7 @@
                     if (response.status == 'success') {
                         alert(response.message); 
                         window.location.href = response.redirectUrl;
-                    }
+                    }j
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX error:', error);
