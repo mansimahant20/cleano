@@ -222,8 +222,9 @@ class AssetController extends AccountBaseController
 
     public function lend(Request $request)
     {
+        $employees = User::allEmployees();
         if ($request->ajax()) {
-            return view('assets.lend.index'); 
+            return view('assets.lend.index',compact('employees')); 
         }
 
         return redirect()->route('assets.index');
