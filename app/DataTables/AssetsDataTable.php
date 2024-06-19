@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Asset;
+use App\Models\AssetHistory;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -89,12 +90,11 @@ class AssetsDataTable extends DataTable
             return '';
         });
         
-        $datatables->editColumn('lent_to', function ($row) {
-            if ($row->lent_to) {
-                return $row->lent_to->name;
-            }
-            else {
-                return '-';
+        $datatables->editColumn('lentTo', function ($row) {
+            if ($row->assetHistory) {
+                return $row->assetHistory->lentTo;
+            } else {
+                return 'No AssetHistory record found';
             }
         });
 
@@ -123,7 +123,7 @@ class AssetsDataTable extends DataTable
     public function query(Asset $model): QueryBuilder
     {
         $request = $this->request();
-        $assets = $model->newQuery();
+        $assets = $model->with('assetHistory')->newQuery();
 
         if ($request->asset) {
             $assets->whereIn('id', collect($request->asset)->pluck('id'));

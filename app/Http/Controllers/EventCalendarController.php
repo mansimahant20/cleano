@@ -491,7 +491,8 @@ class EventCalendarController extends AccountBaseController
         $this->viewPermission = user()->permission('view_events');
         $this->event = Event::with('attendee', 'attendee.user')->findOrFail($id);
         $attendeesIds = $this->event->attendee->pluck('user_id')->toArray();
-        $mentionUser = $this->event->mentionEvent->pluck('user_id')->toArray();
+        // $mentionUser = $this->event->mentionEvent->pluck('user_id')->toArray();
+        $mentionUser = $this->event->mentionEvent ? $this->event->mentionEvent->pluck('user_id')->toArray() : [];
 
         abort_403(!(
             $this->viewPermission == 'all'

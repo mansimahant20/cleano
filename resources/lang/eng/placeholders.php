@@ -32,6 +32,7 @@ return array(
     'id' => 'e.g. 1275901',
     'cluster' => 'e.g. ap2',
     'note' => 'Enter note title',
+    'notes' => 'Notes',
     'consent' => 'Enter consent name',
     'consentDescription' => 'Briefly describe the purpose of consent',
     'title' => 'e.g. Manager',

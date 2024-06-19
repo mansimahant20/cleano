@@ -8,6 +8,7 @@ use App\Traits\ImportExcel;
 use App\Helper\Reply;
 use App\Models\Asset;
 use App\Models\AssetType;
+use App\Models\AssetHistory;
 use App\Models\User;
 use App\Http\Requests\Assets\AssetRequest;
 use App\Helper\Files; 
@@ -228,5 +229,27 @@ class AssetController extends AccountBaseController
         }
 
         return redirect()->route('assets.index');
+    }
+
+    public function lentStore(Request $request)
+    {
+        $request->validate([
+            'lentTo' => 'required|exists:users,id',
+            'dateGiven' => 'required|date',
+            'estimatedDateOfReturn' => 'required|date|after:dateGiven',
+        ]);
+
+        $assets = new AssetHistory();
+        $assets->asset_id = $request->input('asset_id');
+        $assets->notes = $request->input('notes');
+        $assets->lentTo = $request->input('lentTo');
+        $assets->dateGiven = $request->input('dateGiven');
+        $assets->estimatedDateOfReturn = $request->input('estimatedDateOfReturn');
+        $assets->dateOfReturn = $request->input('dateOfReturn');
+        $assets->returnedBy_id = $request->input('returnedBy_id');
+        $assets->save();
+
+        $assetsData = AssetType::all();
+        return Reply::successWithData(__('messages.AssetLent'), ['redirectUrl' => route('assets.index')]);
     }
 }   

@@ -22,8 +22,13 @@ class Asset extends Model
         'asset_image'
     ];
 
-    public function history()
+    public function assetType()
     {
-        return $this->hasMany(History::class);
+        return $this->belongsTo(AssetType::class, 'asset_type_id');
+    }
+
+    public function assetHistory()
+    {
+        return $this->hasOne(AssetHistory::class);
     }
 }

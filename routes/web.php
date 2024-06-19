@@ -220,6 +220,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::get('assets/lend-modal', [AssetController::class, 'lend'])->name('assets.lend-modal');
     Route::resource('assets', AssetController::class);
 
+    Route::post('/assets/lend/store', [AssetController::class, 'lentStore'])->name('assets.lentStore');
+
     /* SOCIAL CALENDERS */
     Route::resource('social-calenders', SocialCalendersController::class);
 
