@@ -133,7 +133,7 @@
         <input type="hidden" name="discussion_id" value="{{ $discussionId }}">
             <div class="col-md-12">
                 <div class="form-group my-3">
-                    <x-forms.label fieldReuired="true" fieldId="description" :fieldLabel="__('app.reply')">
+                    <x-forms.label fieldId="description" :fieldLabel="__('app.reply')">
                     </x-forms.label>
                     <div id="reply"></div>
 

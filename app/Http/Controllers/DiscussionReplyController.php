@@ -7,6 +7,7 @@ use App\Http\Requests\DiscussionReply\StoreRequest;
 use App\Models\Discussion;
 use App\Models\DiscussionReply;
 use App\Models\Project;
+use Illuminate\Http\Request;
 
 class DiscussionReplyController extends AccountBaseController
 {
@@ -17,7 +18,7 @@ class DiscussionReplyController extends AccountBaseController
         return view('discussions.replies.create', $this->data);
     }
 
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
         $reply = new DiscussionReply();
         $reply->user_id = $this->user->id;

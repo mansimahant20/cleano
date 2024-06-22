@@ -220,10 +220,56 @@ class ProjectsDataTable extends BaseDataTable
             }
         );
         $datatables->addColumn(
-            'client_name', function ($row) {
-                if ($row->client) {
-                    return ($row->client->salutation ? $row->client->salutation->label() . ' ' : '') . $row->client->name;
+            'members', function ($row) {
+                if ($row->public) {
+                    return '--';
                 }
+        
+                $members = '<div class="position-relative">';
+        
+                if (count($row->members) > 0) {
+                    foreach ($row->members as $key => $member) {
+                        if ($key < 4) {
+                            $img = '<img data-toggle="tooltip" height="25" width="25" data-original-title="' . $member->user->name . '" src="' . $member->user->image_url . '">';
+        
+                            $position = $key > 0 ? 'position-absolute' : '';
+                            $members .= '<div class="taskEmployeeImg rounded-circle ' . $position . '" style="left:  ' . ($key * 13) . 'px"><a href="' . route('employees.show', $member->user->id) . '">' . $img . '</a></div> ';
+                        }
+                    }
+                } else if ($this->addProjectMemberPermission == 'all') {
+                    $members .= '<a href="' . route('projects.show', $row->id) . '?tab=members" class="f-12 text-dark-grey"><i class="fa fa-plus"></i> ' . __('modules.projects.addMemberTitle') . '</a>';
+                } else {
+                    $members .= '--';
+                }
+        
+                if (count($row->members) > 4) {
+                    $members .= '<div class="taskEmployeeImg more-user-count text-center rounded-circle bg-amt-grey position-absolute" style="left:  52px"><a href="' . route('projects.show', $row->id) . '?tab=members" class="text-dark f-10">+' . (count($row->members) - 4) . '</a></div> ';
+                }
+        
+                $members .= '</div>';
+        
+                return $members;
+            }
+        );
+        
+        $datatables->addColumn(
+            'client_name', function ($row) {
+                if (count($row->clients) > 0) {
+                    $clients = '<div class="position-relative">';
+                    foreach ($row->clients as $key => $client) {
+                        if ($key < 4) {
+                            $img = '<img data-toggle="tooltip" height="25" width="25" data-original-title="' . $client->name . '" src="' . $client->image_url . '">';
+                            $position = $key > 0 ? 'position-absolute' : '';
+                            $clients .= '<div class="taskEmployeeImg rounded-circle ' . $position . '" style="left:  ' . ($key * 13) . 'px"><a href="' . route('clients.show', $client->id) . '">' . $img . '</a></div> ';
+                        }
+                    }
+                    if (count($row->clients) > 4) {
+                        $clients .= '<div class="taskEmployeeImg more-user-count text-center rounded-circle bg-amt-grey position-absolute" style="left:  52px"><a href="' . route('projects.show', $row->id) . '?tab=clients" class="text-dark f-10">+' . (count($row->clients) - 4) . '</a></div> ';
+                    }
+                    $clients .= '</div>';
+                    return $clients;
+                }
+                return '--';
             }
         );
         $datatables->addColumn(
@@ -362,6 +408,7 @@ class ProjectsDataTable extends BaseDataTable
         $model = $model
             ->with('members', 'members.user', 'client', 'client.clientDetails', 'currency', 'client.session', 'mentionUser')
             ->leftJoin('project_members', 'project_members.project_id', 'projects.id')
+            ->leftJoin('project_clients', 'project_clients.project_id', 'projects.id')
             ->leftJoin('users', 'project_members.user_id', 'users.id')
             ->leftJoin('users as client', 'projects.client_id', 'users.id')
             ->leftJoin('mention_users', 'mention_users.project_id', 'projects.id')
@@ -408,7 +455,7 @@ class ProjectsDataTable extends BaseDataTable
         }
 
         if (!is_null($request->client_id) && $request->client_id != 'all') {
-            $model->where('projects.client_id', $request->client_id);
+            $model->where('project_clients.client_id', $request->client_id);
         }
 
         if (!is_null($request->team_id) && $request->team_id != 'all') {
@@ -539,8 +586,6 @@ class ProjectsDataTable extends BaseDataTable
      */
     protected function getColumns()
     {
-
-
         $data = [
             'check' => [
                 'title' => '<input type="checkbox" name="select_all_table" id="select-all-table" onclick="selectAllTable(this)">',
@@ -550,7 +595,7 @@ class ProjectsDataTable extends BaseDataTable
                 'visible' => !in_array('client', user_roles())
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false, 'title' => '#'],
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id'),'visible' => showId()],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id'), 'visible' => showId()],
             __('modules.taskCode') => ['data' => 'project_short_code', 'name' => 'project_short_code', 'title' => __('modules.taskCode')],
             __('modules.projects.projectName') => ['data' => 'project_name', 'name' => 'project_name', 'exportable' => false, 'title' => __('modules.projects.projectName')],
             __('app.project') => ['data' => 'project', 'name' => 'project_name', 'visible' => false, 'title' => __('app.project')],
@@ -560,14 +605,13 @@ class ProjectsDataTable extends BaseDataTable
             __('app.deadline') => ['data' => 'deadline', 'name' => 'deadline', 'title' => __('app.deadline')],
             __('app.client') => ['data' => 'client_id', 'name' => 'client_id', 'width' => '15%', 'exportable' => false, 'title' => __('app.client'), 'visible' => !in_array('client', user_roles())],
             __('app.customers') => ['data' => 'client_name', 'name' => 'client_id', 'visible' => false, 'title' => __('app.customers')],
-
             __('app.client') . ' ' . __('app.email') => ['data' => 'client_email', 'name' => 'client_id', 'visible' => false, 'title' => __('app.client') . ' ' . __('app.email')],
             __('app.progress') => ['data' => 'completion_percent', 'name' => 'completion_percent', 'exportable' => false, 'title' => __('app.progress')],
             __('app.completion') => ['data' => 'completion_export', 'name' => 'completion_export', 'visible' => false, 'title' => __('app.completion')],
             __('app.status') => ['data' => 'status', 'name' => 'status', 'width' => '16%', 'exportable' => false, 'title' => __('app.status')],
             __('app.project') . ' ' . __('app.status') => ['data' => 'project_status', 'name' => 'status', 'visible' => false, 'title' => __('app.project') . ' ' . __('app.status')]
         ];
-
+    
         $action = [
             Column::computed('action', __('app.action'))
                 ->exportable(false)
@@ -576,8 +620,7 @@ class ProjectsDataTable extends BaseDataTable
                 ->searchable(false)
                 ->addClass('text-right pr-20')
         ];
-
+    
         return array_merge($data, CustomFieldGroup::customFieldsDataMerge(new Project()), $action);
     }
-
 }

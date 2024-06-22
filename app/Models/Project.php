@@ -170,6 +170,11 @@ class Project extends BaseModel
         return $this->belongsTo(User::class, 'client_id')->withoutGlobalScope(ActiveScope::class);
     }
 
+    public function clients(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_clients', 'project_id', 'client_id')->withTimestamps();
+    }
+
     public function clientdetails(): BelongsTo
     {
         return $this->belongsTo(ClientDetails::class, 'client_id', 'user_id');

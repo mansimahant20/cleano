@@ -99,17 +99,34 @@
                     @endif
 
                     <div class="col-md-4 @if (!isset($client) && is_null($client)) py-3 @endif">
-                        @if (isset($client) && !is_null($client))
-                            <x-forms.label class="my-3" fieldId="client_id" :fieldLabel="__('app.client')">
-                            </x-forms.label>
+                        <div class="col-md-12">
+                            <div class="form-group my-1">
+                                <x-forms.label fieldId="selectClients" fieldRequired="true"
+                                               :fieldLabel="__('modules.lead.client')">
+                                </x-forms.label>
 
-                            <input type="hidden" name="client_id" id="client_id" value="{{ $client->id }}">
-                            <input type="text" value="{{ $client->name }}"
-                                   class="form-control height-35 f-15 readonly-background" readonly>
-                        @else
-                            <x-client-selection-dropdown :clients="$clients" fieldRequired="false"
-                                                         :selected="request('default_client') ?? null"/>
-                        @endif
+                                <x-forms.input-group>
+                                    <select class="form-control multiple-users" multiple name="clients[]"
+                                            id="selectClients" data-live-search="true" data-size="8">
+                                        @foreach ($clients as $client)
+                                            <x-user-option
+                                                :user="$client"
+                                                :pill="true"
+                                                :selected="(request()->has('default_assign') && request('default_assign') == $client->id) || (isset($projectTemplateMembers) && in_array($client->id, $projectTemplateMembers)) || (isset($projectMembers) && in_array($client->id, $projectMembers))"
+                                            />
+                                        @endforeach
+                                    </select>
+
+                                    @if ($addEmployeePermission == 'all' || $addEmployeePermission == 'added')
+                                        <x-slot name="append">
+                                            <button id="add-client" type="button"
+                                                    class="btn btn-outline-secondary border-grey"
+                                                    data-toggle="tooltip" data-original-title="{{ __('modules.projects.addMemberTitle') }}">@lang('app.add')</button>
+                                        </x-slot>
+                                    @endif
+                                </x-forms.input-group>
+                            </div>
+                        </div>
                     </div>
 
                     @if ($addProjectNotePermission == 'all' || $addProjectNotePermission == 'added')
@@ -396,6 +413,17 @@
             });
         }
 
+        $("#selectClients").selectpicker({
+            actionsBox: true,
+            selectAllText: "{{ __('modules.permission.selectAll') }}",
+            deselectAllText: "{{ __('modules.permission.deselectAll') }}",
+            multipleSeparator: " ",
+            selectedTextFormat: "count > 8",
+            countSelectedText: function (selected, total) {
+                return selected + " {{ __('app.membersSelected') }} ";
+            }
+        });
+
         $("#selectEmployee").selectpicker({
             actionsBox: true,
             selectAllText: "{{ __('modules.permission.selectAll') }}",
@@ -406,6 +434,7 @@
                 return selected + " {{ __('app.membersSelected') }} ";
             }
         });
+
         var userValues = @json($userData);
         quillMention(userValues, '#project_summary');
 
@@ -540,6 +569,24 @@
         $('#' + id).val(checkedData);
     }
 
+    $('#add-client').click(function() {
+            $(MODAL_XL).modal('show');
+
+            const url = "{{ route('clients.create') }}";
+
+            $.easyAjax({
+                url: url,
+                blockUI: true,
+                container: MODAL_XL,
+                success: function(response) {
+                    if (response.status == "success") {
+                        $(MODAL_XL + ' .modal-body').html(response.html);
+                        $(MODAL_XL + ' .modal-title').html(response.title);
+                        init(MODAL_XL);
+                    }
+                }
+            });
+        });
     $('#save-project-data-form').on('change', '#employee_department', function () {
         let id = $(this).val();
         if (id === '') {

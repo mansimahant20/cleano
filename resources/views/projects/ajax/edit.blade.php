@@ -95,25 +95,32 @@ $createPublicProjectPermission = user()->permission('create_public_project');
                     @endif
 
                     <div class="col-md-4">
-                        <x-forms.label class="my-3" fieldId="client_id" :fieldLabel="__('app.client')">
-                        </x-forms.label>
-                        <x-forms.input-group>
-                            <select class="form-control select-picker" name="client_id" id="client_id"
-                                data-live-search="true" data-size="8">
-                                <option value="">--</option>
-                                @foreach ($clients as $client)
-                                    <x-user-option :user="$client" :selected="$project->client_id == $client->id"/>
-                                @endforeach
-                            </select>
-
-                            @if ($addClientPermission == 'all' || $addClientPermission == 'added')
-                                <x-slot name="append">
-                                    <button id="add-client" type="button"
-                                        class="btn btn-outline-secondary border-grey"
-                                        data-toggle="tooltip" data-original-title="{{__('modules.client.addNewClient') }}">@lang('app.add')</button>
-                                </x-slot>
-                            @endif
-                        </x-forms.input-group>
+                        <div class="form-group">
+                            <x-forms.label class="my-3" fieldId="selectClients" fieldRequired="true"
+                                           :fieldLabel="__('modules.lead.client')">
+                            </x-forms.label>
+                    
+                            <x-forms.input-group>
+                                <select class="form-control multiple-users" multiple name="clients[]"
+                                        id="selectClients" data-live-search="true" data-size="8">
+                                    @foreach ($clients as $client)
+                                        <x-user-option
+                                            :user="$client"
+                                            :pill="true"
+                                            :selected="in_array($client->id, $associatedClientIds)"
+                                        />
+                                    @endforeach
+                                </select>
+                    
+                                @if ($addClientPermission == 'all' || $addClientPermission == 'added')
+                                    <x-slot name="append">
+                                        <button id="add-client" type="button"
+                                                class="btn btn-outline-secondary border-grey"
+                                                data-toggle="tooltip" data-original-title="{{ __('modules.projects.addMemberTitle') }}">@lang('app.add')</button>
+                                    </x-slot>
+                                @endif
+                            </x-forms.input-group>
+                        </div>
                     </div>
 
                     <div class="col-md-12 col-lg-12">

@@ -28,6 +28,7 @@ use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\MessageSetting;
 use App\Models\Payment;
+use App\Models\ProjectClient;
 use App\Models\Pinned;
 use App\Models\Project;
 use App\Models\ProjectActivity;
@@ -344,6 +345,10 @@ class ProjectController extends AccountBaseController
 
             $project->save();
 
+            if ($request->has('clients')) {
+                $project->clients()->attach($request->clients);
+            }
+            
             if (trim_editor($request->notes) != '') {
                 $project->notes()->create([
                     'title' => 'Note',
@@ -430,12 +435,12 @@ class ProjectController extends AccountBaseController
             ->withTrashed()
             ->findOrFail($id)
             ->withCustomFields();
-
+    
         $memberIds = $this->project->members->pluck('user_id')->toArray();
-
+    
         $this->editPermission = user()->permission('edit_projects');
         $this->editProjectMembersPermission = user()->permission('edit_project_members');
-
+    
         abort_403(!(
             $this->editPermission == 'all'
             || ($this->editPermission == 'added' && user()->id == $this->project->added_by)
@@ -444,51 +449,50 @@ class ProjectController extends AccountBaseController
             || ($this->editPermission == 'both' && (user()->id == $this->project->client_id || user()->id == $this->project->added_by))
             || ($this->editPermission == 'both' && in_array(user()->id, $memberIds) && in_array('employee', user_roles()))
         ));
-
+    
         $this->pageTitle = __('app.update') . ' ' . __('app.project');
-
+    
         if ($this->project->getCustomFieldGroupsWithFields()) {
             $this->fields = $this->project->getCustomFieldGroupsWithFields()->fields;
         }
-
+    
         $this->clients = User::allClients(null, true, ($this->editPermission == 'all' ? 'all' : null));
+    
+        $associatedClientIds = ProjectClient::where('project_id', $id)->pluck('client_id')->toArray();
+    
+        $this->associatedClientIds = $associatedClientIds;
+    
         $this->categories = ProjectCategory::all();
         $this->currencies = Currency::all();
         $this->teams = Team::all();
         $this->projectStatus = ProjectStatusSetting::where('status', 'active')->get();
-
+    
         $this->employees = '';
-
+    
         if ($this->editPermission == 'all' || $this->editProjectMembersPermission == 'all') {
             $this->employees = User::allEmployees(null, null, ($this->editPermission == 'all' ? 'all' : null));
         }
-
+    
         $userData = [];
-
+    
         $usersData = $this->employees;
-
+    
         foreach ($usersData as $user) {
-
             $url = route('employees.show', [$user->id]);
-
             $userData[] = ['id' => $user->id, 'value' => $user->name, 'image' => $user->image_url, 'link' => $url];
-
         }
-
+    
         $this->userData = $userData;
-
+    
         if (request()->ajax()) {
             $html = view('projects.ajax.edit', $this->data)->render();
-
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
         }
-
-
+    
         abort_403(user()->permission('edit_projects') == 'added' && $this->project->added_by != user()->id);
         $this->view = 'projects.ajax.edit';
-
+    
         return view('projects.create', $this->data);
-
     }
 
     /**
@@ -502,109 +506,114 @@ class ProjectController extends AccountBaseController
         $project = Project::findOrFail($id);
         $project->project_name = $request->project_name;
         $project->project_short_code = $request->project_code;
-
+    
         $project->project_summary = trim_editor($request->project_summary);
-
+    
         $project->start_date = Carbon::createFromFormat($this->company->date_format, $request->start_date)->format('Y-m-d');
-
+    
         if (!$request->has('without_deadline')) {
             $project->deadline = Carbon::createFromFormat($this->company->date_format, $request->deadline)->format('Y-m-d');
-        }
-        else {
+        } else {
             $project->deadline = null;
         }
-
+    
         if ($request->notes != '') {
             $project->notes = trim_editor($request->notes);
         }
-
+    
         if ($request->category_id != '') {
             $project->category_id = $request->category_id;
         }
-
+    
         if ($request->client_view_task) {
             $project->client_view_task = 'enable';
-        }
-        else {
+        } else {
             $project->client_view_task = 'disable';
         }
-
+    
         if ($request->client_task_notification) {
             $project->allow_client_notification = 'enable';
-        }
-        else {
+        } else {
             $project->allow_client_notification = 'disable';
         }
-
+    
         if ($request->manual_timelog) {
             $project->manual_timelog = 'enable';
-        }
-        else {
+        } else {
             $project->manual_timelog = 'disable';
         }
-
+    
         $project->team_id = null;
-
+    
         if ($request->team_id > 0) {
             $project->team_id = $request->team_id;
         }
-
+    
         $project->client_id = ($request->client_id == 'null' || $request->client_id == '') ? null : $request->client_id;
-
+    
         if ($request->calculate_task_progress) {
             $project->calculate_task_progress = 'true';
             $project->completion_percent = $this->calculateProjectProgress($id, 'true');
-        }
-        else {
+        } else {
             $project->calculate_task_progress = 'false';
             $project->completion_percent = $request->completion_percent;
         }
-
+    
         $project->project_budget = $request->project_budget;
         $project->currency_id = $request->currency_id != '' ? $request->currency_id : company()->currency_id;
         $project->hours_allocated = $request->hours_allocated;
         $project->status = $request->status;
-
+    
         $project->miro_board_id = $request->miro_board_id;
-
+    
         if ($request->has('miroboard_checkbox')) {
             $project->client_access = $request->has('client_access') && $request->client_access ? 1 : 0;
-        }
-        else {
+        } else {
             $project->client_access = 0;
         }
-
+    
         $project->enable_miroboard = $request->has('miroboard_checkbox') && $request->miroboard_checkbox ? 1 : 0;
-
+    
         if ($request->public) {
             $project->public = 1;
         }
-
+    
         if ($request->private) {
             $project->public = 0;
         }
-
-
+    
         if (!$request->private && !$request->public && $request->member_id) {
             $project->projectMembers()->sync($request->member_id);
         }
-
+    
         $project->save();
-
-
+    
+        // Delete existing client associations for the project
+        ProjectClient::where('project_id', $id)->delete();
+    
+        // Add new client associations based on the request data
+        if ($request->has('clients')) {
+            foreach ($request->clients as $clientId) {
+                ProjectClient::create([
+                    'project_id' => $id,
+                    'client_id' => $clientId,
+                ]);
+            }
+        }
+    
         // To add custom fields data
         if ($request->custom_fields_data) {
             $project->updateCustomFieldData($request->custom_fields_data);
         }
-
+    
         $this->logProjectActivity($project->id, 'messages.updateSuccess');
-
+    
         $redirectUrl = urldecode($request->redirect_url);
-
+    
         if ($redirectUrl == '') {
             $redirectUrl = route('projects.index');
         }
-
+    
         return Reply::successWithData(__('messages.updateSuccess'), ['projectID' => $project->id, 'redirectUrl' => $redirectUrl]);
     }
 
@@ -616,7 +625,6 @@ class ProjectController extends AccountBaseController
      */
     public function show($id)
     {
-
         $this->viewPermission = user()->permission('view_projects');
         $viewFilePermission = user()->permission('view_project_files');
         $this->viewMiroboardPermission = user()->permission('view_miroboard');
@@ -627,8 +635,8 @@ class ProjectController extends AccountBaseController
         $this->viewRatingPermission = user()->permission('view_project_rating');
         $this->viewBurndownChartPermission = user()->permission('view_project_burndown_chart');
         $this->viewProjectMemberPermission = user()->permission('view_project_members');
-
-        $this->project = Project::with(['client', 'members', 'members.user','mentionProject', 'members.user.session', 'members.user.employeeDetail.designation', 'milestones' => function ($q) use ($viewMilestonePermission) {
+    
+        $this->project = Project::with(['client', 'members', 'members.user', 'mentionProject', 'members.user.session', 'members.user.employeeDetail.designation', 'milestones' => function ($q) use ($viewMilestonePermission) {
             if ($viewMilestonePermission == 'added') {
                 $q->where('added_by', user()->id);
             }
@@ -641,11 +649,14 @@ class ProjectController extends AccountBaseController
             ->withTrashed()
             ->findOrFail($id)
             ->withCustomFields();
-
+    
         $this->projectStatusColor = ProjectStatusSetting::where('status_name', $this->project->status)->first();
         $memberIds = $this->project->members->pluck('user_id')->toArray();
         $mentionIds = $this->project->mentionProject->pluck('user_id')->toArray();
-
+    
+        // Check if the client is associated with the project
+        $isClientAssociated = ProjectClient::where('project_id', $id)->where('client_id', user()->id)->exists();
+    
         abort_403(!(
             $this->viewPermission == 'all'
             || $this->project->public
@@ -654,108 +665,107 @@ class ProjectController extends AccountBaseController
             || ($this->viewPermission == 'owned' && in_array(user()->id, $memberIds) && in_array('employee', user_roles()))
             || ($this->viewPermission == 'both' && (user()->id == $this->project->client_id || user()->id == $this->project->added_by))
             || ($this->viewPermission == 'both' && (in_array(user()->id, $memberIds) || user()->id == $this->project->added_by) && in_array('employee', user_roles()))
-           || (($this->viewPermission == 'none') && (!is_null(($this->project->mentionProject))) && in_array(user()->id, $mentionIds))
+            || (($this->viewPermission == 'none') && (!is_null(($this->project->mentionProject))) && in_array(user()->id, $mentionIds))
+            || $isClientAssociated // Allow access if the client is associated with the project
         ));
-
+    
         $this->pageTitle = $this->project->project_name;
-
+    
         if ($this->project->getCustomFieldGroupsWithFields()) {
             $this->fields = $this->project->getCustomFieldGroupsWithFields()->fields;
         }
-
+    
         $this->messageSetting = MessageSetting::first();
         $this->projectStatus = ProjectStatusSetting::where('status', 'active')->get();
-
+    
         $tab = request('tab');
-
+    
         switch ($tab) {
-        case 'members':
-            abort_403(!(
-                $this->viewProjectMemberPermission == 'all'
-            ));
-            $this->view = 'projects.ajax.members';
-            break;
-        case 'milestones':
-            $this->view = 'projects.ajax.milestones';
-            break;
-        case 'taskboard':
-            session()->forget('pusher_settings');
-            $this->view = 'projects.ajax.taskboard';
-            break;
-        case 'tasks':
-            $this->taskBoardStatus = TaskboardColumn::all();
-
-            return (!$this->project->trashed()) ? $this->tasks($this->project->project_admin == user()->id) : $this->archivedTasks($this->project->project_admin == user()->id);
-        case 'gantt':
-            $this->taskBoardStatus = TaskboardColumn::all();
-            $this->view = 'projects.ajax.gantt';
-            break;
-        case 'invoices':
-            return $this->invoices();
-        case 'files':
-            $this->view = 'projects.ajax.files';
-            break;
-        case 'timelogs':
-            return $this->timelogs($this->project->project_admin == user()->id);
-        case 'expenses':
-            return $this->expenses();
-        case 'miroboard';
-            abort_403(!in_array($this->viewMiroboardPermission, ['all']) || !$this->project->enable_miroboard &&
-                ((!in_array('client', user_roles()) && !$this->project->client_access && $this->project->client_id != user()->id)));
-            $this->view = 'projects.ajax.miroboard';
-            break;
-        case 'payments':
-            return $this->payments();
-        case 'discussion':
-            $this->discussionCategories = DiscussionCategory::orderBy('order', 'asc')->get();
-
-            return $this->discussions($this->project->project_admin == user()->id);
-        case 'notes':
-            return $this->notes($this->project->project_admin == user()->id);
-        case 'rating':
-            return $this->rating($this->project->project_admin == user()->id);
-        case 'burndown-chart':
-            $this->fromDate = now($this->company->timezone)->startOfMonth();
-            $this->toDate = now($this->company->timezone);
-
-            return $this->burndownChart($this->project);
-        case 'activity':
-            $this->activities = ProjectActivity::getProjectActivities($id, 10);
-            $this->view = 'projects.ajax.activity';
-            break;
-        case 'tickets':
-            return $this->tickets($this->project->project_admin == user()->id);
-        default:
-            $this->taskChart = $this->taskChartData($id);
-            $hoursLogged = $this->project->times()->sum('total_minutes');
-
-            $breakMinutes = ProjectTimeLogBreak::projectBreakMinutes($id);
-
-            $this->hoursBudgetChart = $this->hoursBudgetChartData($this->project, $hoursLogged, $breakMinutes);
-
-            $this->amountBudgetChart = $this->amountBudgetChartData($this->project);
-            $this->taskBoardStatus = TaskboardColumn::all();
-            $this->earnings = Payment::where('status', 'complete')
-                ->where('project_id', $id)
-                ->sum('amount');
-
-            $this->hoursLogged = intdiv($hoursLogged - $breakMinutes, 60);
-            $this->expenses = Expense::where(['project_id' => $id, 'status' => 'approved'])->sum('price');
-            $this->view = 'projects.ajax.overview';
-            break;
+            case 'members':
+                abort_403(!(
+                    $this->viewProjectMemberPermission == 'all'
+                ));
+                $this->view = 'projects.ajax.members';
+                break;
+            case 'milestones':
+                $this->view = 'projects.ajax.milestones';
+                break;
+            case 'taskboard':
+                session()->forget('pusher_settings');
+                $this->view = 'projects.ajax.taskboard';
+                break;
+            case 'tasks':
+                $this->taskBoardStatus = TaskboardColumn::all();
+    
+                return (!$this->project->trashed()) ? $this->tasks($this->project->project_admin == user()->id) : $this->archivedTasks($this->project->project_admin == user()->id);
+            case 'gantt':
+                $this->taskBoardStatus = TaskboardColumn::all();
+                $this->view = 'projects.ajax.gantt';
+                break;
+            case 'invoices':
+                return $this->invoices();
+            case 'files':
+                $this->view = 'projects.ajax.files';
+                break;
+            case 'timelogs':
+                return $this->timelogs($this->project->project_admin == user()->id);
+            case 'expenses':
+                return $this->expenses();
+            case 'miroboard';
+                abort_403(!in_array($this->viewMiroboardPermission, ['all']) || !$this->project->enable_miroboard &&
+                    ((!in_array('client', user_roles()) && !$this->project->client_access && $this->project->client_id != user()->id)));
+                $this->view = 'projects.ajax.miroboard';
+                break;
+            case 'payments':
+                return $this->payments();
+            case 'discussion':
+                $this->discussionCategories = DiscussionCategory::orderBy('order', 'asc')->get();
+    
+                return $this->discussions($this->project->project_admin == user()->id);
+            case 'notes':
+                return $this->notes($this->project->project_admin == user()->id);
+            case 'rating':
+                return $this->rating($this->project->project_admin == user()->id);
+            case 'burndown-chart':
+                $this->fromDate = now($this->company->timezone)->startOfMonth();
+                $this->toDate = now($this->company->timezone);
+    
+                return $this->burndownChart($this->project);
+            case 'activity':
+                $this->activities = ProjectActivity::getProjectActivities($id, 10);
+                $this->view = 'projects.ajax.activity';
+                break;
+            case 'tickets':
+                return $this->tickets($this->project->project_admin == user()->id);
+            default:
+                $this->taskChart = $this->taskChartData($id);
+                $hoursLogged = $this->project->times()->sum('total_minutes');
+    
+                $breakMinutes = ProjectTimeLogBreak::projectBreakMinutes($id);
+    
+                $this->hoursBudgetChart = $this->hoursBudgetChartData($this->project, $hoursLogged, $breakMinutes);
+    
+                $this->amountBudgetChart = $this->amountBudgetChartData($this->project);
+                $this->taskBoardStatus = TaskboardColumn::all();
+                $this->earnings = Payment::where('status', 'complete')
+                    ->where('project_id', $id)
+                    ->sum('amount');
+    
+                $this->hoursLogged = intdiv($hoursLogged - $breakMinutes, 60);
+                $this->expenses = Expense::where(['project_id' => $id, 'status' => 'approved'])->sum('price');
+                $this->view = 'projects.ajax.overview';
+                break;
         }
-
-
+    
         if (request()->ajax()) {
             $html = view($this->view, $this->data)->render();
-
+    
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
         }
-
+    
         $this->activeTab = $tab ?: 'overview';
-
+    
         return view('projects.show', $this->data);
-
     }
 
     /**
