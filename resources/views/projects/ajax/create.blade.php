@@ -101,7 +101,7 @@
                     <div class="col-md-4 @if (!isset($client) && is_null($client)) py-3 @endif">
                         <div class="col-md-12">
                             <div class="form-group my-1">
-                                <x-forms.label fieldId="selectClients" fieldRequired="true"
+                                <x-forms.label fieldId="selectClients"
                                                :fieldLabel="__('modules.lead.client')">
                                 </x-forms.label>
 

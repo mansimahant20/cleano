@@ -96,7 +96,7 @@ $createPublicProjectPermission = user()->permission('create_public_project');
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <x-forms.label class="my-3" fieldId="selectClients" fieldRequired="true"
+                            <x-forms.label class="my-3" fieldId="selectClients"
                                            :fieldLabel="__('modules.lead.client')">
                             </x-forms.label>
                     
@@ -105,7 +105,7 @@ $createPublicProjectPermission = user()->permission('create_public_project');
                                         id="selectClients" data-live-search="true" data-size="8">
                                     @foreach ($clients as $client)
                                         <x-user-option
-                                            :user="$client"
+                                            :user="$client" 
                                             :pill="true"
                                             :selected="in_array($client->id, $associatedClientIds)"
                                         />

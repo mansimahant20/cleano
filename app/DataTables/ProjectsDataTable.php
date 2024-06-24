@@ -253,7 +253,7 @@ class ProjectsDataTable extends BaseDataTable
         );
         
         $datatables->addColumn(
-            'client_name', function ($row) {
+            'clients', function ($row) {
                 if (count($row->clients) > 0) {
                     $clients = '<div class="position-relative">';
                     foreach ($row->clients as $key => $client) {
@@ -383,7 +383,7 @@ class ProjectsDataTable extends BaseDataTable
         // Custom Fields For export
         $customFieldColumns = CustomField::customFieldData($datatables, Project::CUSTOM_FIELD_MODEL);
 
-        $datatables->rawColumns(array_merge(['project_name', 'action', 'completion_percent', 'members', 'status', 'client_id', 'check','project_short_code'], $customFieldColumns));
+        $datatables->rawColumns(array_merge(['project_name', 'clients', 'action', 'completion_percent', 'members', 'status', 'client_id', 'check','project_short_code'], $customFieldColumns));
         return $datatables;
     }
 
@@ -603,7 +603,7 @@ class ProjectsDataTable extends BaseDataTable
             __('modules.projects.projectMembers') => ['data' => 'name', 'name' => 'name', 'visible' => false, 'title' => __('modules.projects.projectMembers')],
             __('modules.projects.startDate') => ['data' => 'start_date', 'name' => 'start_date', 'title' => __('modules.projects.startDate'), 'width' => '15%'],
             __('app.deadline') => ['data' => 'deadline', 'name' => 'deadline', 'title' => __('app.deadline')],
-            __('app.client') => ['data' => 'client_id', 'name' => 'client_id', 'width' => '15%', 'exportable' => false, 'title' => __('app.client'), 'visible' => !in_array('client', user_roles())],
+            __('app.clients') => ['data' => 'clients', 'name' => 'clients', 'exportable' => false, 'width' => '15%', 'title' => __('app.client')],
             __('app.customers') => ['data' => 'client_name', 'name' => 'client_id', 'visible' => false, 'title' => __('app.customers')],
             __('app.client') . ' ' . __('app.email') => ['data' => 'client_email', 'name' => 'client_id', 'visible' => false, 'title' => __('app.client') . ' ' . __('app.email')],
             __('app.progress') => ['data' => 'completion_percent', 'name' => 'completion_percent', 'exportable' => false, 'title' => __('app.progress')],

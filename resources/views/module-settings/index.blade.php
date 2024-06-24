@@ -27,10 +27,10 @@
                                 aria-controls="nav-ticketChannel" aria-selected="true">@lang('app.client')
                             </a>
 
-                            <a class="nav-item nav-link f-15 custom" href="{{ route('custom-modules.index') }}?tab=custom"
+                            {{-- <a class="nav-item nav-link f-15 custom" href="{{ route('custom-modules.index') }}?tab=custom"
                                 role="tab" aria-controls="nav-ticketChannel"
                                 aria-selected="true">@lang('app.menu.customModule')
-                            </a>
+                            </a> --}}
 
                         </div>
                     </nav>
