@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Http\Requests\Assets\AssetRequest;
 use App\Helper\Files; 
 use App\DataTables\AssetsDataTable;
+use Illuminate\Support\Carbon;
 
 class AssetController extends AccountBaseController
 {
@@ -236,20 +237,24 @@ class AssetController extends AccountBaseController
         $request->validate([
             'lentTo' => 'required|exists:users,id',
             'dateGiven' => 'required|date',
-            'estimatedDateOfReturn' => 'required|date|after:dateGiven',
         ]);
 
-        $assets = new AssetHistory();
-        $assets->asset_id = $request->input('asset_id');
-        $assets->notes = $request->input('notes');
-        $assets->lentTo = $request->input('lentTo');
-        $assets->dateGiven = $request->input('dateGiven');
-        $assets->estimatedDateOfReturn = $request->input('estimatedDateOfReturn');
-        $assets->dateOfReturn = $request->input('dateOfReturn');
-        $assets->returnedBy_id = $request->input('returnedBy_id');
-        $assets->save();
+        try {
+            $assets = new AssetHistory();
+            $assets->asset_id = $request->input('asset_id');
+            $assets->notes = $request->input('notes');
+            $assets->lentTo = $request->input('lentTo');
+            $assets->dateGiven = Carbon::parse($request->input('dateGiven'))->format('Y-m-d');
+            $assets->estimatedDateOfReturn = Carbon::parse($request->input('estimatedDateOfReturn'))->format('Y-m-d');
+            $assets->dateOfReturn = $request->input('dateOfReturn') ? Carbon::parse($request->input('dateOfReturn'))->format('Y-m-d') : null;
+            $assets->returnedBy_id = $request->input('returnedBy_id');
+            $assets->save();
 
-        $assetsData = AssetType::all();
+        } catch (\Exception $e) {
+            logger($e->getMessage());
+            return Reply::error('Some error occurred when inserting the data. Please try again or contact support '. $e->getMessage());
+        }
+
         return Reply::successWithData(__('messages.AssetLent'), ['redirectUrl' => route('assets.index')]);
     }
 }   

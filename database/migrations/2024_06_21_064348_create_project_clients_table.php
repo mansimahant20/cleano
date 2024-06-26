@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('project_clients')) {
-            Schema::create('project_clients', function (Blueprint $table) {
-                $table->id();
-                $table->unsignedBigInteger('project_id');
-                $table->unsignedBigInteger('client_id');
-                $table->timestamps();
-        
-                $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
-                $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            });
-        }
+        Schema::create('project_clients', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('client_id');
+            $table->timestamps();
+    
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+        });
     }
 
     /**

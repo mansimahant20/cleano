@@ -48,6 +48,12 @@ class AssetsDataTable extends DataTable
                                 <i class="fa fa-share mr-2"></i>
                                 ' . trans('app.lend') . '
                                 </a>';
+            } elseif ($row->status == 'lent') {
+                $action .= '<a class="dropdown-item assets-action-return" data-asset-id="' . $row->id . '" 
+                                href="javascript:void(0);">
+                                <i class="fa fa-undo mr-2"></i>
+                                ' . trans('app.return') . '
+                                </a>';
             }
                             
             $action .= '<a class="dropdown-item delete-table-row" href="javascript:;" data-asset-id="' . $row->id . '">
@@ -73,6 +79,8 @@ class AssetsDataTable extends DataTable
                 return '<i class="fa fa-circle mr-1 text-pink f-15"></i>' . __('app.damaged');
             } elseif ($row->status == 'under-maintenance') {
                 return '<i class="fa fa-circle mr-1 text-orange f-15"></i>' . __('app.underMaintenance');
+            } elseif ($row->status == 'lent') {
+                return '<i class="fa fa-circle mr-1 text-blue f-15"></i>' . __('app.lent');
             }
         });        
 
@@ -97,14 +105,6 @@ class AssetsDataTable extends DataTable
                 return 'No AssetHistory record found';
             }
         });
-
-        // if ($request->searchText != '') {
-        //     $users = $users->where(function ($query) {
-        //         $query->where('users.name', 'like', '%' . request('searchText') . '%')
-        //             ->orWhere('users.email', 'like', '%' . request('searchText') . '%')
-        //             ->orWhere('client_details.company_name', 'like', '%' . request('searchText') . '%');
-        //     });
-        // }
 
         $datatables->addIndexColumn();
         $datatables->smart(false);
@@ -139,22 +139,22 @@ class AssetsDataTable extends DataTable
     {
         $assetTypes = \App\Models\AssetType::all();
 
-                    return $this->builder()
-                    ->setTableId('assets-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ])
-                    ->parameters([
-                        'assetTypes' => $assetTypes,
-                    ]);
+        return $this->builder()
+            ->setTableId('assets-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ])
+            ->parameters([
+                'assetTypes' => $assetTypes,
+            ]);
     }
 
     /**

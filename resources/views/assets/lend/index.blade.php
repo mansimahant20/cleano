@@ -44,43 +44,46 @@
 
 <script>
     $(document).ready(function () {
-    $('.custom-date-picker').each(function(ind, el) {
-        datepicker(el, {
+        $('.custom-date-picker').each(function(ind, el) {
+            datepicker(el, {
+                position: 'bl',
+                ...datepickerConfig
+            });
+        });
+
+        const dp1 = datepicker('#dateGiven', {
             position: 'bl',
+            onSelect: (instance, date) => {
+                dp2.setMin(date);
+            },
             ...datepickerConfig
         });
-    });
 
-    const dp1 = datepicker('#dateGiven', {
-        position: 'bl',
-        onSelect: (instance, date) => {
-            dp2.setMin(date);
-        },
-        ...datepickerConfig
-    });
+        const dp2 = datepicker('#estimatedDateOfReturn', {
+            position: 'bl',
+            onSelect: (instance, date) => {
+                dp1.setMax(date);
+            },
+            ...datepickerConfig
+        });
 
-    const dp2 = datepicker('#estimatedDateOfReturn', {
-        position: 'bl',
-        onSelect: (instance, date) => {
-            dp1.setMax(date);
-        },
-        ...datepickerConfig
-    });
-
-    $('#save-lend').click(function () {
-        $.easyAjax({
-            url: "{{ route('assets.lentStore') }}",
-            container: '#lendForm',
-            type: "POST",
-            disableButton: true,
-            blockUI: true,
-            buttonSelector: "#save-lend",
-            data: $('#lendForm').serialize(),
-            success: function(response) {
-                if (response.status == 'success') {
+        $('#save-lend').click(function () {
+            $.easyAjax({
+                url: "{{ route('assets.lentStore') }}",
+                container: '#lendForm',
+                type: "POST",
+                disableButton: true,
+                blockUI: true,
+                buttonSelector: "#save-lend",
+                data: $('#lendForm').serialize(),
+                success: function(response) {
+                    if (response.status == 'success') {
+                        window.location.href = response.redirectUrl;
+                    } else {
+                        console.error(response);
+                    }
                 }
-            }
+            });
         });
     });
-});
 </script>
