@@ -123,10 +123,16 @@ class AssetsDataTable extends DataTable
     public function query(Asset $model): QueryBuilder
     {
         $request = $this->request();
-        $assets = $model->with('assetHistory')->newQuery();
+        $assets = $model->newQuery();
 
-        if ($request->asset) {
-            $assets->whereIn('id', collect($request->asset)->pluck('id'));
+        if ($request->status != 'all' && $request->status != '') {
+            $assets = $assets->where('assets.status', $request->status);
+        }
+
+        if ($request->searchText != '') {
+            $assets = $assets->where(function ($query) {
+                $query->where('assets.asset_name', 'like', '%' . request('searchText') . '%');
+            });
         }
 
         return $assets;
@@ -138,6 +144,24 @@ class AssetsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         $assetTypes = \App\Models\AssetType::all();
+
+        \Log::info('DataTable HTML Configuration: ', [
+            'tableId' => 'assets-table',
+            'columns' => $this->getColumns(),
+            'minifiedAjax' => true,
+            'orderBy' => 1,
+            'selectStyleSingle' => true,
+            'buttons' => [
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ],
+            'parameters' => [
+                'assetTypes' => $assetTypes,
+            ],
+        ]);
 
         return $this->builder()
             ->setTableId('assets-table')
@@ -160,25 +184,31 @@ class AssetsDataTable extends DataTable
     /**
      * Get the dataTable columns definition.
      */
-    public function getColumns(): array
-    {
-        $columns = [
-            Column::make('id')->title(__('app.id')),
-            Column::make('asset_image')->title(__('app.assetPicture'))->exportable(false)->printable(false),
-            Column::make('asset_name')->title(__('app.assetName')),
-            Column::make('lent_to')->title(__('app.lentTo')),
-            Column::make('status')->title(__('app.status')),
-            Column::make('created_at')->title(__('app.date')),
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
-                ->orderable(false)
-                ->searchable(false)
-                ->addClass('text-right pr-20')
-        ];
 
-        return array_merge($columns, CustomFieldGroup::customFieldsDataMerge(new Asset()));
-    }
+     protected function getColumns()
+     {
+         $data = [
+             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => !showId(), 'title' => '#'],
+             __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id'), 'visible' => showId()],
+             __('app.assetPicture') => ['data' => 'asset_image', 'name' => 'asset_image', 'exportable' => false, 'title' => __('app.assetPicture')],
+             __('app.assetName') => ['data' => 'asset_name', 'name' => 'asset_name', 'title' => __('app.assetName')],
+             __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
+             __('app.date') => ['data' => 'created_at', 'name' => 'created_at', 'title' => __('app.date')]
+         ];
+     
+         \Log::info('Columns for DataTable: ', $data);
+     
+         $action = [
+             Column::computed('action', __('app.action'))
+                 ->exportable(false)
+                 ->printable(false)
+                 ->orderable(false)
+                 ->searchable(false)
+                 ->addClass('text-right pr-20')
+         ];
+     
+         return array_merge($data, CustomFieldGroup::customFieldsDataMerge(new Asset()), $action);
+     }
 
     /**
      * Get the filename for export.

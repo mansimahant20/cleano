@@ -125,20 +125,25 @@
 @include('sections.datatable_js')
 <script>
     $(document).ready(function() {
-    var table = $('#assets-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{!! route('assets.index') !!}',
-        columns: [
-            { data: 'id', name: 'id' },
-            { data: 'asset_image', name: 'asset_image' }, 
-            { data: 'asset_name', name: 'asset_name' },
-            { data: 'status', name: 'status' },
-            { data: 'action', name: 'action', orderable: false, searchable: false },
-        ],
-        error: function (xhr, err, opt) {
-            console.log('Request Failed: ' + xhr.statusText, err, opt);
-        }
+
+    const showTable = () => {
+        window.LaravelDataTables["assets-table"].draw(false);
+    }
+
+    $('#assets-table').on('preXhr.dt', function(e, settings, data) {
+        const id = $('#id').val();
+        const asset_image = $('#asset_image').val();
+        const asset_name = $('#asset_name').val();
+        const status = $('#status').val();
+        const action = $('#action').val();
+        const searchText = $('#search-text-field').val();
+
+        data['id'] = id;
+        data['asset_image'] = asset_image;
+        data['asset_name'] = asset_name;
+        data['status'] = status;
+        data['action'] = action;
+        data['searchText'] = searchText;
     });
 
     $('#assets-table').on('click', '.delete-table-row', function() {
@@ -175,7 +180,7 @@
                     },
                     success: function(response) {
                         if (response.status == "success") {
-                            table.ajax.reload();
+                            showTable();
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -195,33 +200,23 @@
             }
         });
     });
-});
 
-    $('#employee, #status, #assets, #gender, #skill, #designation, #department').on('change keyup',
-        function () {
-            if ($('#status').val() != "all") {
-                $('#reset-filters').removeClass('d-none');
-            } else if ($('#employee').val() != "all") {
-                $('#reset-filters').removeClass('d-none');
-            } else if ($('#assets').val() != "all") {
-                $('#reset-filters').removeClass('d-none');
-            } else if ($('#gender').val() != "all") {
-                $('#reset-filters').removeClass('d-none');
-            } else if ($('#designation').val() != "all") {
-                $('#reset-filters').removeClass('d-none');
-            } else if ($('#department').val() != "all") {
-                $('#reset-filters').removeClass('d-none');
-            } else {
-                $('#reset-filters').addClass('d-none');
-            }
-            showTable();
+    $('#assets, #status, #employee').on('change keyup', function () {
+        if ($('#status').val() != "all" || $('#employee').val() != "all" || $('#assets').val() != "all") {
+            $('#reset-filters').removeClass('d-none');
+        } else {
+            $('#reset-filters').addClass('d-none');
+        }
+        showTable();
     });
 
     $('#search-text-field').on('keyup', function () {
         if ($('#search-text-field').val() != "") {
             $('#reset-filters').removeClass('d-none');
-            showTable();
+        } else {
+            $('#reset-filters').addClass('d-none');
         }
+        showTable();
     });
 
     $('#reset-filters, #reset-filters-2').click(function () {
@@ -238,6 +233,7 @@
         
         $(MODAL_LG + ' ' + MODAL_HEADING).html('@lang("app.lendAsset")');
         $.ajaxModal(MODAL_LG, url + searchQuery);
+    });
     });
 </script>
 @endpush
