@@ -6,6 +6,7 @@
     <div class="portlet-body">
         <form method="POST" id="lendForm" class="ajax-form" autocomplete="off">
             @csrf
+            <input type="hidden" name="asset_id" value="{{ $asset->id }}">
             <div class="form-body">
                 <div class="row">
                     <div class="col-lg-4">
@@ -19,12 +20,12 @@
                     </div>
                     <div class="col-md-4">
                         <x-forms.datepicker fieldId="dateGiven" fieldRequired="true"
-                        :fieldLabel="__('modules.projects.startDate')" fieldName="dateGiven"
+                        :fieldLabel="__('modules.assets.dateGiven')" fieldName="dateGiven"
                         :fieldPlaceholder="__('placeholders.date')" />
                     </div>
                     <div class="col-md-4">
-                        <x-forms.datepicker fieldId="estimatedDateOfReturn" fieldRequired="true"
-                        :fieldLabel="__('modules.projects.deadline')" fieldName="estimatedDateOfReturn"
+                        <x-forms.datepicker fieldId="estimatedDateOfReturn"
+                        :fieldLabel="__('modules.assets.estimatedDateOfReturn')" fieldName="estimatedDateOfReturn"
                         :fieldPlaceholder="__('placeholders.date')" />
                     </div>
                     <div class="col-md-12">

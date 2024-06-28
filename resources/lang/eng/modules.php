@@ -310,7 +310,10 @@ return array(
         'description' => 'Description',
         'assetPicture' => 'Asset Picture',
         'name' => 'Name',
-        'updateInfo' => 'Update Asset Info'
+        'updateInfo' => 'Update Asset Info',
+        'dateGiven' => 'Date Given',
+        'estimatedDateOfReturn' => 'Estimated Date of Return',
+        'dateOfReturn' => 'Date Of Return'
     ),
     'socialCalenders' => array(
         'viewLeads' => 'View Leads'

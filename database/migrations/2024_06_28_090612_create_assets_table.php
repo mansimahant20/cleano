@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('serial_number')->nullable();
             $table->string('value')->nullable();
             $table->string('location')->nullable();
-            $table->enum('status',['available','non-functional','lost','damaged','under-maintenance'])->default('available');
+            $table->enum('status',['available','non-functional','lost','damaged','under-maintenance','lent'])->default('available');
             $table->string('description')->nullable();
             $table->string('asset_image')->nullable();
             $table->timestamps();

@@ -80,7 +80,7 @@ class AssetsDataTable extends DataTable
             } elseif ($row->status == 'under-maintenance') {
                 return '<i class="fa fa-circle mr-1 text-orange f-15"></i>' . __('app.underMaintenance');
             } elseif ($row->status == 'lent') {
-                return '<i class="fa fa-circle mr-1 text-blue f-15"></i>' . __('app.lent');
+                return '<i class="fa fa-circle mr-1 text-yellow f-15"></i>' . __('app.lent');
             }
         });        
 
@@ -93,26 +93,42 @@ class AssetsDataTable extends DataTable
                 return '--';
             }
         });
-        
-        $datatables->editColumn('created_at', function ($row) {
-            return '';
-        });
-        
+
         $datatables->editColumn('lentTo', function ($row) {
-            if ($row->assetHistory) {
-                return $row->assetHistory->lentTo;
+            if ($row->name) {
+                $name = $row->name;
+                $designation = $row->designation_name ?? '-';
+                $userImage = $row->image ? asset('user-uploads/avatar/' . $row->image) : asset('img/avatar.png');
+        
+                $imageHeight = '35px'; 
+                $imageWidth = '35px';
+        
+                return "<div class='user-info d-flex align-items-center'>
+                            <img src='{$userImage}' class='user-image rounded-circle mr-2' height='{$imageHeight}' width='{$imageWidth}'>
+                            <div class='user-details'>
+                                <span class='user-name font-weight-medium'>{$name}</span><br>
+                                <span class='user-designation text-muted'>{$designation}</span>
+                            </div>
+                        </div>";
             } else {
-                return 'No AssetHistory record found';
+                return '-';
             }
         });
-
+        
+        $datatables->editColumn('date', function ($row) {
+            $dateGiven = $row->dateGiven ? date('d-m-Y', strtotime($row->dateGiven)) : '';
+            $estimatedDateOfReturn = $row->estimatedDateOfReturn ? date('d-m-Y', strtotime($row->estimatedDateOfReturn)) : '';
+        
+            return ($dateGiven ? 'Given Date: ' . $dateGiven : '') . '<br>' . ($estimatedDateOfReturn ? 'Estimated Return: ' . $estimatedDateOfReturn : '');
+        });
+        
         $datatables->addIndexColumn();
         $datatables->smart(false);
         $datatables->setRowId(function ($row) {
             return 'row-' . $row->id;
         });
 
-        $datatables->rawColumns(['action', 'status', 'asset_image']);
+        $datatables->rawColumns(['action', 'status', 'asset_image', 'date', 'lentTo']);
 
         return $datatables;
     }
@@ -125,13 +141,31 @@ class AssetsDataTable extends DataTable
         $request = $this->request();
         $assets = $model->newQuery();
 
+        $assets = $assets->join('asset_types', 'assets.asset_type_id', '=', 'asset_types.id')
+                 ->leftJoin('asset_histories', 'assets.id', '=', 'asset_histories.asset_id')
+                 ->leftJoin('users', 'asset_histories.lentTo', '=', 'users.id') 
+                 ->leftJoin('employee_details', 'employee_details.user_id', '=', 'users.id')
+                 ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
+                 ->select('assets.*', 
+                          'asset_types.type_name', 
+                          'asset_histories.dateGiven as dateGiven', 
+                          'asset_histories.estimatedDateOfReturn as estimatedDateOfReturn', 
+                          'users.name as name', 
+                          'designations.name as designation_name',
+                          'users.image as image');
+
         if ($request->status != 'all' && $request->status != '') {
             $assets = $assets->where('assets.status', $request->status);
         }
 
+        if ($request->asset_type_id != 'all' && $request->asset_type_id != '') {
+            $assets = $assets->where('assets.asset_type_id', $request->asset_type_id);
+        }
+
         if ($request->searchText != '') {
-            $assets = $assets->where(function ($query) {
-                $query->where('assets.asset_name', 'like', '%' . request('searchText') . '%');
+            $assets = $assets->where(function ($query) use ($request) {
+                $query->where('assets.asset_name', 'like', '%' . $request->searchText . '%')
+                    ->orWhere('asset_types.type_name', 'like', '%' . $request->searchText . '%');
             });
         }
 
@@ -187,14 +221,17 @@ class AssetsDataTable extends DataTable
 
      protected function getColumns()
      {
-         $data = [
-             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => !showId(), 'title' => '#'],
-             __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id'), 'visible' => showId()],
-             __('app.assetPicture') => ['data' => 'asset_image', 'name' => 'asset_image', 'exportable' => false, 'title' => __('app.assetPicture')],
-             __('app.assetName') => ['data' => 'asset_name', 'name' => 'asset_name', 'title' => __('app.assetName')],
-             __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
-             __('app.date') => ['data' => 'created_at', 'name' => 'created_at', 'title' => __('app.date')]
-         ];
+        $data = [
+            '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => !showId(), 'title' => '#'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id'), 'visible' => showId()],
+            __('app.assetPicture') => ['data' => 'asset_image', 'name' => 'asset_image', 'exportable' => false, 'title' => __('app.assetPicture')],
+            __('app.assetName') => ['data' => 'asset_name', 'name' => 'asset_name', 'title' => __('app.assetName')],
+            __('app.lentTo') => ['data' => 'lentTo', 'name' => 'lentTo', 'title' => __('app.lentTo')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
+            __('app.date') => ['data' => 'date', 'name' => 'date', 'title' => __('app.date'), 'visible' => function ($query) {
+                return $query->where('assets.status', 'lent');
+            }],
+        ];
      
          \Log::info('Columns for DataTable: ', $data);
      

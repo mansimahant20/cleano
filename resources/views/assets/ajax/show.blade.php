@@ -42,6 +42,9 @@
                         } elseif ($asset->status == 'under-maintenance') {
                             $class = 'text-orange';
                             $status = __('app.underMaintenance');
+                        } elseif ($asset->status == 'lent') {
+                            $class = 'text-yellow';
+                            $status = __('app.lent');
                         }
                         $assetStatus = '<i class="fa fa-circle mr-1 ' . $class . ' f-10"></i> ' . $status;
                     @endphp

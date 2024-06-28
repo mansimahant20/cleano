@@ -225,8 +225,10 @@ class AssetController extends AccountBaseController
     public function lend(Request $request)
     {
         $employees = User::allEmployees();
+        $asset = Asset::find($request->id); 
+
         if ($request->ajax()) {
-            return view('assets.lend.index',compact('employees')); 
+            return view('assets.lend.index', compact('employees', 'asset')); 
         }
 
         return redirect()->route('assets.index');
@@ -237,6 +239,7 @@ class AssetController extends AccountBaseController
         $request->validate([
             'lentTo' => 'required|exists:users,id',
             'dateGiven' => 'required|date',
+            'asset_id' => 'required|exists:assets,id',
         ]);
 
         try {
@@ -250,11 +253,28 @@ class AssetController extends AccountBaseController
             $assets->returnedBy_id = $request->input('returnedBy_id');
             $assets->save();
 
+            $asset = Asset::find($request->input('asset_id'));
+            $asset->status = 'lent';
+            $asset->save();
+
         } catch (\Exception $e) {
             logger($e->getMessage());
             return Reply::error('Some error occurred when inserting the data. Please try again or contact support '. $e->getMessage());
         }
 
         return Reply::successWithData(__('messages.AssetLent'), ['redirectUrl' => route('assets.index')]);
+    }
+
+    public function return(Request $request)
+    {
+        $employees = User::allEmployees();
+        $asset = Asset::find($request->id); 
+        $assetHistory = AssetHistory::find($request->id);
+
+        if ($request->ajax()) {
+            return view('assets.return.index', compact('employees', 'asset', 'assetHistory')); 
+        }
+
+        return redirect()->route('assets.index');
     }
 }   

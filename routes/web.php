@@ -218,6 +218,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 
     /* ASSETS */
     Route::get('assets/lend-modal', [AssetController::class, 'lend'])->name('assets.lend-modal');
+    Route::get('assets/return-modal', [AssetController::class, 'return'])->name('assets.return-modal');
     Route::resource('assets', AssetController::class);
 
     Route::post('/assets/lend/store', [AssetController::class, 'lentStore'])->name('assets.lentStore');
