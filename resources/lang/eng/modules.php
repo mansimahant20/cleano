@@ -313,7 +313,8 @@ return array(
         'updateInfo' => 'Update Asset Info',
         'dateGiven' => 'Date Given',
         'estimatedDateOfReturn' => 'Estimated Date of Return',
-        'dateOfReturn' => 'Date Of Return'
+        'dateOfReturn' => 'Date Of Return',
+        'assetHistory' => 'History'
     ),
     'socialCalenders' => array(
         'viewLeads' => 'View Leads'

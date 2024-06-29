@@ -95,7 +95,7 @@ class AssetsDataTable extends DataTable
         });
 
         $datatables->editColumn('lentTo', function ($row) {
-            if ($row->name) {
+            if ($row->status === 'lent' && $row->name) {
                 $name = $row->name;
                 $designation = $row->designation_name ?? '-';
                 $userImage = $row->image ? asset('user-uploads/avatar/' . $row->image) : asset('img/avatar.png');
@@ -104,7 +104,7 @@ class AssetsDataTable extends DataTable
                 $imageWidth = '35px';
         
                 return "<div class='user-info d-flex align-items-center'>
-                            <img src='{$userImage}' class='user-image rounded-circle mr-2' height='{$imageHeight}' width='{$imageWidth}'>
+                            <img src='{$userImage}' class='user-image taskEmployeeImg rounded-circle mr-2' height='{$imageHeight}' width='{$imageWidth}'>
                             <div class='user-details'>
                                 <span class='user-name font-weight-medium'>{$name}</span><br>
                                 <span class='user-designation text-muted'>{$designation}</span>
@@ -116,10 +116,14 @@ class AssetsDataTable extends DataTable
         });
         
         $datatables->editColumn('date', function ($row) {
-            $dateGiven = $row->dateGiven ? date('d-m-Y', strtotime($row->dateGiven)) : '';
-            $estimatedDateOfReturn = $row->estimatedDateOfReturn ? date('d-m-Y', strtotime($row->estimatedDateOfReturn)) : '';
+            if ($row->status === 'lent') {
+                $dateGiven = $row->dateGiven ? date('d-m-Y', strtotime($row->dateGiven)) : '';
+                $estimatedDateOfReturn = $row->estimatedDateOfReturn ? date('d-m-Y', strtotime($row->estimatedDateOfReturn)) : '';
         
-            return ($dateGiven ? 'Given Date: ' . $dateGiven : '') . '<br>' . ($estimatedDateOfReturn ? 'Estimated Return: ' . $estimatedDateOfReturn : '');
+                return ($dateGiven ? 'Given Date: ' . $dateGiven : '') . '<br>' . ($estimatedDateOfReturn ? 'Estimated Return: ' . $estimatedDateOfReturn : '');
+            } else {
+                return '-';
+            }
         });
         
         $datatables->addIndexColumn();
@@ -140,9 +144,12 @@ class AssetsDataTable extends DataTable
     {
         $request = $this->request();
         $assets = $model->newQuery();
-
+    
         $assets = $assets->join('asset_types', 'assets.asset_type_id', '=', 'asset_types.id')
-                 ->leftJoin('asset_histories', 'assets.id', '=', 'asset_histories.asset_id')
+                 ->leftJoin('asset_histories', function ($join) {
+                     $join->on('assets.id', '=', 'asset_histories.asset_id')
+                          ->whereNull('asset_histories.dateOfReturn');
+                 })
                  ->leftJoin('users', 'asset_histories.lentTo', '=', 'users.id') 
                  ->leftJoin('employee_details', 'employee_details.user_id', '=', 'users.id')
                  ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
@@ -150,25 +157,29 @@ class AssetsDataTable extends DataTable
                           'asset_types.type_name', 
                           'asset_histories.dateGiven as dateGiven', 
                           'asset_histories.estimatedDateOfReturn as estimatedDateOfReturn', 
-                          'users.name as name', 
+                          'users.name as name',
                           'designations.name as designation_name',
                           'users.image as image');
-
+    
         if ($request->status != 'all' && $request->status != '') {
             $assets = $assets->where('assets.status', $request->status);
         }
-
+    
+        if ($request->employee != 'all' && $request->employee != '') {
+            $assets = $assets->where('asset_histories.lentTo', $request->employee);
+        }
+    
         if ($request->asset_type_id != 'all' && $request->asset_type_id != '') {
             $assets = $assets->where('assets.asset_type_id', $request->asset_type_id);
         }
-
+    
         if ($request->searchText != '') {
             $assets = $assets->where(function ($query) use ($request) {
                 $query->where('assets.asset_name', 'like', '%' . $request->searchText . '%')
                     ->orWhere('asset_types.type_name', 'like', '%' . $request->searchText . '%');
             });
         }
-
+    
         return $assets;
     }
 
@@ -228,9 +239,7 @@ class AssetsDataTable extends DataTable
             __('app.assetName') => ['data' => 'asset_name', 'name' => 'asset_name', 'title' => __('app.assetName')],
             __('app.lentTo') => ['data' => 'lentTo', 'name' => 'lentTo', 'title' => __('app.lentTo')],
             __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
-            __('app.date') => ['data' => 'date', 'name' => 'date', 'title' => __('app.date'), 'visible' => function ($query) {
-                return $query->where('assets.status', 'lent');
-            }],
+            __('app.date') => ['data' => 'date', 'name' => 'date', 'title' => __('app.date')]
         ];
      
          \Log::info('Columns for DataTable: ', $data);

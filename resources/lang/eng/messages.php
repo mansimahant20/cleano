@@ -8,6 +8,7 @@ return array(
     'updateSuccess' => 'Updated successfully.',
     'recordSaved' => 'Record saved successfully',
     'AssetLent' => 'Asset Successfully Lent',
+    'AssetReturn' => 'Asset history updated successfully.',
     'deleteSuccess' => 'Deleted successfully.',
     'checkDayHoliday' => 'Choose at-least 1.',
     'addItem' => 'Add at-least 1 item.',

@@ -222,6 +222,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::resource('assets', AssetController::class);
 
     Route::post('/assets/lend/store', [AssetController::class, 'lentStore'])->name('assets.lentStore');
+    Route::post('/assets/return/store', [AssetController::class, 'returnStore'])->name('assets.returnStore');
 
     /* SOCIAL CALENDERS */
     Route::resource('social-calenders', SocialCalendersController::class);

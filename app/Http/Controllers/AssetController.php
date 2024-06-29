@@ -141,12 +141,35 @@ class AssetController extends AccountBaseController
         $this->pageTitle = __('app.asset');
         $asset = Asset::find($id);
 
+        if (!$asset) {
+            return redirect()->back()->with('error', __('app.assetNotFound'));
+        }
+
         $assetType = AssetType::find($asset->asset_type_id);
+
+        $assetHistories = AssetHistory::select(
+            'asset_histories.*',
+            'lentToUser.name as employee_name',
+            'lentToUser.image as employee_image',
+            'designations.name as designation',
+            'returnedByUser.name as returned_by_name',
+            'returnedByUser.image as returned_by_image',
+            'returnedByDesignations.name as returned_by_designation'
+        )
+        ->leftJoin('users as lentToUser', 'asset_histories.lentTo', '=', 'lentToUser.id')
+        ->leftJoin('employee_details', 'lentToUser.id', '=', 'employee_details.user_id')
+        ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
+        ->leftJoin('users as returnedByUser', 'asset_histories.returnedBy_id', '=', 'returnedByUser.id')
+        ->leftJoin('employee_details as returnedByEmployeeDetails', 'returnedByUser.id', '=', 'returnedByEmployeeDetails.user_id')
+        ->leftJoin('designations as returnedByDesignations', 'returnedByEmployeeDetails.designation_id', '=', 'returnedByDesignations.id')
+        ->where('asset_histories.asset_id', $id)
+        ->get();
 
         $this->data = [
             'pageTitle' => $this->pageTitle,
             'asset' => $asset,
-            'assetType' => $assetType
+            'assetType' => $assetType,
+            'assetHistories' => $assetHistories
         ];
 
         if (request()->ajax()) {
@@ -243,15 +266,27 @@ class AssetController extends AccountBaseController
         ]);
 
         try {
-            $assets = new AssetHistory();
-            $assets->asset_id = $request->input('asset_id');
-            $assets->notes = $request->input('notes');
-            $assets->lentTo = $request->input('lentTo');
-            $assets->dateGiven = Carbon::parse($request->input('dateGiven'))->format('Y-m-d');
-            $assets->estimatedDateOfReturn = Carbon::parse($request->input('estimatedDateOfReturn'))->format('Y-m-d');
-            $assets->dateOfReturn = $request->input('dateOfReturn') ? Carbon::parse($request->input('dateOfReturn'))->format('Y-m-d') : null;
-            $assets->returnedBy_id = $request->input('returnedBy_id');
-            $assets->save();
+            $existingAssetHistory = AssetHistory::where('asset_id', $request->input('asset_id'))
+                ->whereNull('dateOfReturn')
+                ->first();
+
+            if ($existingAssetHistory) {
+                $existingAssetHistory->dateOfReturn = Carbon::now()->format('Y-m-d');
+                $existingAssetHistory->returnedBy_id = auth()->user()->id;
+                $existingAssetHistory->save();
+
+                $asset = Asset::find($request->input('asset_id'));
+                $asset->status = 'available';
+                $asset->save();
+            }
+
+            $assetHistory = new AssetHistory();
+            $assetHistory->asset_id = $request->input('asset_id');
+            $assetHistory->lentTo = $request->input('lentTo');
+            $assetHistory->dateGiven = Carbon::parse($request->input('dateGiven'))->format('Y-m-d');
+            $assetHistory->estimatedDateOfReturn = Carbon::parse($request->input('estimatedDateOfReturn'))->format('Y-m-d');
+            $assetHistory->notes = $request->input('notes');
+            $assetHistory->save();
 
             $asset = Asset::find($request->input('asset_id'));
             $asset->status = 'lent';
@@ -259,7 +294,7 @@ class AssetController extends AccountBaseController
 
         } catch (\Exception $e) {
             logger($e->getMessage());
-            return Reply::error('Some error occurred when inserting the data. Please try again or contact support '. $e->getMessage());
+            return Reply::error('Some error occurred when inserting the data. Please try again or contact support: ' . $e->getMessage());
         }
 
         return Reply::successWithData(__('messages.AssetLent'), ['redirectUrl' => route('assets.index')]);
@@ -267,14 +302,52 @@ class AssetController extends AccountBaseController
 
     public function return(Request $request)
     {
-        $employees = User::allEmployees();
         $asset = Asset::find($request->id); 
-        $assetHistory = AssetHistory::find($request->id);
+        $assetHistory = AssetHistory::where('asset_id', $request->id)->first();
+
+        if ($assetHistory) {
+            $employees = User::select('users.id', 'users.name', 'users.image', 'designations.name as designation')
+                ->leftJoin('employee_details', 'users.id', '=', 'employee_details.user_id')
+                ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
+                ->where('users.id', $assetHistory->lentTo)
+                ->get();
+        } else {
+            $employees = collect(); 
+        }
 
         if ($request->ajax()) {
             return view('assets.return.index', compact('employees', 'asset', 'assetHistory')); 
         }
 
         return redirect()->route('assets.index');
+    }
+
+    public function returnStore(Request $request)
+    {
+        $request->validate([
+            'asset_id' => 'required|exists:assets,id',
+            'dateOfReturn' => 'required|date',
+        ]);
+
+        try {
+            $assetHistory = AssetHistory::where('asset_id', $request->input('asset_id'))
+                ->whereNull('dateOfReturn')
+                ->firstOrFail();
+
+            $assetHistory->dateOfReturn = Carbon::parse($request->input('dateOfReturn'))->format('Y-m-d');
+            $assetHistory->returnedBy_id = auth()->user()->id;
+            $assetHistory->notes = $request->input('notes');
+            $assetHistory->save();
+
+            $asset = Asset::find($request->input('asset_id'));
+            $asset->status = 'available';
+            $asset->save();
+
+        } catch (\Exception $e) {
+            logger($e->getMessage());
+            return Reply::error('Some error occurred when updating the data. Please try again or contact support: ' . $e->getMessage());
+        }
+
+        return Reply::successWithData(__('messages.AssetReturn'), ['redirectUrl' => route('assets.index')]);
     }
 }   
